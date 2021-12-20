@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "worldpreview",
+  "version": "${version}",
+
+  "name": "WorldPreview",
+  "description": "Spawns the player during the world generation but then pauses the game until all the chunks are generated",
+  "authors": [
+   "Void_X_Walker"
+  ],
+  "license": "MIT",
+  "icon": "assets/worldpreview/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.voidxwalker.worldpreview.Main"
+    ]
+  },
+  "mixins": [
+    "worldpreview.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.1",
+    "minecraft": "1.16.x"
+  }
+}
