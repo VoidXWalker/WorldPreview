@@ -35,12 +35,10 @@ public class LevelLoadingScreenMixin extends Screen {
                 this.button= this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 + -16, 204, 20, new TranslatableText("menu.returnToMenu"), (buttonWidgetx) -> {
                     buttonWidgetx.active = false;
                     Main.kill=true;
-
-
                 }));
                calculateSpawn();
             }
-            if(Main.clientWord.getChunkManager().getLoadedChunkCount()>25&&calculatedSpawn){
+            if(Main.clientWord.getChunkManager().getLoadedChunkCount()>15&&calculatedSpawn){
                 MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
                 this.client.getProfiler().swap("camera");
                 if(Main.camera==null){
@@ -48,10 +46,8 @@ public class LevelLoadingScreenMixin extends Screen {
                     Main.camera=new Camera();
                     Main.camera.update(Main.world,Main.player,false,false,0.2F);
                 }
-
                 MatrixStack matrixStack = new MatrixStack();
                 matrixStack.peek().getModel().multiply(this.getBasicProjectionMatrix());
-
                 Matrix4f matrix4f = matrixStack.peek().getModel();
                 RenderSystem.matrixMode(5889);
                 RenderSystem.loadIdentity();
@@ -74,12 +70,9 @@ public class LevelLoadingScreenMixin extends Screen {
                 RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
                 this.client.getProfiler().pop();
             }
-
-
         }
         ci.cancel();
     }
-
     private int calculateSpawnOffsetMultiplier(int horizontalSpawnArea) {
         return horizontalSpawnArea <= 16 ? horizontalSpawnArea - 1 : 17;
     }
@@ -111,7 +104,6 @@ public class LevelLoadingScreenMixin extends Screen {
             int s = q / (i * 2 + 1);
             if(true){
                 BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn((ServerWorld) Main.world, blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
-
                 if (blockPos2 != null) {
                     Main.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
                     if (Main.world.doesNotCollide(Main.player)) {
@@ -119,7 +111,6 @@ public class LevelLoadingScreenMixin extends Screen {
                     }
                 }
             }
-
         }
         calculatedSpawn=true;
     }

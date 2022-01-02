@@ -15,7 +15,8 @@
 
     "ServerPlayerEntityMixin",
     "MinecraftClientMixin",
-    "ServerChunkManagerMixin"
+    "ServerChunkManagerMixin",
+    "ThreadedAnvilChunkStorageMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -763,7 +763,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 
 										RenderSystem.pushMatrix();
 										RenderSystem.multMatrix(matrices.peek().getModel());
-										this.client.debugRenderer.render(matrices, immediate, d, e, f);
 										RenderSystem.popMatrix();
 										immediate.draw(TexturedRenderLayers.getEntityTranslucentCull());
 										immediate.draw(TexturedRenderLayers.getBannerPatterns());

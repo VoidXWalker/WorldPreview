@@ -13,10 +13,12 @@ public class Main {
    public static Entity player;
    public static ClientWorld clientWord;
    public static BlockPos spawnPos;
-   public static boolean kill;
+   public static boolean kill=false;
    public static int playerSpawn;
    public static Camera camera;
    public static PreviewRenderer worldRenderer;
-
+public static void e(){
+   System.out.println(1);
+}
 
 }
