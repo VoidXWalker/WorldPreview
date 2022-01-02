@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.voidxwalker.worldpreview.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "LevelLoadingScreenMixin",
+    "MinecraftServerMixin",
+    "access.BuiltChunkStorageMixin",
+    "access.ClientChunkManagerMixin",
+    "access.ClientChunkMapMixin",
+    "access.ThreadedAnvilChunkStorageMixin",
+    "access.RenderPhaseMixin",
+    "access.SpawnLocatingMixin",
+
+    "ServerPlayerEntityMixin",
+    "MinecraftClientMixin",
+    "ServerChunkManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
