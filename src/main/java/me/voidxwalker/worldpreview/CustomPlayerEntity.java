@@ -8,8 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CustomPlayerEntity extends Entity {
-
-
     public CustomPlayerEntity(EntityType<?> type, World world, BlockPos pos,float yaw, float pitch) {
         super(type, world);
         this.setPos(pos.getX(),pos.getY(),pos.getZ());
@@ -19,22 +17,12 @@ public class CustomPlayerEntity extends Entity {
         this.prevY=pos.getY();
         this.prevZ=pos.getZ();
     }
-
     @Override
-    protected void initDataTracker() {
-
-    }
-
+    protected void initDataTracker() {}
     @Override
-    protected void readCustomDataFromTag(CompoundTag tag) {
-
-    }
-
+    protected void readCustomDataFromTag(CompoundTag tag) {}
     @Override
-    protected void writeCustomDataToTag(CompoundTag tag) {
-
-    }
-
+    protected void writeCustomDataToTag(CompoundTag tag) {}
     @Override
     public Packet<?> createSpawnPacket() {
         return null;

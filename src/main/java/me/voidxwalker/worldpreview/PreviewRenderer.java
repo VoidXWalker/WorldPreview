@@ -180,7 +180,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 		this.entityRenderDispatcher = client.getEntityRenderManager();
 		this.bufferBuilders = bufferBuilders;
 		this.textureManager = client.getTextureManager();
-
 		for(int i = 0; i < 32; ++i) {
 			for(int j = 0; j < 32; ++j) {
 				float f = (float)(j - 16);
@@ -190,22 +189,12 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 				this.field_20795[i << 5 | j] = f / h;
 			}
 		}
-
 		this.renderLightSky();
-
 	}
-
-
-
-
-
-
-
 
 	private void loadTransparencyShader() {
 		this.resetTransparencyShader();
 		Identifier identifier = new Identifier("shaders/post/transparency.json");
-
 		try {
 			ShaderEffect shaderEffect = new ShaderEffect(this.client.getTextureManager(), this.client.getResourceManager(), this.client.getFramebuffer(), identifier);
 			shaderEffect.setupDimensions(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight());
@@ -244,7 +233,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 			this.weatherFramebuffer = null;
 			this.cloudsFramebuffer = null;
 		}
-
 	}
 
 	public void drawEntityOutlinesFramebuffer() {
@@ -254,13 +242,11 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 			this.entityOutlinesFramebuffer.draw(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight(), false);
 			RenderSystem.disableBlend();
 		}
-
 	}
 
 	protected boolean canDrawEntityOutlines() {
 		return this.entityOutlinesFramebuffer != null && this.entityOutlineShader != null && Main.player != null;
 	}
-
 
 	private void renderLightSky() {
 		Tessellator tessellator = Tessellator.getInstance();
@@ -268,7 +254,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 		if (this.lightSkyBuffer != null) {
 			this.lightSkyBuffer.close();
 		}
-
 		this.lightSkyBuffer = new VertexBuffer(this.skyVertexFormat);
 		this.renderSkyHalf(bufferBuilder, false);
 		bufferBuilder.end();
@@ -277,7 +262,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 
 	private void renderSkyHalf(BufferBuilder buffer, boolean bottom) {
 		buffer.begin(7, VertexFormats.POSITION);
-
 		for(int k = -384; k <= 384; k += 64) {
 			for(int l = -384; l <= 384; l += 64) {
 				float f = (float)k;
@@ -286,7 +270,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 					g = (float)k;
 					f = (float)(k + 64);
 				}
-
 				buffer.vertex(f, (float) 16.0, l).next();
 				buffer.vertex(g, (float) 16.0, l).next();
 				buffer.vertex(g, (float) 16.0, l + 64).next();
@@ -295,10 +278,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 		}
 
 	}
-
-
-
-
 
 	public void setWorld(@Nullable ClientWorld clientWorld) {
 		this.lastCameraChunkUpdateX = Double.MIN_VALUE;
@@ -318,11 +297,9 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 				this.chunks.clear();
 				this.chunks = null;
 			}
-
 			if (this.chunkBuilder != null) {
 				this.chunkBuilder.stop();
 			}
-
 			this.chunkBuilder = null;
 			this.noCullingBlockEntities.clear();
 		}
@@ -336,14 +313,12 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 			} else {
 				this.resetTransparencyShader();
 			}
-
 			this.world.reloadColor();
 			if (this.chunkBuilder == null) {
 				this.chunkBuilder = new ChunkBuilder(this.world, this, Util.getServerWorkerExecutor(), this.client.is64Bit(), this.bufferBuilders.getBlockBufferBuilders());
 			} else {
 				this.chunkBuilder.setWorld(this.world);
 			}
-
 			this.needsTerrainUpdate = true;
 			this.cloudsDirty = true;
 			RenderLayers.setFancyGraphicsOrBetter(MinecraftClient.isFancyGraphicsOrBetter());
@@ -351,12 +326,10 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 			if (this.chunks != null) {
 				this.chunks.clear();
 			}
-
 			this.clearChunkRenderers();
 			synchronized(this.noCullingBlockEntities) {
 				this.noCullingBlockEntities.clear();
 			}
-
 			this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, this);
 			if (this.world != null) {
 				Entity entity = this.client.getCameraEntity();
@@ -364,7 +337,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 					this.chunks.updateCameraPosition(entity.getX(), entity.getZ());
 				}
 			}
-
 		}
 	}
 
@@ -378,7 +350,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 		if (this.entityOutlineShader != null) {
 			this.entityOutlineShader.setupDimensions(i, j);
 		}
-
 		if (this.transparencyShader != null) {
 			this.transparencyShader.setupDimensions(i, j);
 		}
@@ -401,7 +372,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 				++i;
 			}
 		}
-
 		return i;
 	}
 
@@ -414,7 +384,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 		if (this.client.options.viewDistance != this.renderDistance) {
 			this.reload();
 		}
-
 		this.world.getProfiler().push("camera");
 		double d = Main.player.getX() - this.lastCameraChunkUpdateX;
 		double e = Main.player.getY() - this.lastCameraChunkUpdateY;
@@ -428,7 +397,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 			this.cameraChunkZ = Main.player.chunkZ;
 			this.chunks.updateCameraPosition(Main.player.getX(), Main.player.getZ());
 		}
-
 		this.chunkBuilder.setCameraPosition(vec3d);
 		this.world.getProfiler().swap("cull");
 		this.client.getProfiler().swap("culling");
@@ -458,7 +426,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 				if (spectator && this.world.getBlockState(blockPos).isOpaqueFullCube(this.world, blockPos)) {
 					bl = false;
 				}
-
 				builtChunk.setRebuildFrame(frame);
 				queue.add(new PreviewRenderer.ChunkInfo(builtChunk, null, 0));
 			} else {
@@ -467,7 +434,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 				int l = MathHelper.floor(vec3d.z / 16.0D) * 16;
 				List<PreviewRenderer.ChunkInfo> list = Lists.newArrayList();
 				m = -this.renderDistance;
-
 				while(true) {
 					if (m > this.renderDistance) {
 						list.sort(Comparator.comparingDouble((chunkInfox) -> {
@@ -476,7 +442,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 						queue.addAll(list);
 						break;
 					}
-
 					for(n = -this.renderDistance; n <= this.renderDistance; ++n) {
 						ChunkBuilder.BuiltChunk builtChunk2 = ((BuiltChunkStorageMixin)this.chunks).callGetRenderedChunk(new BlockPos(k + (m << 4) + 8, j, l + (n << 4) + 8));
 						if (builtChunk2 != null && frustum.isVisible(builtChunk2.boundingBox)) {
@@ -484,13 +449,10 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 							list.add(new PreviewRenderer.ChunkInfo(builtChunk2, null, 0));
 						}
 					}
-
 					++m;
 				}
 			}
-
 			this.client.getProfiler().push("iteration");
-
 			while(!queue.isEmpty()) {
 				chunkInfo = queue.poll();
 				builtChunk3 = chunkInfo.chunk;
@@ -498,7 +460,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 				this.visibleChunks.add(chunkInfo);
 				Direction[] var36 = DIRECTIONS;
 				m = var36.length;
-
 				for(n = 0; n < m; ++n) {
 					Direction direction2 = var36[n];
 					ChunkBuilder.BuiltChunk builtChunk4 = this.getAdjacentChunk(blockPos2, builtChunk3, direction2);
@@ -509,15 +470,12 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 					}
 				}
 			}
-
 			this.client.getProfiler().pop();
 		}
-
 		this.client.getProfiler().swap("rebuildNear");
 		Set<ChunkBuilder.BuiltChunk> set = this.chunksToRebuild;
 		this.chunksToRebuild = Sets.newLinkedHashSet();
 		ObjectListIterator var31 = this.visibleChunks.iterator();
-
 		while(true) {
 			while(true) {
 				do {
@@ -526,7 +484,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 						this.client.getProfiler().pop();
 						return;
 					}
-
 					chunkInfo = (PreviewRenderer.ChunkInfo)var31.next();
 					builtChunk3 = chunkInfo.chunk;
 				} while(!builtChunk3.needsRebuild() && !set.contains(builtChunk3));
@@ -574,12 +531,10 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 		this.capturedFrustumOrientation[5] = new Vector4f(1.0F, -1.0F, 1.0F, 1.0F);
 		this.capturedFrustumOrientation[6] = new Vector4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.capturedFrustumOrientation[7] = new Vector4f(-1.0F, 1.0F, 1.0F, 1.0F);
-
 		for(int i = 0; i < 8; ++i) {
 			this.capturedFrustumOrientation[i].transform(matrix4f2);
 			this.capturedFrustumOrientation[i].normalizeProjectiveCoordinates();
 		}
-
 	}
 
 	public void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f) {
@@ -617,13 +572,11 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 
 		boolean bl2 = this.world.getSkyProperties().useThickFog(MathHelper.floor(d), MathHelper.floor(e));
 		if (this.client.options.viewDistance >= 4) {
-		//	BackgroundRenderer.applyFog(camera, BackgroundRenderer.FogType.FOG_SKY, g, bl2);
 			profiler.swap("sky");
 			this.renderSky(matrices, tickDelta);
 		}
 
 		profiler.swap("fog");
-		//BackgroundRenderer.applyFog(camera, BackgroundRenderer.FogType.FOG_TERRAIN, Math.max(g - 16.0F, 32.0F), bl2);
 		profiler.swap("terrain_setup");
 		this.setupTerrain(camera, frustum2, bl, this.frame++, Main.player.isSpectator());
 		profiler.swap("updatechunks");
@@ -674,7 +627,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 		VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
 		Iterator var39 = this.world.getEntities().iterator();
 
-
 		while(true) {
 			Entity entity;
 			int w;
@@ -689,19 +641,16 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 							immediate.draw(RenderLayer.getEntitySmoothCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
 							profiler.swap("blockentities");
 							ObjectListIterator var53 = this.visibleChunks.iterator();
-
 							while(true) {
 								List list;
 								do {
 									if (!var53.hasNext()) {
 										synchronized(this.noCullingBlockEntities) {
 											Iterator var57 = this.noCullingBlockEntities.iterator();
-
 											while(true) {
 												if (!var57.hasNext()) {
 													break;
 												}
-
 												BlockEntity blockEntity2 = (BlockEntity)var57.next();
 												BlockPos blockPos2 = blockEntity2.getPos();
 												matrices.push();
@@ -710,7 +659,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 												matrices.pop();
 											}
 										}
-
 										this.checkEmpty(matrices);
 										immediate.draw(RenderLayer.getSolid());
 										immediate.draw(TexturedRenderLayers.getEntitySolid());
@@ -724,10 +672,8 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 											this.entityOutlineShader.render(tickDelta);
 											this.client.getFramebuffer().beginWrite(false);
 										}
-
 										profiler.swap("destroyProgress");
 										ObjectIterator var54 = this.blockBreakingProgressions.long2ObjectEntrySet().iterator();
-
 										while(var54.hasNext()) {
 											Entry<SortedSet<BlockBreakingInfo>> entry2 = (Entry)var54.next();
 											BlockPos blockPos3 = BlockPos.fromLong(entry2.getLongKey());
@@ -747,7 +693,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 												}
 											}
 										}
-
 										this.checkEmpty(matrices);
 										profiler.pop();
 										HitResult hitResult = this.client.crosshairTarget;
@@ -760,7 +705,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 												this.drawBlockOutline(matrices, vertexConsumer3, camera.getFocusedEntity(), d, e, f, blockPos4, blockState);
 											}
 										}
-
 										RenderSystem.pushMatrix();
 										RenderSystem.multMatrix(matrices.peek().getModel());
 										RenderSystem.popMatrix();
@@ -796,7 +740,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 											profiler.swap("particles");
 											this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
 										}
-
 										RenderSystem.pushMatrix();
 										RenderSystem.multMatrix(matrices.peek().getModel());
 										if (this.client.options.getCloudRenderMode() != CloudRenderMode.OFF) {
@@ -811,9 +754,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 												this.renderClouds(matrices, tickDelta, d, e, f);
 											}
 										}
-
-
-
 										this.renderChunkDebugInfo(camera);
 										RenderSystem.shadeModel(7424);
 										RenderSystem.depthMask(true);
@@ -822,13 +762,10 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 										BackgroundRenderer.method_23792();
 										return;
 									}
-
 									PreviewRenderer.ChunkInfo chunkInfo = (PreviewRenderer.ChunkInfo)var53.next();
 									list = chunkInfo.chunk.getData().getBlockEntities();
 								} while(list.isEmpty());
-
 								Iterator var61 = list.iterator();
-
 								while(var61.hasNext()) {
 									BlockEntity blockEntity = (BlockEntity)var61.next();
 									BlockPos blockPos = blockEntity.getPos();
@@ -847,7 +784,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 											};
 										}
 									}
-
 									BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider3);
 									matrices.pop();
 								}
@@ -858,21 +794,18 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 					} while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(Main.player));
 				} while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
 			} while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
-
 			++this.regularEntityCount;
 			if (entity.age == 0) {
 				entity.lastRenderX = entity.getX();
 				entity.lastRenderY = entity.getY();
 				entity.lastRenderZ = entity.getZ();
 			}
-
 			Object vertexConsumerProvider2;
 			if (this.canDrawEntityOutlines() && this.client.method_27022(entity)) {
 				bl3 = true;
 				OutlineVertexConsumerProvider outlineVertexConsumerProvider = this.bufferBuilders.getOutlineVertexConsumers();
 				vertexConsumerProvider2 = outlineVertexConsumerProvider;
 				int k = entity.getTeamColorValue();
-				int s = 1;
 				int t = k >> 16 & 255;
 				int u = k >> 8 & 255;
 				w = k & 255;
@@ -880,10 +813,8 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 			} else {
 				vertexConsumerProvider2 = immediate;
 			}
-
 			this.renderEntity(entity, d, e, f, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider2);
 		}
-
 	}
 
 	private void checkEmpty(MatrixStack matrices) {
@@ -1397,42 +1328,39 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 
 					if (ac <= 1) {
 						for(aj = 0; aj < 8; ++aj) {
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 0.0F), (double)(af + 8.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 4.0F), (double)(af + 8.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 4.0F), (double)(af + 0.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 0.0F), (double)(af + 0.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 0.0F, af + 8.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 4.0F, af + 8.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 4.0F, af + 0.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 0.0F, af + 0.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
 						}
 					}
 
 					if (ad > -1) {
 						for(aj = 0; aj < 8; ++aj) {
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 4.0F, af + (float)aj + 0.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 4.0F, af + (float)aj + 0.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 0.0F, af + (float)aj + 0.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 0.0F, af + (float)aj + 0.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
 						}
 					}
 
 					if (ad <= 1) {
 						for(aj = 0; aj < 8; ++aj) {
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 4.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 4.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 0.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 0.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
 						}
 					}
 				}
 			}
 		} else {
-			int ak = 1;
-			int al =1;
-
 			for(int am = -32; am < 32; am += 32) {
 				for(int an = -32; an < 32; an += 32) {
-					builder.vertex((double)(am + 0), (double)ab, (double)(an + 32)).texture((float)(am + 0) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-					builder.vertex((double)(am + 32), (double)ab, (double)(an + 32)).texture((float)(am + 32) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-					builder.vertex((double)(am + 32), (double)ab, (double)(an + 0)).texture((float)(am + 32) * 0.00390625F + k, (float)(an + 0) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-					builder.vertex((double)(am + 0), (double)ab, (double)(an + 0)).texture((float)(am + 0) * 0.00390625F + k, (float)(an + 0) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am + 0, ab, an + 32).texture((float)(am + 0) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am + 32, ab, an + 32).texture((float)(am + 32) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am + 32, ab, an + 0).texture((float)(am + 32) * 0.00390625F + k, (float)(an + 0) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am + 0, ab, an + 0).texture((float)(am + 0) * 0.00390625F + k, (float)(an + 0) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
 				}
 			}
 		}
@@ -1453,7 +1381,6 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 				} else {
 					builtChunk.scheduleRebuild(this.chunkBuilder);
 				}
-
 				builtChunk.cancelRebuild();
 				iterator.remove();
 				++i;
@@ -1479,7 +1406,8 @@ public class PreviewRenderer extends net.minecraft.client.render.WorldRenderer i
 			vertexConsumer.vertex(matrix4f, (float)(n + d), (float)(o + e), (float)(p + f)).color(g, h, i, j).next();
 		});
 	}
-@Environment(EnvType.CLIENT)
+
+	@Environment(EnvType.CLIENT)
 	public class ChunkInfo {
 		public final ChunkBuilder.BuiltChunk chunk;
 		private final Direction direction;
