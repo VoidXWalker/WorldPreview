@@ -2,32 +2,37 @@ package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.Main;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
-import org.objectweb.asm.Opcodes;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 
 @Mixin(MinecraftClient.class)
-public abstract class MinecraftClientMixin<V> {
+public abstract class MinecraftClientMixin {
 
-    @Shadow private boolean paused;
+    @Shadow public abstract void openScreen(@Nullable Screen screen);
 
-    @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;paused:Z", opcode = Opcodes.GETFIELD,ordinal = 2))
-    private boolean renderWhilePaused(MinecraftClient instance) {
-        if(Main.forcedPaused){
-            return false;
+    @Shadow public abstract void disconnect();
+
+    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/MinecraftClient;render(Z)V", shift = At.Shift.AFTER),cancellable = true)
+    public void kill( CallbackInfo ci){
+        if(Main.kill){
+            Main.world=null;
+            Main.player=null;
+            Main.clientWord=null;
+            Main.spawnPos=null;
+            Main.camera=null;
+            Main.worldRenderer=null;
+            this.disconnect();
+            this.openScreen(new TitleScreen());
+            Main.kill=false;
+            ci.cancel();
         }
-        else {
-            return paused;
-        }
+
     }
-    @Redirect(method = "openScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Mouse;lockCursor()V"))
-    private void preventMouseMovement(Mouse instance) {
-        if(!Main.forcedPaused){
-            instance.lockCursor();
-        }
-    }
-
 }
