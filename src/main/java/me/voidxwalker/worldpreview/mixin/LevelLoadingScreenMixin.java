@@ -45,6 +45,7 @@ public class LevelLoadingScreenMixin extends Screen {
                     Main.player.refreshPositionAndAngles(Main.player.getX(),Main.player.getY()+1.5,Main.player.getZ(),0.0F,0.0F);
                     Main.camera=new Camera();
                     Main.camera.update(Main.world,Main.player,false,false,0.2F);
+                    Main.player.refreshPositionAndAngles(Main.player.getX(),Main.player.getY()-1.5,Main.player.getZ(),0.0F,0.0F);
                 }
                 MatrixStack matrixStack = new MatrixStack();
                 matrixStack.peek().getModel().multiply(this.getBasicProjectionMatrix());
@@ -56,6 +57,10 @@ public class LevelLoadingScreenMixin extends Screen {
                 MatrixStack m = new MatrixStack();
                 m.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(Main.camera.getPitch()));
                 m.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(Main.camera.getYaw() + 180.0F));
+                if(!Main.world.doesNotCollide(Main.player)){
+                    calculateSpawn();
+                    Main.camera.update(Main.world,Main.player,false,false,0.2F);
+                }
                 Main.worldRenderer.render(m, 0.2F, 1000000, false, Main.camera, MinecraftClient.getInstance().gameRenderer, MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager(), matrix4f);
                 Window window = this.client.getWindow();
                 RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);

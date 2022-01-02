@@ -18,5 +18,10 @@ public interface RenderPhaseMixin {
         throw new AssertionError();
     }
 
+    @Accessor @Mutable
+    static RenderPhase.Target getWEATHER_TARGET() {
+        throw new AssertionError();
+    }
+
 
 }
