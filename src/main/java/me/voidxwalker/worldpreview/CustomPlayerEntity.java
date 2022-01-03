@@ -7,7 +7,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class CustomPlayerEntity extends Entity {
+public class CustomPlayerEntity extends Entity  {
     public CustomPlayerEntity(EntityType<?> type, World world, BlockPos pos,float yaw, float pitch) {
         super(type, world);
         this.setPos(pos.getX(),pos.getY(),pos.getZ());
@@ -16,6 +16,9 @@ public class CustomPlayerEntity extends Entity {
         this.prevX=pos.getX();
         this.prevY=pos.getY();
         this.prevZ=pos.getZ();
+        this.chunkX=pos.getX()%8;
+        this.chunkY=pos.getY()%8;
+        this.chunkZ=pos.getZ()%8;
     }
     @Override
     protected void initDataTracker() {}

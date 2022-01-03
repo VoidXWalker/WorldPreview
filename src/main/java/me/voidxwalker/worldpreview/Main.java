@@ -15,4 +15,7 @@ public class Main {
    public static int playerSpawn;
    public static Camera camera;
    public static PreviewRenderer worldRenderer;
+   public static void e(){
+      System.out.println(2);
+   }
 }
