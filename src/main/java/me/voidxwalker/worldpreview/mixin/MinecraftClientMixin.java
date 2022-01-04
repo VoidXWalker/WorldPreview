@@ -22,8 +22,8 @@ public abstract class MinecraftClientMixin {
     public void kill( CallbackInfo ci){
         if(Main.kill){
             this.disconnect();
-            this.openScreen(new TitleScreen());
             Main.kill=false;
+            this.openScreen(new TitleScreen());
             ci.cancel();
         }
     }
