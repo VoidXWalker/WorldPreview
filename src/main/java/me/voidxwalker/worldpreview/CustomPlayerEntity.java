@@ -16,9 +16,6 @@ public class CustomPlayerEntity extends Entity  {
         this.prevX=pos.getX();
         this.prevY=pos.getY();
         this.prevZ=pos.getZ();
-        this.chunkX=pos.getX()%8;
-        this.chunkY=pos.getY()%8;
-        this.chunkZ=pos.getZ()%8;
     }
     @Override
     protected void initDataTracker() {}

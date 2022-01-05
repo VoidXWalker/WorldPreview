@@ -21,7 +21,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     private int setSpawnPos(Random defaultRandom, int k){
         if(Main.spawnPos != null){
             int value = Main.playerSpawn;
-            Main.spawnPos=null;
             return value;
         }
         return defaultRandom.nextInt(k);

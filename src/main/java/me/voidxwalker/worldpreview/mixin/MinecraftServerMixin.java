@@ -2,10 +2,9 @@ package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.CustomPlayerEntity;
 import me.voidxwalker.worldpreview.Main;
-import me.voidxwalker.worldpreview.PreviewRenderer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.resource.ServerResourceManager;
@@ -45,10 +44,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow private volatile boolean running;
 
-    @Shadow @Nullable public abstract  ServerNetworkIo getNetworkIo();
-
-    @Shadow private PlayerManager playerManager;
-
     @Shadow public abstract Iterable<ServerWorld> getWorlds();
 
     @Shadow @Final private Snooper snooper;
@@ -59,62 +54,83 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow @Final private static Logger LOGGER;
 
+    @Shadow public abstract @Nullable ServerNetworkIo getNetworkIo();
+
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-
-        ServerWorld serverWorld = this.getOverworld();
-        Main.spawnPos= serverWorld.getSpawnPos();
-        Main.world=this.getWorld(World.OVERWORLD);
-        RegistryKey<DimensionType> registryKey = DimensionType.OVERWORLD_REGISTRY_KEY;
-        RegistryKey<World> registryKey2 = World.OVERWORLD;
-        DimensionType dimensionType = DimensionType.getOverworldDimensionType();
-        ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, Main.world.getLevelProperties().isHardcore(), false);
-        Main.player=new CustomPlayerEntity(EntityType.ARMOR_STAND,Main.world,Main.spawnPos,0,0);
-        Main.clientWord = new ClientWorld(new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,null),properties, registryKey2, registryKey, dimensionType, 16, MinecraftClient.getInstance()::getProfiler, Main.worldRenderer,false, BiomeAccess.hashSeed(((ServerWorld)(Main.world)).getSeed()));
-        Main.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
-        Main.worldRenderer.setWorld(Main.clientWord);
-
-
+        if(!Main.existingWorld){
+            ServerWorld serverWorld = this.getOverworld();
+            Main.spawnPos= serverWorld.getSpawnPos();
+            Main.world=this.getWorld(World.OVERWORLD);
+            RegistryKey<DimensionType> registryKey = DimensionType.OVERWORLD_REGISTRY_KEY;
+            RegistryKey<World> registryKey2 = World.OVERWORLD;
+            DimensionType dimensionType = DimensionType.getOverworldDimensionType();
+            ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, Main.world.getLevelProperties().isHardcore(), false);
+            Main.player=new CustomPlayerEntity(EntityType.PLAYER,Main.world,Main.spawnPos,0,0);
+            Main.clientWord = new ClientWorld(new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,null),properties, registryKey2, registryKey, dimensionType, 16, MinecraftClient.getInstance()::getProfiler, Main.worldRenderer,false, BiomeAccess.hashSeed(((ServerWorld)(Main.world)).getSeed()));
+        }
+        Main.existingWorld=false;
     }
 
-    @Inject(method = "shutdown",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/MinecraftServer;save(ZZZ)Z"),cancellable = true)
+    @Inject(method = "shutdown",at=@At(value = "HEAD"),cancellable = true)
     public void kill(CallbackInfo ci){
         if(Main.kill){
-            this.running=false;
-            Iterator var1 = this.getWorlds().iterator();
-            ServerWorld serverWorld2;
-            while(var1.hasNext()) {
-                serverWorld2 = (ServerWorld)var1.next();
-                if (serverWorld2 != null) {
-                    try {
-                        serverWorld2.getChunkManager().threadedAnvilChunkStorage.close();
-                    } catch (IOException var5) {
-
-                    }
+                if(this.running){
+                    this.running=false;
+                    this.shutdownWithoutSave();
+                    MinecraftClient.getInstance().disconnect();
+                    MinecraftClient.getInstance().openScreen(new TitleScreen());
+                }
+                else{
+                    Main.kill = false;
+                }
+                ci.cancel();
+        }
+    }
+@Inject(method="runServer",at=@At(value="INVOKE",target="Lnet/minecraft/server/ServerMetadata;setVersion(Lnet/minecraft/server/ServerMetadata$Version;)V"), cancellable = true)
+    public void kill2(CallbackInfo ci){
+        if(Main.kill){
+            ci.cancel();
+        }
+    }
+public void shutdownWithoutSave(){
+        LOGGER.info("Stopping server");
+        if (this.getNetworkIo() != null) {
+            this.getNetworkIo().stop();
+        }
+        Iterator var1 = this.getWorlds().iterator();
+        ServerWorld serverWorld2;
+        while(var1.hasNext()) {
+            serverWorld2 = (ServerWorld)var1.next();
+            if (serverWorld2 != null) {
+                serverWorld2.savingDisabled = false;
+            }
+        }
+        Iterator<ServerWorld> var2 = this.getWorlds().iterator();
+        while(var2.hasNext()) {
+            serverWorld2 = var2.next();
+            if (serverWorld2 != null) {
+                try {
+                    serverWorld2.getChunkManager().threadedAnvilChunkStorage.close();
+                } catch (IOException var5) {
                 }
             }
-            if (this.snooper.isActive()) {
-                this.snooper.cancel();
-            }
-
-            this.serverResourceManager.close();
-
-            try {
-                this.session.close();
-            } catch (IOException var4) {
-                LOGGER.error((String)"Failed to unlock level {}", (Object)this.session.getDirectoryName(), (Object)var4);
-            }
-           ci.cancel();
         }
-
+        if (this.snooper.isActive()) {
+            this.snooper.cancel();
+        }
+        this.serverResourceManager.close();
+        try {
+            this.session.close();
+        } catch (IOException var4) {
+            LOGGER.error("Failed to unlock level {}", this.session.getDirectoryName(), var4);
+        }
     }
 
     @Redirect(method = "prepareStartRegion",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/world/ServerChunkManager;getTotalChunksLoadedCount()I"))
     public int kill(ServerChunkManager instance){
-
         if(Main.kill){
-            this.running=false;
             return 441;
         }
         return  instance.getTotalChunksLoadedCount();
