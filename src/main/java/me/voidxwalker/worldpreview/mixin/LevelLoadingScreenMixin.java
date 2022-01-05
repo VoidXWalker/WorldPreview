@@ -66,6 +66,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 calculateSpawn();
             }
             if (calculatedSpawn) {
+
                 try {
                     MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
                     this.client.getProfiler().swap("camera");
@@ -169,6 +170,8 @@ public abstract class LevelLoadingScreenMixin extends Screen {
             if(!Main.stopButton){
                 Main.kill = true;
                 client.getServer().shutdown();
+                MinecraftClient.getInstance().disconnect();
+                MinecraftClient.getInstance().openScreen(new TitleScreen());
                 buttonWidgetx.active = false;
             }
         }));

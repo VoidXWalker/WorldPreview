@@ -56,6 +56,8 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow public abstract @Nullable ServerNetworkIo getNetworkIo();
 
+    @Shadow public abstract boolean isRunning();
+
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
@@ -76,21 +78,23 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     @Inject(method = "shutdown",at=@At(value = "HEAD"),cancellable = true)
     public void kill(CallbackInfo ci){
         if(Main.kill){
-                if(this.running){
-                    this.running=false;
-                    this.shutdownWithoutSave();
-                    MinecraftClient.getInstance().disconnect();
-                    MinecraftClient.getInstance().openScreen(new TitleScreen());
-                }
-                else{
-                    Main.kill = false;
-                }
-                ci.cancel();
+            if(this.isRunning()){
+                this.shutdownWithoutSave();
+                this.running=false;
+            }
+            else {
+                Main.kill=false;
+            }
+
+
+                    ci.cancel();
         }
     }
 @Inject(method="runServer",at=@At(value="INVOKE",target="Lnet/minecraft/server/ServerMetadata;setVersion(Lnet/minecraft/server/ServerMetadata$Version;)V"), cancellable = true)
     public void kill2(CallbackInfo ci){
         if(Main.kill){
+            Main.kill=false;
+            System.out.println(5);
             ci.cancel();
         }
     }
