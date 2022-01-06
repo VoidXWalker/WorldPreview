@@ -31,6 +31,9 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -50,25 +53,19 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
 
     private boolean calculatedSpawn;
-    /**
-     * @author Void_X_Walker
-     */
-    @Overwrite
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Inject(method = "render",at=@At("HEAD"),cancellable = true)
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if(Main.world!=null&&Main.clientWord!=null&&Main.spawnPos!=null) {
             if(Main.worldRenderer==null){
-                System.out.println(2);
                 Main.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
                 Main.worldRenderer.setWorld(Main.clientWord);
             }
-            if (!calculatedSpawn) {
-                System.out.println(3);
+            if (!calculatedSpawn&&this.progressProvider.getProgressPercentage()<30) {
                 Main.stopButton=false;
                 this.initWidgets();
                 calculateSpawn();
             }
             if (calculatedSpawn) {
-                System.out.println(4);
                 try {
                     MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
                     this.client.getProfiler().swap("camera");
@@ -109,19 +106,19 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                         iterator.next().render(matrices,mouseX,mouseY,delta);
                     }
                     RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
+                    this.renderCustom(matrices);
                     this.client.getProfiler().pop();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return;
+                ci.cancel();
             }
         }
-        renderNormal(matrices);
+
 
     }
 
-    private void renderNormal(MatrixStack matrices){
-        this.renderBackground(matrices);
+    private void renderCustom(MatrixStack matrices){
         String string = MathHelper.clamp(this.progressProvider.getProgressPercentage(), 0, 100) + "%";
         long l = Util.getMeasuringTimeMs();
         if (l - this.field_19101 > 2000L) {
@@ -129,8 +126,8 @@ public abstract class LevelLoadingScreenMixin extends Screen {
             NarratorManager.INSTANCE.narrate((new TranslatableText("narrator.loading", string)).getString());
         }
 
-        int i = this.width / 2;
-        int j = this.height / 2;
+        int i = this.width -45;
+        int j = this.height -75;
         drawChunkMap(matrices, this.progressProvider, i, j + 30, 2, 0);
         TextRenderer var10002 = this.textRenderer;
         this.drawCenteredString(matrices, var10002, string, i, j - 9 / 2 - 30, 16777215);

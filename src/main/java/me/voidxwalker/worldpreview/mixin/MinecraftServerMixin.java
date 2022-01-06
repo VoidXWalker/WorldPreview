@@ -11,6 +11,7 @@ import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.*;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.snooper.Snooper;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
@@ -31,6 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<ServerTask> {
@@ -62,7 +64,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
         if(!Main.existingWorld){
-            System.out.println(0);
             ServerWorld serverWorld = this.getOverworld();
             Main.spawnPos= serverWorld.getSpawnPos();
             Main.world=this.getWorld(World.OVERWORLD);
@@ -71,8 +72,9 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             DimensionType dimensionType = DimensionType.getOverworldDimensionType();
             ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, Main.world.getLevelProperties().isHardcore(), false);
             Main.player=new CustomPlayerEntity(EntityType.PLAYER,Main.world,Main.spawnPos,0,0);
-            Main.clientWord = new ClientWorld(new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,null),properties, registryKey2, registryKey, dimensionType, 16, MinecraftClient.getInstance()::getProfiler, Main.worldRenderer,false, BiomeAccess.hashSeed(((ServerWorld)(Main.world)).getSeed()));
-            System.out.println(1);
+            Supplier<Profiler>s=MinecraftClient.getInstance()::getProfiler;
+            long seed = BiomeAccess.hashSeed(((ServerWorld)(Main.world)).getSeed());
+            Main.clientWord = new ClientWorld(null,properties, registryKey2, registryKey, dimensionType,16 , s, Main.worldRenderer,false, seed);
         }
         Main.existingWorld=false;
     }
@@ -87,19 +89,18 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             else {
                 Main.kill=false;
             }
-
-
-                    ci.cancel();
+            ci.cancel();
         }
     }
-@Inject(method="runServer",at=@At(value="INVOKE",target="Lnet/minecraft/server/ServerMetadata;setVersion(Lnet/minecraft/server/ServerMetadata$Version;)V"), cancellable = true)
+
+    @Inject(method="runServer",at=@At(value="INVOKE",target="Lnet/minecraft/server/ServerMetadata;setVersion(Lnet/minecraft/server/ServerMetadata$Version;)V"), cancellable = true)
     public void kill2(CallbackInfo ci){
         if(Main.kill){
             Main.kill=false;
             ci.cancel();
         }
     }
-public void shutdownWithoutSave(){
+    public void shutdownWithoutSave(){
         LOGGER.info("Stopping server");
         if (this.getNetworkIo() != null) {
             this.getNetworkIo().stop();

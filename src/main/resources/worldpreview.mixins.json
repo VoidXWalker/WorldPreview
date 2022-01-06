@@ -17,7 +17,8 @@
     "ChunkBuilderMixin",
     "MinecraftClientMixin",
     "ServerChunkManagerMixin",
-    "ThreadedAnvilChunkStorageMixin"
+    "ThreadedAnvilChunkStorageMixin",
+    "ClientWorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -33,8 +33,6 @@ public abstract class ServerChunkManagerMixin {
             Iterator<ChunkHolder> iterator =  ((ThreadedAnvilChunkStorageMixin) this.threadedAnvilChunkStorage).getChunkHolders().values().stream().iterator();
             try{
                 while (iterator.hasNext()){
-                   // System.out.println(3);
-
                     ChunkHolder holder = iterator.next();
                     if(holder!=null){
                         ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) Main.clientWord.getChunkManager()).getChunks()));
