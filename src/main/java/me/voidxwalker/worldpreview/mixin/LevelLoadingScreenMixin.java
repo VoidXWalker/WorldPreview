@@ -57,16 +57,18 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if(Main.world!=null&&Main.clientWord!=null&&Main.spawnPos!=null) {
             if(Main.worldRenderer==null){
+                System.out.println(2);
                 Main.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
                 Main.worldRenderer.setWorld(Main.clientWord);
             }
             if (!calculatedSpawn) {
+                System.out.println(3);
                 Main.stopButton=false;
                 this.initWidgets();
                 calculateSpawn();
             }
             if (calculatedSpawn) {
-
+                System.out.println(4);
                 try {
                     MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
                     this.client.getProfiler().swap("camera");

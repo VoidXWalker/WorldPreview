@@ -62,6 +62,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
         if(!Main.existingWorld){
+            System.out.println(0);
             ServerWorld serverWorld = this.getOverworld();
             Main.spawnPos= serverWorld.getSpawnPos();
             Main.world=this.getWorld(World.OVERWORLD);
@@ -71,6 +72,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, Main.world.getLevelProperties().isHardcore(), false);
             Main.player=new CustomPlayerEntity(EntityType.PLAYER,Main.world,Main.spawnPos,0,0);
             Main.clientWord = new ClientWorld(new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,null),properties, registryKey2, registryKey, dimensionType, 16, MinecraftClient.getInstance()::getProfiler, Main.worldRenderer,false, BiomeAccess.hashSeed(((ServerWorld)(Main.world)).getSeed()));
+            System.out.println(1);
         }
         Main.existingWorld=false;
     }
@@ -94,7 +96,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     public void kill2(CallbackInfo ci){
         if(Main.kill){
             Main.kill=false;
-            System.out.println(5);
             ci.cancel();
         }
     }

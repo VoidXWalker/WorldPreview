@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -29,11 +30,12 @@ public abstract class MinecraftClientMixin {
 
     @Shadow @Final private SoundManager soundManager;
 
-    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/MinecraftClient;render(Z)V", shift = At.Shift.AFTER),cancellable = true)
-    public void kill( CallbackInfo ci){
-        if(Main.kill){
-            ci.cancel();
+    @Redirect(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"))
+    public boolean kill(IntegratedServer instance){
+        if(instance==null){
+            return false;
         }
+        return instance.isLoading();
     }
     @Inject(method="startIntegratedServer(Ljava/lang/String;)V",at=@At(value = "HEAD"))
     public void isExistingWorld(String worldName, CallbackInfo ci){
