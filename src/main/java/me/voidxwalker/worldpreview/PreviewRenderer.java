@@ -636,7 +636,6 @@ public class PreviewRenderer extends WorldRenderer implements SynchronousResourc
 				builtChunk.setRebuildFrame(frame);
 				queue.add(new PreviewRenderer.ChunkInfo(builtChunk, null, 0));
 			} else {
-				//this.visibleChunks.add(new PreviewRenderer.ChunkInfo(((BuiltChunkStorageMixin)this.chunks).callGetRenderedChunk(Main.player.getBlockPos()), (Direction)null, 0));
 				int j = blockPos.getY() > 0 ? 248 : 8;
 				int k = MathHelper.floor(vec3d.x / 16.0D) * 16;
 				int l = MathHelper.floor(vec3d.z / 16.0D) * 16;
@@ -714,8 +713,7 @@ public class PreviewRenderer extends WorldRenderer implements SynchronousResourc
 				} else {
 					this.client.getProfiler().push("build near");
 					this.chunkBuilder.rebuild(builtChunk3);
-				//	builtChunk3.cancelRebuild();
-					this.client.getProfiler().pop();//176 64 96
+					this.client.getProfiler().pop();
 				}
 			}
 		}
@@ -1790,9 +1788,7 @@ public class PreviewRenderer extends WorldRenderer implements SynchronousResourc
 			vertexConsumer.vertex(matrix4f, (float)(n + d), (float)(o + e), (float)(p + f)).color((float) 0.0, (float) 0.0, (float) 0.0, (float) 0.4).next();
 		});
 	}
-	private void scheduleChunkRender(int x, int y, int z, boolean important) {
-		this.chunks.scheduleRebuild(x, y, z, important);
-	}
+
 	@Environment(EnvType.CLIENT)
 	class ChunkInfo {
 		private final ChunkBuilder.BuiltChunk chunk;
