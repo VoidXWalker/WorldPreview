@@ -53,6 +53,7 @@ public abstract class MinecraftClientMixin {
     }
     @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",target = "Lnet/minecraft/util/profiler/Profiler;pop()V"),cancellable = true)
     public void kill2(CallbackInfo ci){
+        Main.stopButton=true;
         if(this.server==null){
             ci.cancel();
         }
@@ -67,7 +68,7 @@ public abstract class MinecraftClientMixin {
     }
     @Redirect(method="joinWorld",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;reset(Lnet/minecraft/client/gui/screen/Screen;)V"))
     public void smoothTransition(MinecraftClient instance, Screen screen){
-        Main.stopButton=true;
+
         this.profiler.push("forcedTick");
         this.soundManager.stopAll();
         this.cameraEntity = null;
