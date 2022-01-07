@@ -1,31 +1,35 @@
 plugins {
 	id 'fabric-loom' version '0.9-SNAPSHOT'
-	id 'maven-publish'
+	id 'org.ajoberstar.grgit' version '4.1.0'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name
-version = project.mod_version
+archivesBaseName = "sodium-${project.minecraft_version}-backport-fabric"
+version = "${project.mod_version}+${getVersionMetadata()}"
 group = project.maven_group
 
-repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.grad........................le.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
-}
-loom {
+minecraft {
 	accessWidener = file("src/main/resources/worldpreview.accesswidener")
 }
+
 dependencies {
-	minecraft "com.mojang:minecraft:1.16.1"
-	mappings "net.fabricmc:yarn:1.16.1+build.21:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.12.12"
+	//to change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+}
 
+if (project.use_third_party_mods) {
+	repositories {
+		maven { url = "https://jitpack.io" }
+	}
 
+	dependencies {
+		// DataBreaker applies a number of patches to eliminate the loading of data fixers
+		// This greatly reduces the amount of time needed to start the game, but is generally unsafe in production
+		modRuntime ("com.github.SuperCoder7979:databreaker:${project.databreaker_version}") {
+			transitive = false
+		}
+	}
 }
 
 processResources {
@@ -36,48 +40,45 @@ processResources {
 	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	// ensure that the encoding is set to UTF-8, no matter what the system default is
-	// this fixes some edge cases with special characters not displaying correctly
-	// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
-	it.options.encoding = "UTF-8"
-
-	// Minecraft 1.17 (21w19a) upwards uses Java 16.
-	it.options.release = 8
+// ensure that the encoding is set to UTF-8, no matter what the system default is
+// this fixes some edge cases with special characters not displaying correctly
+// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(16)
+	}
 }
+
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
-	}
+	from "LICENSE.txt"
 }
 
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
+def getVersionMetadata() {
+	def build_id = System.getenv("GITHUB_RUN_NUMBER")
+
+	// CI builds only
+	if (build_id != null) {
+		return "build.${build_id}"
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+	if (grgit != null) {
+		def head = grgit.head()
+		def id = head.abbreviatedId
+
+		// Flag the build if the build tree is not clean
+		if (!grgit.status().clean) {
+			id += "-dirty"
+		}
+
+		return "rev.${id}"
 	}
+
+	// No tracking information could be found about the build
+	return "unknown"
 }

@@ -18,7 +18,9 @@
     "MinecraftClientMixin",
     "ServerChunkManagerMixin",
     "ThreadedAnvilChunkStorageMixin",
-    "ClientWorldMixin"
+    "ClientWorldMixin",
+    "BlockModelRendererMixin",
+    "BlockRenderManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
