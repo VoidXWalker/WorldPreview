@@ -476,7 +476,7 @@ public class PreviewRenderer extends WorldRenderer implements SynchronousResourc
 
 	}
 
-	public void setWorld(@Nullable ClientWorld clientWorld) {
+	public void loadWorld(@Nullable ClientWorld clientWorld) {
 		this.lastCameraChunkUpdateX = Double.MIN_VALUE;
 		this.lastCameraChunkUpdateY = Double.MIN_VALUE;
 		this.lastCameraChunkUpdateZ = Double.MIN_VALUE;

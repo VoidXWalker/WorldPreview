@@ -58,7 +58,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         if(Main.world!=null&&Main.clientWord!=null&&Main.spawnPos!=null) {
             if(Main.worldRenderer==null){
                 Main.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
-                Main.worldRenderer.setWorld(Main.clientWord);
+                Main.worldRenderer.loadWorld(Main.clientWord);
             }
             if (!calculatedSpawn&&this.progressProvider.getProgressPercentage()<30) {
                 Main.stopButton=false;
