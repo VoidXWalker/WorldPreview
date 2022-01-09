@@ -29,21 +29,23 @@ public abstract class ServerChunkManagerMixin {
 
     @Inject(method ="tick()Z",at = @At(value = "TAIL"))
     public void getChunks(CallbackInfoReturnable<Boolean> cir){
+
         if(Main.world!=null&&Main.clientWord!=null&&Main.worldRenderer!=null&& MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
+            ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) Main.clientWord.getChunkManager()).getChunks()));
             Iterator<ChunkHolder> iterator =  ((ThreadedAnvilChunkStorageMixin) this.threadedAnvilChunkStorage).getChunkHolders().values().stream().iterator();
-            try{
                 while (iterator.hasNext()){
                     ChunkHolder holder = iterator.next();
                     if(holder!=null){
-                        ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) Main.clientWord.getChunkManager()).getChunks()));
+
                         int index = ((ClientChunkMapMixin)(Object)(map)).callGetIndex(holder.getPos().x,holder.getPos().z);
-                        WorldChunk chunk = this.getWorldChunk(holder.getPos().x,holder.getPos().z);
-                        ((ClientChunkMapMixin)(Object)(map)).callSet(index,chunk);
-                    }
+                        if(((ClientChunkMapMixin)(Object)(map)).callGetChunk(index)==null) {
+                            WorldChunk chunk = this.getWorldChunk(holder.getPos().x,holder.getPos().z);
+                            ((ClientChunkMapMixin)(Object)(map)).callSet(index,chunk);
+                        }
+
                 }
             }
-            catch(Exception x){
-            }
+
         }
     }
 }

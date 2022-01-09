@@ -10,5 +10,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface ClientChunkMapMixin {
     @Invoker void callSet(int index, @Nullable WorldChunk chunk);
     @Invoker int callGetIndex(int chunkX, int chunkZ);
-
+    @Invoker WorldChunk callGetChunk(int index);
 }

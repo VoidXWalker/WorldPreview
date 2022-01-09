@@ -58,7 +58,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         if(Main.world!=null&&Main.clientWord!=null&&Main.spawnPos!=null) {
             if(Main.worldRenderer==null){
                 Main.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
-                Main.worldRenderer.setWorld(Main.clientWord);
+                Main.worldRenderer.loadWorld(Main.clientWord);
             }
             if (!calculatedSpawn) {
                 Main.showMenu=true;
@@ -74,7 +74,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     this.showMenu=Main.showMenu;
                 }
                 MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
-                this.client.getProfiler().swap("camera");
                 if (Main.camera == null) {
                     Main.player.refreshPositionAndAngles(Main.player.getX(), Main.player.getY() + 1.5, Main.player.getZ(), 0.0F, 0.0F);
                     Main.camera = new Camera();Main.camera.update(Main.world, Main.player, false, false, 0.2F);
@@ -108,7 +107,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 this.renderPauseMenu(matrices,mouseX,mouseY,delta);
                 RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
                 this.renderCustom(matrices);
-                this.client.getProfiler().pop();
                 ci.cancel();
             }
         }

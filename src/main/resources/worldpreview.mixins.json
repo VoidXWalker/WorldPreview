@@ -21,6 +21,7 @@
     "access.MinecraftClientMixin",
     "ServerChunkManagerMixin",
     "access.WorldRendererMixin",
+    "BuiltChunkMixin",
     "ClientWorldMixin",
     "BlockModelRendererMixin",
     "BlockRenderManagerMixin"

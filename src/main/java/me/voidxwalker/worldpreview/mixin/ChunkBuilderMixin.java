@@ -53,7 +53,6 @@ public class ChunkBuilderMixin {
         this.bufferCount = this.threadBuffers.size();
 
     }
-
     private ArrayList getList(int l) {
         return Lists.newArrayListWithExpectedSize(l);
     }

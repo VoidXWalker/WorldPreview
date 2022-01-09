@@ -66,7 +66,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        System.out.println(1);
         if(!Main.existingWorld&&((MinecraftClientMixin)MinecraftClient.getInstance()).getWorldGenProgressTracker().get().getProgressPercentage()<50){
             ServerWorld serverWorld = this.getOverworld();
             Main.spawnPos= serverWorld.getSpawnPos();
@@ -78,7 +77,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             Main.player=new CustomPlayerEntity(EntityType.PLAYER,Main.world,Main.spawnPos,0,0);
             Supplier<Profiler>s=MinecraftClient.getInstance()::getProfiler;
             long seed = BiomeAccess.hashSeed(((ServerWorld)(Main.world)).getSeed());
-            Main.clientWord = new ClientWorld(null,properties, registryKey2, registryKey, dimensionType,16 , s, Main.worldRenderer,false, seed);
+            Main.clientWord = new ClientWorld(null,properties, registryKey2, registryKey, dimensionType,16 , s,null,false, seed);
         }
         Main.existingWorld=false;
     }
@@ -108,7 +107,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     public void shutdownWithoutSave(){
         LOGGER.info("Stopping server");
         if (this.getNetworkIo() != null) {
-            System.out.println(2);
             this.getNetworkIo().stop();
         }
         Iterator var1 = this.getWorlds().iterator();
