@@ -22,17 +22,11 @@ import java.util.concurrent.Executor;
 
 @Mixin(ChunkBuilder.class)
 public class ChunkBuilderMixin {
-    @Shadow
-    @Final
-    private static Logger LOGGER;
+    @Shadow @Final private static Logger LOGGER;
 
-    @Mutable
-    @Shadow
-    @Final
-    private Queue<BlockBufferBuilderStorage> threadBuffers;
+    @Mutable @Shadow @Final private Queue<BlockBufferBuilderStorage> threadBuffers;
 
-    @Shadow
-    private volatile int bufferCount;
+    @Shadow private volatile int bufferCount;
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     public void sodiumCompatibility(World world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {

@@ -10,5 +10,5 @@ import net.minecraft.world.BlockRenderView;
 import java.util.Random;
 
 public interface OldSodiumCompatibility {
-    public boolean renderSafe(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay) ;
+    boolean renderSafe(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay) ;
 }

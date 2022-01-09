@@ -16,8 +16,11 @@
     "ServerPlayerEntityMixin",
     "ChunkBuilderMixin",
     "MinecraftClientMixin",
+    "KeyboardMixin",
+    "GameOptionsMixin",
+    "access.MinecraftClientMixin",
     "ServerChunkManagerMixin",
-    "ThreadedAnvilChunkStorageMixin",
+    "access.WorldRendererMixin",
     "ClientWorldMixin",
     "BlockModelRendererMixin",
     "BlockRenderManagerMixin"

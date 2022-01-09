@@ -26,6 +26,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:0.12.12"
 
 
+
 }
 
 processResources {

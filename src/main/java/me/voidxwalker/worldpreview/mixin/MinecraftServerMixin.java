@@ -2,7 +2,9 @@ package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.CustomPlayerEntity;
 import me.voidxwalker.worldpreview.Main;
+import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.world.ClientWorld;
@@ -24,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -63,7 +66,8 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        if(!Main.existingWorld){
+        System.out.println(1);
+        if(!Main.existingWorld&&((MinecraftClientMixin)MinecraftClient.getInstance()).getWorldGenProgressTracker().get().getProgressPercentage()<50){
             ServerWorld serverWorld = this.getOverworld();
             Main.spawnPos= serverWorld.getSpawnPos();
             Main.world=this.getWorld(World.OVERWORLD);
@@ -81,13 +85,13 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Inject(method = "shutdown",at=@At(value = "HEAD"),cancellable = true)
     public void kill(CallbackInfo ci){
-        if(Main.kill){
+        if(Main.kill==1){
             if(this.isRunning()){
                 this.shutdownWithoutSave();
                 this.running=false;
             }
             else {
-                Main.kill=false;
+                Main.kill=0;
             }
             ci.cancel();
         }
@@ -95,14 +99,16 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Inject(method="runServer",at=@At(value="INVOKE",target="Lnet/minecraft/server/ServerMetadata;setVersion(Lnet/minecraft/server/ServerMetadata$Version;)V"), cancellable = true)
     public void kill2(CallbackInfo ci){
-        if(Main.kill){
-            Main.kill=false;
+        if(Main.kill==1){
+            Main.kill=0;
             ci.cancel();
         }
     }
+
     public void shutdownWithoutSave(){
         LOGGER.info("Stopping server");
         if (this.getNetworkIo() != null) {
+            System.out.println(2);
             this.getNetworkIo().stop();
         }
         Iterator var1 = this.getWorlds().iterator();
@@ -136,7 +142,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Redirect(method = "prepareStartRegion",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/world/ServerChunkManager;getTotalChunksLoadedCount()I"))
     public int kill(ServerChunkManager instance){
-        if(Main.kill){
+        if(Main.kill==1){
             return 441;
         }
         return  instance.getTotalChunksLoadedCount();

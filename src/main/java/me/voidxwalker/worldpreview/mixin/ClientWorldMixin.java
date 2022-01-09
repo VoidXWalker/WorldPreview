@@ -23,8 +23,7 @@ import java.util.function.Supplier;
 
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
-    @Mutable
-    @Shadow @Final private ClientChunkManager chunkManager;
+    @Mutable @Shadow @Final private ClientChunkManager chunkManager;
 
     @Redirect(method = "<init>",at=@At(value="INVOKE",target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;getRegistryTracker()Lnet/minecraft/util/registry/RegistryTracker;"))
     public RegistryTracker stopLag(ClientPlayNetworkHandler instance){
@@ -33,13 +32,15 @@ public class ClientWorldMixin {
         }
         return instance.getRegistryTracker();
     }
+
     @Inject(method ="<init>",at=@At("TAIL"))
     public void oldSodiumCompatibility(ClientPlayNetworkHandler clientPlayNetworkHandler, ClientWorld.Properties properties, RegistryKey registryKey, RegistryKey registryKey2, DimensionType dimensionType, int i, Supplier supplier, WorldRenderer worldRenderer, boolean bl, long l, CallbackInfo ci){
-        if(Main.camera==null){
+        if(Main.camera==null&&Main.world!=null&&Main.spawnPos!=null){
             this.chunkManager=getChunkManager(i);
         }
 
     }
+
     private ClientChunkManager getChunkManager(int i){
         return new ClientChunkManager((ClientWorld) (Object)this, i);
     }
