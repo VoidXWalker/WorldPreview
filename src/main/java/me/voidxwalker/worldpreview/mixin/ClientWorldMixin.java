@@ -1,8 +1,6 @@
 package me.voidxwalker.worldpreview.mixin;
 
-import me.voidxwalker.worldpreview.Main;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.LevelLoadingScreen;
+import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientChunkManager;
@@ -35,7 +33,7 @@ public class ClientWorldMixin {
 
     @Inject(method ="<init>",at=@At("TAIL"))
     public void oldSodiumCompatibility(ClientPlayNetworkHandler clientPlayNetworkHandler, ClientWorld.Properties properties, RegistryKey registryKey, RegistryKey registryKey2, DimensionType dimensionType, int i, Supplier supplier, WorldRenderer worldRenderer, boolean bl, long l, CallbackInfo ci){
-        if(Main.camera==null&&Main.world!=null&&Main.spawnPos!=null){
+        if(WorldPreview.camera==null&& WorldPreview.world!=null&& WorldPreview.spawnPos!=null){
             this.chunkManager=getChunkManager(i);
         }
 

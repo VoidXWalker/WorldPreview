@@ -17,8 +17,6 @@ import me.voidxwalker.worldpreview.mixin.access.RenderPhaseMixin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -41,13 +39,6 @@ import net.minecraft.client.util.math.Vector4f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.resource.SynchronousResourceReloadListener;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
@@ -543,7 +534,7 @@ public class PreviewRenderer {
 
 			this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, null);
 			if (this.world != null) {
-				Entity entity = Main.player;
+				Entity entity = WorldPreview.player;
 				if (entity != null) {
 					this.chunks.updateCameraPosition(entity.getX(), entity.getZ());
 				}
@@ -564,17 +555,17 @@ public class PreviewRenderer {
 		}
 
 		this.world.getProfiler().push("camera");
-		double d = Main.player.getX() - this.lastCameraChunkUpdateX;
-		double e = Main.player.getY() - this.lastCameraChunkUpdateY;
-		double f = Main.player.getZ() - this.lastCameraChunkUpdateZ;
-		if (this.cameraChunkX != Main.player.chunkX || this.cameraChunkY != Main.player.chunkY || this.cameraChunkZ != Main.player.chunkZ || d * d + e * e + f * f > 16.0D) {
-			this.lastCameraChunkUpdateX = Main.player.getX();
-			this.lastCameraChunkUpdateY = Main.player.getY();
-			this.lastCameraChunkUpdateZ = Main.player.getZ();
-			this.cameraChunkX =Main.player.chunkX;
-			this.cameraChunkY = Main.player.chunkY;
-			this.cameraChunkZ =Main.player.chunkZ;
-			this.chunks.updateCameraPosition(Main.player.getX(), Main.player.getZ());
+		double d = WorldPreview.player.getX() - this.lastCameraChunkUpdateX;
+		double e = WorldPreview.player.getY() - this.lastCameraChunkUpdateY;
+		double f = WorldPreview.player.getZ() - this.lastCameraChunkUpdateZ;
+		if (this.cameraChunkX != WorldPreview.player.chunkX || this.cameraChunkY != WorldPreview.player.chunkY || this.cameraChunkZ != WorldPreview.player.chunkZ || d * d + e * e + f * f > 16.0D) {
+			this.lastCameraChunkUpdateX = WorldPreview.player.getX();
+			this.lastCameraChunkUpdateY = WorldPreview.player.getY();
+			this.lastCameraChunkUpdateZ = WorldPreview.player.getZ();
+			this.cameraChunkX = WorldPreview.player.chunkX;
+			this.cameraChunkY = WorldPreview.player.chunkY;
+			this.cameraChunkZ = WorldPreview.player.chunkZ;
+			this.chunks.updateCameraPosition(WorldPreview.player.getX(), WorldPreview.player.getZ());
 		}
 
 		this.chunkBuilder.setCameraPosition(vec3d);
@@ -733,7 +724,7 @@ public class PreviewRenderer {
 
 	public void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f) {
 		BlockEntityRenderDispatcher.INSTANCE.configure(this.world, this.client.getTextureManager(), this.client.textRenderer, camera, this.client.crosshairTarget);
-		this.entityRenderDispatcher.configure(this.world, camera,Main.player);
+		this.entityRenderDispatcher.configure(this.world, camera, WorldPreview.player);
 		Profiler profiler = this.world.getProfiler();
 		profiler.swap("light_updates");
 		this.world.getChunkManager().getLightingProvider().doLightUpdates(Integer.MAX_VALUE, true, true);
@@ -772,7 +763,7 @@ public class PreviewRenderer {
 		profiler.swap("fog");
 		BackgroundRenderer.applyFog(camera, BackgroundRenderer.FogType.FOG_TERRAIN, Math.max(g - 16.0F, 32.0F), bl2);
 		profiler.swap("terrain_setup");
-		this.setupTerrain(camera, frustum2, bl, this.frame++, Main.player.isSpectator());
+		this.setupTerrain(camera, frustum2, bl, this.frame++, WorldPreview.player.isSpectator());
 		profiler.swap("updatechunks");
 		int j = this.client.options.maxFps;
 		long n;
@@ -1002,7 +993,7 @@ public class PreviewRenderer {
 						}
 
 						entity = var39.next();
-					} while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(Main.player));
+					} while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(WorldPreview.player));
 				} while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
 			} while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
 
@@ -1315,7 +1306,7 @@ public class PreviewRenderer {
 			this.renderEndSky(matrices);
 		} else if (this.world.getSkyProperties().getSkyType() == SkyProperties.SkyType.NORMAL) {
 			RenderSystem.disableTexture();
-			Vec3d vec3d = this.world.method_23777(Main.camera.getBlockPos(), tickDelta);
+			Vec3d vec3d = this.world.method_23777(WorldPreview.camera.getBlockPos(), tickDelta);
 			float f = (float)vec3d.x;
 			float g = (float)vec3d.y;
 			float h = (float)vec3d.z;
@@ -1418,7 +1409,7 @@ public class PreviewRenderer {
 			matrices.pop();
 			RenderSystem.disableTexture();
 			RenderSystem.color3f(0.0F, 0.0F, 0.0F);
-			double d = Main.player.getCameraPosVec(tickDelta).y - this.world.getLevelProperties().getSkyDarknessHeight();
+			double d = WorldPreview.player.getCameraPosVec(tickDelta).y - this.world.getLevelProperties().getSkyDarknessHeight();
 			if (d < 0.0D) {
 				matrices.push();
 				matrices.translate(0.0D, 12.0D, 0.0D);

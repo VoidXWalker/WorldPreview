@@ -1,14 +1,12 @@
 package me.voidxwalker.worldpreview.mixin;
 
-import me.voidxwalker.worldpreview.Main;
+import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.profiler.Profiler;
 import org.apache.logging.log4j.Level;
@@ -41,43 +39,43 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void onHotKeyPressed( CallbackInfo ci){
-        if(Main.inPreview){
+        if(WorldPreview.inPreview){
 
             cycleCooldown++;
-            if(Main.resetKey.wasPressed()||Main.kill==-1){
+            if(WorldPreview.resetKey.wasPressed()|| WorldPreview.kill==-1){
 
-                Main.log(Level.INFO,"Leaving world generation");
-                Main.kill = 1;
-                while(Main.inPreview){
+                WorldPreview.log(Level.INFO,"Leaving world generation");
+                WorldPreview.kill = 1;
+                while(WorldPreview.inPreview){
                     Thread.yield();
 
                 }
                 this.server.shutdown();
                 MinecraftClient.getInstance().disconnect();
-                Main.kill=0;
+                WorldPreview.kill=0;
                 MinecraftClient.getInstance().openScreen(new TitleScreen());
                 ci.cancel();
             }
-            if(Main.stopKey.wasPressed()&&!Main.stop){
+            if(WorldPreview.stopKey.wasPressed()&&!WorldPreview.stop){
 
-                Main.inPreview=false;
-                Main.stop=true;
-                Main.log(Level.INFO,"Stopping Preview");
+                WorldPreview.inPreview=false;
+                WorldPreview.stop=true;
+                WorldPreview.log(Level.INFO,"Stopping Preview");
             }
-            if(Main.cycleChunkMapKey.wasPressed()&&cycleCooldown>10&&!Main.stop){
+            if(WorldPreview.cycleChunkMapKey.wasPressed()&&cycleCooldown>10&&!WorldPreview.stop){
                 cycleCooldown=0;
-                Main.chunkMapPos=Main.chunkMapPos<5?Main.chunkMapPos+1:1;
+                WorldPreview.chunkMapPos= WorldPreview.chunkMapPos<5? WorldPreview.chunkMapPos+1:1;
             }
         }
     }
 
     @Inject(method="startIntegratedServer(Ljava/lang/String;)V",at=@At(value = "HEAD"))
     public void isExistingWorld(String worldName, CallbackInfo ci){
-        Main.existingWorld=true;
+        WorldPreview.existingWorld=true;
     }
     @Redirect(method="joinWorld",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;reset(Lnet/minecraft/client/gui/screen/Screen;)V"))
     public void smoothTransition(MinecraftClient instance, Screen screen){
-        if(!Main.stop){
+        if(!WorldPreview.stop){
             this.profiler.push("forcedTick");
             this.soundManager.stopAll();
             this.cameraEntity = null;
@@ -92,13 +90,13 @@ public abstract class MinecraftClientMixin {
     }
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
     public void reset(Screen screen, CallbackInfo ci){
-        synchronized (Main.lock){
-            Main.world=null;
-            Main.player=null;
-            Main.clientWord=null;
-            Main.camera=null;
-            if(Main.worldRenderer!=null){
-                Main.worldRenderer.loadWorld(null);
+        synchronized (WorldPreview.lock){
+            WorldPreview.world=null;
+            WorldPreview.player=null;
+            WorldPreview.clientWord=null;
+            WorldPreview.camera=null;
+            if(WorldPreview.worldRenderer!=null){
+                WorldPreview.worldRenderer.loadWorld(null);
             }
             cycleCooldown=0;
         }
