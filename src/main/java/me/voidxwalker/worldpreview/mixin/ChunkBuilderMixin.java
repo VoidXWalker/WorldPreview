@@ -2,7 +2,6 @@ package me.voidxwalker.worldpreview.mixin;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import me.voidxwalker.worldpreview.Main;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.render.RenderLayer;
