@@ -1,12 +1,8 @@
 package me.voidxwalker.worldpreview.mixin;
 
-import me.voidxwalker.worldpreview.Main;
-import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
+import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.LevelLoadingScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.spongepowered.asm.mixin.Final;
@@ -24,19 +20,14 @@ public abstract class KeyboardMixin {
 
     @Inject(method = "onKey",at=@At("HEAD"))
     public void getF3ESCKey(long window, int key, int scancode, int i, int j, CallbackInfo ci){
-        if( Main.inPreview&&window == this.client.getWindow().getHandle()){
+        if( WorldPreview.inPreview&&window == this.client.window.getHandle()){
             if(i!=0) {
-                if (key == 256) {
-                    boolean bl3 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292);
-                    if(bl3){
-                        Main.showMenu=false;
-                    }
+
+                InputUtil.KeyCode key2 = InputUtil.getKeyCode(key, scancode);
+                if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().window.getHandle(), 292)) {
+                    WorldPreview.showMenu=!WorldPreview.showMenu;
                 }
-                InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
-                if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292)) {
-                    Main.showMenu=false;
-                }
-                boolean bl2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292) && this.processF3(key);
+                boolean bl2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().window.getHandle(), 292) && this.processF3(key);
                 if (bl2) {
                     KeyBinding.setKeyPressed(key2, false);
                 }

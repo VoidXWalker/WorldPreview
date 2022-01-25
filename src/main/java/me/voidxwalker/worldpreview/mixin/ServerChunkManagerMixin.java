@@ -1,6 +1,6 @@
 package me.voidxwalker.worldpreview.mixin;
 
-import me.voidxwalker.worldpreview.Main;
+import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.ClientChunkManagerMixin;
 import me.voidxwalker.worldpreview.mixin.access.ClientChunkMapMixin;
 import me.voidxwalker.worldpreview.mixin.access.ThreadedAnvilChunkStorageMixin;
@@ -10,7 +10,7 @@ import net.minecraft.client.world.ClientChunkManager;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ThreadedAnvilChunkStorage;
-import net.minecraft.util.Util;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -26,23 +26,23 @@ import java.util.Iterator;
 public abstract class ServerChunkManagerMixin {
     @Shadow @Final public ThreadedAnvilChunkStorage threadedAnvilChunkStorage;
 
-    @Shadow public @Nullable abstract WorldChunk getWorldChunk(int chunkX, int chunkZ);
+
+    @Shadow public abstract BlockView getChunk(int chunkX, int chunkZ);
 
     @Inject(method ="tick()Z",at = @At(value = "TAIL"))
     public void getChunks(CallbackInfoReturnable<Boolean> cir){
 
-        synchronized (Main.lock){
-            if(Main.player!=null&&Main.player.calculatedSpawn&& !Main.stop&&MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
-                try{
+        synchronized (WorldPreview.lock){
+            if(WorldPreview.player!=null&& WorldPreview.player.calculatedSpawn&& !WorldPreview.stop&&MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
 
-                    ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) Main.clientWord.getChunkManager()).getChunks()));
+                    ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) WorldPreview.clientWord.getChunkManager()).getChunks()));
                     Iterator<ChunkHolder> iterator =  ((ThreadedAnvilChunkStorageMixin) this.threadedAnvilChunkStorage).getChunkHolders().values().stream().iterator();
                     while (iterator.hasNext()){
                         ChunkHolder holder = iterator.next();
                         if(holder!=null){
                             int index = ((ClientChunkMapMixin)(Object)(map)).callGetIndex(holder.getPos().x,holder.getPos().z);
                             if(((ClientChunkMapMixin)(Object)(map)).callGetChunk(index)==null) {
-                                WorldChunk chunk = this.getWorldChunk(holder.getPos().x,holder.getPos().z);
+                                WorldChunk chunk = (WorldChunk) this.getChunk(holder.getPos().x,holder.getPos().z);
                                 if(chunk!=null){
                                     ((ClientChunkMapMixin)(Object)(map)).callSet(index,chunk);
                                 }
@@ -51,8 +51,6 @@ public abstract class ServerChunkManagerMixin {
 
                         }
                     }
-                } catch (Exception ignored) {
-                }
 
             }
         }
