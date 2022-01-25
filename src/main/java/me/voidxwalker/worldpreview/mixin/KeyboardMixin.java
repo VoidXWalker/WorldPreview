@@ -22,15 +22,10 @@ public abstract class KeyboardMixin {
     public void getF3ESCKey(long window, int key, int scancode, int i, int j, CallbackInfo ci){
         if( WorldPreview.inPreview&&window == this.client.getWindow().getHandle()){
             if(i!=0) {
-                if (key == 256) {
-                    boolean bl3 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292);
-                    if(bl3){
-                        WorldPreview.showMenu=false;
-                    }
-                }
+
                 InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
                 if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292)) {
-                    WorldPreview.showMenu=false;
+                    WorldPreview.showMenu=!WorldPreview.showMenu;
                 }
                 boolean bl2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292) && this.processF3(key);
                 if (bl2) {
