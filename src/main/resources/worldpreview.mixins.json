@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "me.voidxwalker.worldpreview.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "client": [
     "LevelLoadingScreenMixin",
     "MinecraftServerMixin",
@@ -17,7 +17,6 @@
     "ChunkBuilderMixin",
     "MinecraftClientMixin",
     "KeyboardMixin",
-    "GameOptionsMixin",
     "ServerChunkManagerMixin",
     "BuiltChunkMixin",
     "ClientWorldMixin",

@@ -27,7 +27,6 @@ public abstract class MinecraftClientMixin {
     @Shadow private @Nullable IntegratedServer server;
 
     @Shadow @Nullable public Entity cameraEntity;
-    @Shadow private @Nullable ClientConnection connection;
     @Shadow @Final private SoundManager soundManager;
     @Shadow private Profiler profiler;
 
@@ -35,9 +34,12 @@ public abstract class MinecraftClientMixin {
 
     @Shadow public @Nullable abstract IntegratedServer getServer();
 
+    @Shadow public abstract void setScreen(@Nullable Screen screen);
+
+    @Shadow private @Nullable ClientConnection integratedServerConnection;
     private int cycleCooldown;
 
-    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
+    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void onHotKeyPressed( CallbackInfo ci){
         if(WorldPreview.inPreview){
 
@@ -53,7 +55,7 @@ public abstract class MinecraftClientMixin {
                 this.server.shutdown();
                 MinecraftClient.getInstance().disconnect();
                 WorldPreview.kill=0;
-                MinecraftClient.getInstance().openScreen(new TitleScreen());
+                MinecraftClient.getInstance().setScreen(new TitleScreen());
                 ci.cancel();
             }
             if(WorldPreview.stopKey.wasPressed()&&!WorldPreview.stop){
@@ -79,7 +81,8 @@ public abstract class MinecraftClientMixin {
             this.profiler.push("forcedTick");
             this.soundManager.stopAll();
             this.cameraEntity = null;
-            this.connection = null;
+            this.integratedServerConnection = null;
+            this.setScreen(screen);
             this.render(false);
             this.profiler.pop();
         }
@@ -96,7 +99,7 @@ public abstract class MinecraftClientMixin {
             WorldPreview.clientWord=null;
             WorldPreview.camera=null;
             if(WorldPreview.worldRenderer!=null){
-                WorldPreview.worldRenderer.loadWorld(null);
+                WorldPreview.worldRenderer.setWorld(null);
             }
             cycleCooldown=0;
         }

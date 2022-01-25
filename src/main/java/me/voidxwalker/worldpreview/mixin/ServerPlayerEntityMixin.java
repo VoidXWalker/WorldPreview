@@ -14,9 +14,12 @@ import java.util.Random;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
-    public ServerPlayerEntityMixin(World world, BlockPos blockPos, GameProfile gameProfile) {
-        super(world, blockPos, gameProfile);
+
+
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
+        super(world, pos, yaw, profile);
     }
+
     @Redirect(method = "moveToSpawn", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"))
     private int setSpawnPos(Random defaultRandom, int k){
         if(WorldPreview.spawnPos != null){
