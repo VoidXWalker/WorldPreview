@@ -25,6 +25,8 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.world.World;
+import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,6 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.awt.*;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.logging.LogManager;
 
 @Mixin(LevelLoadingScreen.class)
 public abstract class LevelLoadingScreenMixin extends Screen {
@@ -51,22 +54,19 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         super(title);
     }
 
-    private boolean calculatedSpawn;
-
     @Inject(method = "render",at=@At("HEAD"),cancellable = true)
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(Main.world!=null&&Main.clientWord!=null&&Main.spawnPos!=null) {
+        if(Main.world!=null&&Main.clientWord!=null&&!Main.stop) {
             if(Main.worldRenderer==null){
                 Main.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
-                Main.worldRenderer.loadWorld(Main.clientWord);
             }
-            if (!calculatedSpawn) {
+            if(Main.worldRenderer.world==null&&Main.player.calculatedSpawn){
+                Main.worldRenderer.loadWorld(Main.clientWord);
                 Main.showMenu=true;
                 this.showMenu=true;
                 this.initWidgets();
-                calculateSpawn();
             }
-            if (calculatedSpawn) {
+            if (Main.worldRenderer.world!=null) {
                 if(this.showMenu!=Main.showMenu){
                     if(!Main.showMenu){
                         this.children.clear();
@@ -78,6 +78,8 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     Main.player.refreshPositionAndAngles(Main.player.getX(), Main.player.getY() + 1.5, Main.player.getZ(), 0.0F, 0.0F);
                     Main.camera = new Camera();Main.camera.update(Main.world, Main.player, false, false, 0.2F);
                     Main.player.refreshPositionAndAngles(Main.player.getX(), Main.player.getY() - 1.5, Main.player.getZ(), 0.0F, 0.0F);
+                    Main.inPreview=true;
+                    Main.log(Level.INFO,"Starting Preview");
                 }
                 MatrixStack matrixStack = new MatrixStack();
                 matrixStack.peek().getModel().multiply(this.getBasicProjectionMatrix());
@@ -89,10 +91,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 MatrixStack m = new MatrixStack();
                 m.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(Main.camera.getPitch()));
                 m.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(Main.camera.getYaw() + 180.0F));
-                if (!Main.world.doesNotCollide(Main.player)) {
-                    calculateSpawn();
-                    Main.camera.update(Main.world, Main.player, false, false, 0.2F);
-                }
                 Main.worldRenderer.render(m, 0.2F, 1000000, false, Main.camera, MinecraftClient.getInstance().gameRenderer, MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager(), matrix4f);
                 Main.worldRenderer.ticks++;
                 Window window = this.client.getWindow();
@@ -150,10 +148,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    private int calculateSpawnOffsetMultiplier(int horizontalSpawnArea) {
-        return horizontalSpawnArea <= 16 ? horizontalSpawnArea - 1 : 17;
-    }
-
     public Matrix4f getBasicProjectionMatrix() {
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.peek().getModel().loadIdentity();
@@ -162,68 +156,22 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
 
     private void initWidgets(){
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame"), (buttonWidgetx) -> {
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame"), (ignored) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.advancements"), (ignored) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.stats"), (ignored) -> {}));
 
-        }));
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.advancements"), (buttonWidgetx) -> {
-
-        }));
-        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.stats"), (buttonWidgetx) -> {
-
-        }));
-
-        this .addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.sendFeedback"), (buttonWidgetx) -> {
-
-        }));
-        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.reportBugs"), (buttonWidgetx) -> {
-
-        }));
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.options"), (buttonWidgetx) -> {
-
-        }));
-        ButtonWidget buttonWidget = this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.shareToLan"), (buttonWidgetx) -> {
-
-        }));
-        buttonWidget.active = this.client.isIntegratedServerRunning() && !this.client.getServer().isRemote();
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 - 16, 204, 20, new TranslatableText("menu.returnToMenu"), (buttonWidgetx) -> {
+        this .addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.sendFeedback"), (ignored) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.reportBugs"), (ignored) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.options"), (ignored) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.shareToLan"), (ignored) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 - 16, 204, 20, new TranslatableText("menu.returnToMenu"), (buttonWidgetX) -> {
                 Main.kill = -1;
-                buttonWidgetx.active = false;
+                buttonWidgetX.active = false;
         }));
     }
 
     public void resize(MinecraftClient client, int width, int height) {
         this.init(client, width, height);
         this.initWidgets();
-    }
-
-    private void calculateSpawn(){
-        BlockPos blockPos = Main.spawnPos;
-        int i = Math.max(0, client.getServer().getSpawnRadius((ServerWorld) Main.world));
-        int j = MathHelper.floor(Main.world.getWorldBorder().getDistanceInsideBorder(blockPos.getX(), blockPos.getZ()));
-        if (j < i) {
-            i = j;
-        }
-        if (j <= 1) {
-            i = 1;
-        }
-        long l = i * 2L + 1;
-        long m = l * l;
-        int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
-        int n = this.calculateSpawnOffsetMultiplier(k);
-        int o = (new Random()).nextInt(k);
-        Main.playerSpawn=o;
-        for(int p = 0; p < k; ++p) {
-            int q = (o + n * p) % k;
-            int r = q % (i * 2 + 1);
-            int s = q / (i * 2 + 1);
-            BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn((ServerWorld) Main.world, blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
-            if (blockPos2 != null) {
-                Main.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                if (Main.world.doesNotCollide(Main.player)) {
-                    break;
-                }
-            }
-        }
-        calculatedSpawn=true;
     }
 }

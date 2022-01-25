@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.Main;
+import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
@@ -23,7 +24,7 @@ public abstract class KeyboardMixin {
 
     @Inject(method = "onKey",at=@At("HEAD"))
     public void getF3ESCKey(long window, int key, int scancode, int i, int j, CallbackInfo ci){
-        if(client.currentScreen instanceof LevelLoadingScreen&& Main.camera!=null&&window == this.client.getWindow().getHandle()){
+        if( Main.inPreview&&window == this.client.getWindow().getHandle()){
             if(i!=0) {
                 if (key == 256) {
                     boolean bl3 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292);

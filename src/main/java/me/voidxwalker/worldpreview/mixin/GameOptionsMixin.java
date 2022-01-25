@@ -31,6 +31,8 @@ public class GameOptionsMixin {
     public void initCustomHotkey(MinecraftClient client, File optionsFile, CallbackInfo ci){
         Main.resetKey=new KeyBinding(translate("Reset","key.world_preview.reset"),71, "key.categories.misc");
         keysAll=ArrayUtils.add(keysAll,Main.resetKey);
+        Main.stopKey=new KeyBinding(translate("Stop","key.world_preview.stop"),73, "key.categories.misc");
+        keysAll=ArrayUtils.add(keysAll,Main.stopKey);
         Main.cycleChunkMapKey=new KeyBinding(translate("Cycle Chunk Map","key.world_preview.cycle_chunkmap"),72, "key.categories.misc");
         keysAll=ArrayUtils.add(keysAll,Main.cycleChunkMapKey);
     }

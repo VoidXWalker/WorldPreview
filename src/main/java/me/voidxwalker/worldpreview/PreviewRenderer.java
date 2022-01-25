@@ -76,7 +76,7 @@ public class PreviewRenderer {
 	private final TextureManager textureManager;
 	private final EntityRenderDispatcher entityRenderDispatcher;
 	private final BufferBuilderStorage bufferBuilders;
-	private ClientWorld world;
+	public ClientWorld world;
 	private Set<ChunkBuilder.BuiltChunk> chunksToRebuild = Sets.newLinkedHashSet();
 	private final ObjectArrayList<ChunkInfo> visibleChunks = new ObjectArrayList<>(69696);
 	private final Set<BlockEntity> noCullingBlockEntities = Sets.newHashSet();
@@ -126,8 +126,6 @@ public class PreviewRenderer {
 	private ChunkBuilder chunkBuilder;
 	private final VertexFormat vertexFormat;
 	private int renderDistance;
-	private int regularEntityCount;
-	private int blockEntityCount;
 	private boolean shouldCaptureFrustum;
 	@Nullable
 	private Frustum capturedFrustum;
@@ -187,7 +185,6 @@ public class PreviewRenderer {
 		this.renderLightSky();
 		this.renderDarkSky();
 	}
-
 	private void renderWeather(LightmapTextureManager manager, float f, double d, double e, double g) {
 		float h = this.world.getRainGradient(f);
 		if (!(h <= 0.0F)) {
@@ -378,8 +375,6 @@ public class PreviewRenderer {
 		}
 
 	}
-
-
 
 
 	private void renderDarkSky() {
@@ -804,8 +799,8 @@ public class PreviewRenderer {
 
 		profiler.swap("entities");
 		profiler.push("prepare");
-		this.regularEntityCount = 0;
-		this.blockEntityCount = 0;
+		int regularEntityCount = 0;
+		int blockEntityCount = 0;
 		profiler.swap("entities");
 		if (this.entityFramebuffer != null) {
 			this.entityFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
@@ -1011,7 +1006,7 @@ public class PreviewRenderer {
 				} while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
 			} while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
 
-			++this.regularEntityCount;
+			++regularEntityCount;
 			if (entity.age == 0) {
 				entity.lastRenderX = entity.getX();
 				entity.lastRenderY = entity.getY();

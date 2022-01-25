@@ -8,10 +8,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CustomPlayerEntity extends Entity  {
-
+    public boolean calculatedSpawn;
     public CustomPlayerEntity(EntityType<?> type, World world, BlockPos pos,float yaw, float pitch) {
         super(type, world);
         this.setPos(pos.getX(),pos.getY(),pos.getZ());
+        calculatedSpawn=false;
         this.yaw=yaw;
         this.pitch=pitch;
         this.prevX=pos.getX();

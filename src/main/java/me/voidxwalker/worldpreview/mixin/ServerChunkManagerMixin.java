@@ -10,6 +10,7 @@ import net.minecraft.client.world.ClientChunkManager;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ThreadedAnvilChunkStorage;
+import net.minecraft.util.Util;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -30,22 +31,30 @@ public abstract class ServerChunkManagerMixin {
     @Inject(method ="tick()Z",at = @At(value = "TAIL"))
     public void getChunks(CallbackInfoReturnable<Boolean> cir){
 
-        if(Main.world!=null&&Main.clientWord!=null&&Main.worldRenderer!=null&& MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
-            ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) Main.clientWord.getChunkManager()).getChunks()));
-            Iterator<ChunkHolder> iterator =  ((ThreadedAnvilChunkStorageMixin) this.threadedAnvilChunkStorage).getChunkHolders().values().stream().iterator();
-                while (iterator.hasNext()){
-                    ChunkHolder holder = iterator.next();
-                    if(holder!=null){
+        synchronized (Main.lock){
+            if(Main.player!=null&&Main.player.calculatedSpawn&& !Main.stop&&MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
+                try{
 
-                        int index = ((ClientChunkMapMixin)(Object)(map)).callGetIndex(holder.getPos().x,holder.getPos().z);
-                        if(((ClientChunkMapMixin)(Object)(map)).callGetChunk(index)==null) {
-                            WorldChunk chunk = this.getWorldChunk(holder.getPos().x,holder.getPos().z);
-                            ((ClientChunkMapMixin)(Object)(map)).callSet(index,chunk);
+                    ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) Main.clientWord.getChunkManager()).getChunks()));
+                    Iterator<ChunkHolder> iterator =  ((ThreadedAnvilChunkStorageMixin) this.threadedAnvilChunkStorage).getChunkHolders().values().stream().iterator();
+                    while (iterator.hasNext()){
+                        ChunkHolder holder = iterator.next();
+                        if(holder!=null){
+                            int index = ((ClientChunkMapMixin)(Object)(map)).callGetIndex(holder.getPos().x,holder.getPos().z);
+                            if(((ClientChunkMapMixin)(Object)(map)).callGetChunk(index)==null) {
+                                WorldChunk chunk = this.getWorldChunk(holder.getPos().x,holder.getPos().z);
+                                if(chunk!=null){
+                                    ((ClientChunkMapMixin)(Object)(map)).callSet(index,chunk);
+                                }
+
+                            }
+
                         }
-
+                    }
+                } catch (Exception ignored) {
                 }
-            }
 
+            }
         }
     }
 }
