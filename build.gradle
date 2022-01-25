@@ -21,9 +21,12 @@ loom {
 	accessWidener = file("src/main/resources/worldpreview.accesswidener")
 }
 dependencies {
-	minecraft "com.mojang:minecraft:1.16.1"
-	mappings "net.fabricmc:yarn:1.16.1+build.21:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.12.12"
+		minecraft "com.mojang:minecraft:1.15.2"
+		mappings "net.fabricmc:yarn:1.15.2+build.17:v2"
+		modImplementation "net.fabricmc:fabric-loader:0.12.12"
+
+
+
 
 
 
