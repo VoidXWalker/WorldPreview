@@ -99,7 +99,7 @@ public abstract class MinecraftClientMixin {
             WorldPreview.clientWord=null;
             WorldPreview.camera=null;
             if(WorldPreview.worldRenderer!=null){
-                WorldPreview.worldRenderer.setWorld(null);
+                WorldPreview.worldRenderer.loadWorld(null);
             }
             cycleCooldown=0;
         }
