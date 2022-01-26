@@ -297,7 +297,7 @@ public class PreviewRenderer {
 
 			this.needsTerrainUpdate = true;
 			this.cloudsDirty = true;
-			RenderLayers.setFancyGraphics(this.client.options.fancyGraphics);
+			RenderLayers.setFancyGraphics(false);
 			this.renderDistance = this.client.options.viewDistance;
 			if (this.chunks != null) {
 				this.chunks.clear();
