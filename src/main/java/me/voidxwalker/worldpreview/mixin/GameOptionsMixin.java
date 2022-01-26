@@ -21,38 +21,30 @@ import java.util.Iterator;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
-
     @Shadow @Mutable public KeyBinding[] keysAll;
 
-    @Inject(method = "<init>",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/options/GameOptions;load()V"))
-    public void initCustomHotkey(MinecraftClient client, File optionsFile, CallbackInfo ci){
-        WorldPreview.resetKey=new KeyBinding(translate("Reset","key.world_preview.reset"),71, "key.categories.misc");
-        keysAll=ArrayUtils.add(keysAll, WorldPreview.resetKey);
-        WorldPreview.stopKey=new KeyBinding(translate("Stop","key.world_preview.stop"),73, "key.categories.misc");
-        keysAll=ArrayUtils.add(keysAll, WorldPreview.stopKey);
-        WorldPreview.cycleChunkMapKey=new KeyBinding(translate("Cycle Chunk Map","key.world_preview.cycle_chunkmap"),72, "key.categories.misc");
-        keysAll=ArrayUtils.add(keysAll, WorldPreview.cycleChunkMapKey);
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/options/GameOptions;load()V"))
+    public void initCustomHotkey(MinecraftClient client, File optionsFile, CallbackInfo ci) {
+        WorldPreview.resetKey = new KeyBinding(translate("Reset", "key.world_preview.reset"), 71, "key.categories.misc");
+        keysAll = ArrayUtils.add(keysAll, WorldPreview.resetKey);
+        WorldPreview.stopKey = new KeyBinding(translate("Stop", "key.world_preview.stop"), 73, "key.categories.misc");
+        keysAll = ArrayUtils.add(keysAll, WorldPreview.stopKey);
+        WorldPreview.cycleChunkMapKey = new KeyBinding(translate("Cycle Chunk Map", "key.world_preview.cycle_chunkmap"), 72, "key.categories.misc");
+        keysAll = ArrayUtils.add(keysAll, WorldPreview.cycleChunkMapKey);
     }
 
-    private String translate(String replacement,String key ){
+    private String translate(String replacement, String key) {
         TranslatableText t=new TranslatableText(key,replacement);
-        if(t.getString().equals(key)){
-            return replacement;
-        }
+        
+        if(t.getString().equals(key)) { return replacement; }
         return t.asString();
     }
 
-    @Inject(method = "load",at=@At(value = "INVOKE",target = "Lnet/minecraft/sound/SoundCategory;values()[Lnet/minecraft/sound/SoundCategory;",shift = At.Shift.AFTER),locals = LocalCapture.CAPTURE_FAILSOFT)
-    public void loadCustom(CallbackInfo ci, CompoundTag compoundTag,  CompoundTag compoundTag2,Iterator var22,String string,String string2){
-        if ("chunkmapPos".equals(string)) {
-            WorldPreview.chunkMapPos=Integer.parseInt(string2);
-        }
-
+    @Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/sound/SoundCategory;values()[Lnet/minecraft/sound/SoundCategory;", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILSOFT)
+    public void loadCustom(CallbackInfo ci, CompoundTag compoundTag, CompoundTag compoundTag2, Iterator var22, String string, String string2) {
+        if ("chunkmapPos".equals(string)) { WorldPreview.chunkMapPos = Integer.parseInt(string2); }
     }
 
-    @Inject(method = "write",at=@At(value = "INVOKE",target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V",ordinal = 0),locals = LocalCapture.CAPTURE_FAILSOFT)
-    public void loadCustom(CallbackInfo ci, PrintWriter printWriter){
-        printWriter.println("chunkmapPos:" + WorldPreview.chunkMapPos);
-
-    }
+    @Inject(method = "write", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT)
+    public void loadCustom(CallbackInfo ci, PrintWriter printWriter) { printWriter.println("chunkmapPos:" + WorldPreview.chunkMapPos); }
 }
