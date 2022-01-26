@@ -28,6 +28,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
@@ -36,20 +38,37 @@ import java.util.Iterator;
 @Mixin(LevelLoadingScreen.class)
 public abstract class LevelLoadingScreenMixin extends Screen {
 
-    @Shadow @Final private WorldGenerationProgressTracker progressProvider;
-
-    @Shadow public static void drawChunkMap(MatrixStack matrixStack, WorldGenerationProgressTracker worldGenerationProgressTracker, int i, int j, int k, int l) {}
-
-    @Shadow private long field_19101;
-
     private boolean showMenu;
 
     protected LevelLoadingScreenMixin(Text title) {
         super(title);
     }
-
+    @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V"))
+    public void stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){
+        if(!drawingPreview){
+            instance.renderBackground(matrixStack);
+        }
+    }
+    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
+    public int moveLoadingScreen(int i){
+        if(!drawingPreview){
+            return i;
+        }
+        return getChunkMapPos().x;
+    }
+    private boolean drawingPreview=false;
+    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
+    public int moveLoadingScreen2(int i){
+        if(!drawingPreview){
+            return i;
+        }
+        return getChunkMapPos().y;
+    }
     @Inject(method = "render",at=@At("HEAD"),cancellable = true)
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if(WorldPreview.stop){
+            drawingPreview=false;
+        }
         if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&!WorldPreview.stop) {
             if(WorldPreview.worldRenderer==null){
                 WorldPreview.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
@@ -61,6 +80,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 this.initWidgets();
             }
             if (WorldPreview.worldRenderer.world!=null) {
+                drawingPreview=true;
                 if(this.showMenu!= WorldPreview.showMenu){
                     if(!WorldPreview.showMenu){
                         this.children.clear();
@@ -98,9 +118,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
                 DiffuseLighting.enableGuiDepthLighting();
                 this.renderPauseMenu(matrices,mouseX,mouseY,delta);
-                RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
-                this.renderCustom(matrices);
-                ci.cancel();
+
             }
         }
     }
@@ -117,29 +135,16 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    private void renderCustom(MatrixStack matrices){
-        String string = MathHelper.clamp(this.progressProvider.getProgressPercentage(), 0, 100) + "%";
-        long l = Util.getMeasuringTimeMs();
-        if (l - this.field_19101 > 2000L) {
-            this.field_19101 = l;
-            NarratorManager.INSTANCE.narrate((new TranslatableText("narrator.loading", string)).getString());
-        }
-        Point chunkMapPos =getChunkMapPos();
-        drawChunkMap(matrices, this.progressProvider, chunkMapPos.x, chunkMapPos.y, 2, 0);
-        TextRenderer var10002 = this.textRenderer;
-        this.drawCenteredString(matrices, var10002, string, chunkMapPos.x, chunkMapPos.y-60 - 9 / 2, 16777215);
-    }
-
     private Point getChunkMapPos(){
         switch (WorldPreview.chunkMapPos){
             case 1:
-                return new Point(this.width -45,this.height -45);
+                return new Point(this.width -45,this.height -75);
             case 2:
-                return new Point(this.width -45,75);
+                return new Point(this.width -45,105);
             case 3:
-                return new Point(45,75);
+                return new Point(45,105);
             default:
-                return new Point(45,this.height -45);
+                return new Point(45,this.height -75);
         }
     }
 

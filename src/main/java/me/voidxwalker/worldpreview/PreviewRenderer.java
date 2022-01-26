@@ -200,9 +200,6 @@ public class PreviewRenderer {
 			RenderSystem.defaultAlphaFunc();
 			RenderSystem.enableDepthTest();
 			int l = 5;
-			if (MinecraftClient.isFancyGraphicsOrBetter()) {
-				l = 10;
-			}
 
 			RenderSystem.depthMask(MinecraftClient.isFabulousGraphicsOrBetter());
 			int m = -1;
@@ -527,7 +524,7 @@ public class PreviewRenderer {
 
 			this.needsTerrainUpdate = true;
 			this.cloudsDirty = true;
-			RenderLayers.setFancyGraphicsOrBetter(MinecraftClient.isFancyGraphicsOrBetter());
+			RenderLayers.setFancyGraphicsOrBetter(false);
 			this.renderDistance = this.client.options.viewDistance;
 			if (this.chunks != null) {
 				this.chunks.clear();
