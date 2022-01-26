@@ -1,25 +1,21 @@
 package me.voidxwalker.worldpreview.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.platform.GlStateManager;
 import me.voidxwalker.worldpreview.PreviewRenderer;
 import me.voidxwalker.worldpreview.WorldPreview;
-import me.voidxwalker.worldpreview.mixin.access.GameRendererMixin;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.WorldGenerationProgressTracker;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.render.BufferBuilderStorage;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.DiffuseLighting;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.options.CloudRenderMode;
+import net.minecraft.client.render.*;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.NarratorManager;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Matrix4f;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.entity.Entity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
@@ -61,7 +57,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 WorldPreview.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance());
             }
             if(WorldPreview.worldRenderer.world==null&& WorldPreview.player.calculatedSpawn){
-                WorldPreview.worldRenderer.loadWorld(WorldPreview.clientWord);
+                WorldPreview.worldRenderer.setWorld(WorldPreview.clientWord);
                 WorldPreview.showMenu=true;
                 this.showMenu=true;
                 this.initWidgets();
@@ -73,7 +69,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     }
                     this.showMenu= WorldPreview.showMenu;
                 }
-                ((GameRendererMixin)MinecraftClient.getInstance().gameRenderer).getLightmapTextureManager().update(0);
                 if (WorldPreview.camera == null) {
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y + 1.5, WorldPreview.player.z, 0.0F, 0.0F);
                     WorldPreview.camera = new Camera();
@@ -82,35 +77,160 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     WorldPreview.inPreview=true;
                     WorldPreview.log(Level.INFO,"Starting Preview");
                 }
-                MatrixStack matrixStack = new MatrixStack();
-                matrixStack.peek().getModel().multiply(this.getBasicProjectionMatrix());
-                Matrix4f matrix4f = matrixStack.peek().getModel();
-                RenderSystem.matrixMode(5889);
-                RenderSystem.loadIdentity();
-                RenderSystem.multMatrix(matrix4f);
-                RenderSystem.matrixMode(5888);
-                MatrixStack m = new MatrixStack();
-                m.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(WorldPreview.camera.getPitch()));
-                m.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(WorldPreview.camera.getYaw() + 180.0F));
-                WorldPreview.worldRenderer.render(m, 0.2F, 1000000, false, WorldPreview.camera, MinecraftClient.getInstance().gameRenderer, MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager(), matrix4f);
+
+                renderWorld(delta,(long)(1000000000 / 60 / 4) );
                 WorldPreview.worldRenderer.ticks++;
-                Window window = this.minecraft.getWindow();
-                RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
-                RenderSystem.matrixMode(5889);
-                RenderSystem.loadIdentity();
-                RenderSystem.ortho(0.0D, (double) window.getFramebufferWidth() / window.getScaleFactor(), (double) window.getFramebufferHeight() / window.getScaleFactor(), 0.0D, 1000.0D, 3000.0D);
-                RenderSystem.matrixMode(5888);
-                RenderSystem.loadIdentity();
-                RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
-                DiffuseLighting.enableGuiDepthLighting();
+                Window window = this.minecraft.window;
+                GlStateManager.clear(256, MinecraftClient.IS_SYSTEM_MAC);
+                GlStateManager.matrixMode(5889);
+                GlStateManager.loadIdentity();
+                GlStateManager.ortho(0.0D, (double) window.getFramebufferWidth() / window.getScaleFactor(), (double) window.getFramebufferHeight() / window.getScaleFactor(), 0.0D, 1000.0D, 3000.0D);
+                GlStateManager.matrixMode(5888);
+                GlStateManager.loadIdentity();
+                GlStateManager.translatef(0.0F, 0.0F, -2000.0F);
                 this.renderPauseMenu(mouseX,mouseY,delta);
-                RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
+                GlStateManager.clear(256, MinecraftClient.IS_SYSTEM_MAC);
                 this.renderCustom();
                 ci.cancel();
             }
         }
     }
+    public void renderWorld(float tickDelta, long endTime) {
 
+
+
+
+        GlStateManager.enableDepthTest();
+        GlStateManager.enableAlphaTest();
+        GlStateManager.alphaFunc(516, 0.5F);
+        this.renderCenter(tickDelta, endTime);
+    }
+
+    private void renderCenter(float tickDelta, long endTime) {
+       PreviewRenderer worldRenderer = WorldPreview.worldRenderer;
+
+        GlStateManager.enableCull();
+        this.minecraft.getProfiler().swap("camera");
+        this.applyCameraTransformations(tickDelta);
+        Camera camera = WorldPreview.camera;
+        camera.update(WorldPreview.worldRenderer.world, (Entity)(WorldPreview.player), this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, tickDelta);
+        Frustum frustum = GlMatrixFrustum.get();
+        worldRenderer.method_21595(camera);
+        this.minecraft.getProfiler().swap("clear");
+        GlStateManager.viewport(0, 0, this.minecraft.window.getFramebufferWidth(), this.minecraft.window.getFramebufferHeight());
+        WorldPreview.worldRenderer.backgroundRenderer.renderBackground(camera, tickDelta);
+        GlStateManager.clear(16640, MinecraftClient.IS_SYSTEM_MAC);
+        this.minecraft.getProfiler().swap("culling");
+        VisibleRegion visibleRegion = new FrustumWithOrigin(frustum);
+        double d = camera.getPos().x;
+        double e = camera.getPos().y;
+        double f = camera.getPos().z;
+        visibleRegion.setOrigin(d, e, f);
+        if (this.minecraft.options.viewDistance >= 4) {
+            WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, -1);
+            this.minecraft.getProfiler().swap("sky");
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            GlStateManager.multMatrix(Matrix4f.method_4929(minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance *16* 2.0F));
+            GlStateManager.matrixMode(5888);
+            worldRenderer.renderSky(tickDelta);
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            GlStateManager.multMatrix(Matrix4f.method_4929(minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance *16* MathHelper.SQUARE_ROOT_OF_TWO));
+            GlStateManager.matrixMode(5888);
+        }
+
+        WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+        GlStateManager.shadeModel(7425);
+        if (camera.getPos().y < 128.0D) {
+            this.renderAboveClouds(camera, tickDelta, d, e, f);
+        }
+
+        this.minecraft.getProfiler().swap("prepareterrain");
+        WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+        this.minecraft.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+        DiffuseLighting.disable();
+        this.minecraft.getProfiler().swap("terrain_setup");
+        WorldPreview.worldRenderer.world.getChunkManager().getLightingProvider().doLightUpdates(Integer.MAX_VALUE, true, true);
+        worldRenderer.setUpTerrain(camera, visibleRegion, WorldPreview.field_4021++, false);
+        this.minecraft.getProfiler().swap("updatechunks");
+        WorldPreview.worldRenderer.updateChunks(endTime);
+        this.minecraft.getProfiler().swap("terrain");
+        GlStateManager.matrixMode(5888);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableAlphaTest();
+        worldRenderer.renderLayer(RenderLayer.SOLID, camera);
+        GlStateManager.enableAlphaTest();
+        worldRenderer.renderLayer(RenderLayer.CUTOUT_MIPPED, camera);
+        this.minecraft.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
+        worldRenderer.renderLayer(RenderLayer.CUTOUT, camera);
+        this.minecraft.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).popFilter();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.alphaFunc(516, 0.1F);
+        GlStateManager.matrixMode(5888);
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.matrixMode(5888);
+        GlStateManager.popMatrix();
+        GlStateManager.depthMask(false);
+        GlStateManager.enableCull();
+        GlStateManager.depthMask(true);
+        GlStateManager.disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.alphaFunc(516, 0.1F);
+        WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+        GlStateManager.enableBlend();
+        GlStateManager.depthMask(false);
+        this.minecraft.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+        GlStateManager.shadeModel(7425);
+        this.minecraft.getProfiler().swap("translucent");
+        worldRenderer.renderLayer(RenderLayer.TRANSLUCENT, camera);
+        GlStateManager.shadeModel(7424);
+        GlStateManager.depthMask(true);
+        GlStateManager.enableCull();
+        GlStateManager.disableBlend();
+        GlStateManager.disableFog();
+        if (camera.getPos().y >= 128.0D) {
+            this.minecraft.getProfiler().swap("aboveClouds");
+            this.renderAboveClouds(camera,tickDelta, d, e, f);
+        }
+
+
+
+    }
+    private void renderAboveClouds(Camera camera,  float tickDelta, double cameraX, double cameraY, double cameraZ) {
+        if (this.minecraft.options.getCloudRenderMode() != CloudRenderMode.OFF) {
+            this.minecraft.getProfiler().swap("clouds");
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            GlStateManager.multMatrix(Matrix4f.method_4929(minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance *16 * 4.0F));
+            GlStateManager.matrixMode(5888);
+            GlStateManager.pushMatrix();
+            WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+            WorldPreview.worldRenderer.renderClouds(tickDelta, cameraX, cameraY, cameraZ);
+            GlStateManager.disableFog();
+            GlStateManager.popMatrix();
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            GlStateManager.multMatrix(Matrix4f.method_4929(minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance *16* MathHelper.SQUARE_ROOT_OF_TWO));
+            GlStateManager.matrixMode(5888);
+        }
+
+    }
+    private void applyCameraTransformations(float tickDelta) {
+        GlStateManager.matrixMode(5889);
+        GlStateManager.loadIdentity();
+
+
+        GlStateManager.multMatrix(Matrix4f.method_4929(this.minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance*16));
+        GlStateManager.matrixMode(5888);
+        GlStateManager.loadIdentity();
+
+
+
+
+    }
     private void renderPauseMenu(int mouseX, int mouseY, float delta){
         if(WorldPreview.showMenu){
             Iterator<AbstractButtonWidget> iterator =this.buttons.listIterator();
@@ -148,12 +268,12 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    public Matrix4f getBasicProjectionMatrix() {
+   /* public Matrix4f getBasicProjectionMatrix() {
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.peek().getModel().loadIdentity();
         matrixStack.peek().getModel().multiply(Matrix4f.viewboxMatrix(minecraft.options.fov, (float)this.minecraft.getWindow().getFramebufferWidth() / (float)this.minecraft.getWindow().getFramebufferHeight(), 0.05F, this.minecraft.options.viewDistance*16 * 4.0F));
         return matrixStack.peek().getModel();
-    }
+    }*/
 
     private void initWidgets(){
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame").getString(), (ignored) -> {}));

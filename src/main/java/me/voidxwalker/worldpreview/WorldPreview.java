@@ -1,7 +1,5 @@
 package me.voidxwalker.worldpreview;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;
@@ -17,6 +15,7 @@ public class WorldPreview {
    public static ClientWorld clientWord;
    public static boolean inPreview;
    public static BlockPos spawnPos;
+   public static int field_4021;
    public static int kill=0;
    public static int playerSpawn;
    public static Camera camera;

@@ -11,7 +11,9 @@ public class CustomPlayerEntity extends Entity  {
     public boolean calculatedSpawn;
     public CustomPlayerEntity(EntityType<?> type, World world, BlockPos pos,float yaw, float pitch) {
         super(type, world);
-        this.setPos(pos.getX(),pos.getY(),pos.getZ());
+        this.x=pos.getX();
+        this.y=pos.getY();
+        this.z=pos.getZ();
         calculatedSpawn=false;
         this.yaw=yaw;
         this.pitch=pitch;

@@ -12,15 +12,14 @@
     "access.ThreadedAnvilChunkStorageMixin",
 
     "ServerPlayerEntityMixin",
-    "ChunkBuilderMixin",
+    "ClientChunkMapMixin",
+    "ChunkRendererMixin",
     "MinecraftClientMixin",
     "KeyboardMixin",
     "GameOptionsMixin",
     "ServerChunkManagerMixin",
-    "BuiltChunkMixin",
-    "WorldMixin",
-    "BlockModelRendererMixin",
-    "BlockRenderManagerMixin"
+    "BuiltChunkMixin"
+
   ],
   "injectors": {
     "defaultRequire": 1

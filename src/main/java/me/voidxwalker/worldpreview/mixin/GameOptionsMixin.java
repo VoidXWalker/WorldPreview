@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Iterator;
+import java.util.List;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
@@ -43,7 +44,7 @@ public class GameOptionsMixin {
     }
 
     @Inject(method = "load",at=@At(value = "INVOKE",target = "Lnet/minecraft/sound/SoundCategory;values()[Lnet/minecraft/sound/SoundCategory;",shift = At.Shift.AFTER),locals = LocalCapture.CAPTURE_FAILSOFT)
-    public void loadCustom(CallbackInfo ci, CompoundTag compoundTag,  CompoundTag compoundTag2,Iterator var22,String string,String string2){
+    public void loadCustom(CallbackInfo ci, List ignored,CompoundTag compoundTag,  Iterator var22, String string, String string2){
         if ("chunkmapPos".equals(string)) {
             WorldPreview.chunkMapPos=Integer.parseInt(string2);
         }

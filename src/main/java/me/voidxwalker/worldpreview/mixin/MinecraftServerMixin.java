@@ -30,7 +30,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.function.Supplier;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<ServerTask> {
@@ -77,40 +76,44 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
         }
 
     }
+    private int method_14244(int i) {
+        return i <= 16 ? i - 1 : 17;
+    }
     private void calculateSpawn(ServerWorld serverWorld) {
         BlockPos blockPos = serverWorld.getSpawnPos();
-        int i = Math.max(0, getSpawnRadius(serverWorld));
-        int j = MathHelper.floor(serverWorld.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
-        if (j < i) {
-            i = j;
-        }
+            int i = Math.max(0, this.getSpawnRadius(serverWorld));
+            int j = MathHelper.floor(serverWorld.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
+            if (j < i) {
+                i = j;
+            }
 
-        if (j <= 1) {
-            i = 1;
-        }
+            if (j <= 1) {
+                i = 1;
+            }
 
-        long l = (long)(i * 2 + 1);
-        long m = l * l;
-        int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
-        int n = k <= 16 ? k - 1 : 17;
-        int o = (new Random()).nextInt(k);
-        WorldPreview.playerSpawn=o;
-        for(int p = 0; p < k; ++p) {
-            int q = (o + n * p) % k;
-            int r = q % (i * 2 + 1);
-            int s = q / (i * 2 + 1);
-            BlockPos blockPos2 = serverWorld.getDimension().getTopSpawningBlockPosition(blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
-            if (blockPos2 != null) {
-                WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                if (serverWorld.doesNotCollide(WorldPreview.player)) {
-                    break;
+            long l = (long)(i * 2 + 1);
+            long m = l * l;
+            int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
+            int n = this.method_14244(k);
+            int o = (new Random()).nextInt(k);
+            WorldPreview.playerSpawn=o;
+            for(int p = 0; p < k; ++p) {
+                int q = (o + n * p) % k;
+                int r = q % (i * 2 + 1);
+                int s = q / (i * 2 + 1);
+                BlockPos blockPos2 = serverWorld.getDimension().getTopSpawningBlockPosition(blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
+                if (blockPos2 != null) {
+                    WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
+                    WorldPreview.player.y+=1.8F;
+
+                    if (serverWorld.doesNotCollide(WorldPreview.player)) {
+                        break;
+                    }
                 }
             }
-        }
+
     }
-    private int calculateSpawnOffsetMultiplier(int horizontalSpawnArea) {
-        return horizontalSpawnArea <= 16 ? horizontalSpawnArea - 1 : 17;
-    }
+
     @Inject(method = "shutdown",at=@At(value = "HEAD"),cancellable = true)
     public void kill(CallbackInfo ci){
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen&&Thread.currentThread().getId()!=this.getThread().getId()) {

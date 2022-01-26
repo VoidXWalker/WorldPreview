@@ -1,5 +1,6 @@
 package me.voidxwalker.worldpreview.mixin;
 
+import me.voidxwalker.worldpreview.ChunkSetter;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.ClientChunkManagerMixin;
 import me.voidxwalker.worldpreview.mixin.access.ClientChunkMapMixin;
@@ -12,7 +13,6 @@ import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ThreadedAnvilChunkStorage;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.chunk.WorldChunk;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,12 +40,16 @@ public abstract class ServerChunkManagerMixin {
                     while (iterator.hasNext()){
                         ChunkHolder holder = iterator.next();
                         if(holder!=null){
-                            int index = ((ClientChunkMapMixin)(Object)(map)).callGetIndex(holder.getPos().x,holder.getPos().z);
+                            int index = ((ClientChunkMapMixin)(Object)(map)).callIndex(holder.getPos().x,holder.getPos().z);
                             if(((ClientChunkMapMixin)(Object)(map)).callGetChunk(index)==null) {
-                                WorldChunk chunk = (WorldChunk) this.getChunk(holder.getPos().x,holder.getPos().z);
-                                if(chunk!=null){
-                                    ((ClientChunkMapMixin)(Object)(map)).callSet(index,chunk);
+                                BlockView chunk = this.getChunk(holder.getPos().x,holder.getPos().z);
+                                if(chunk instanceof WorldChunk){
+                                    WorldChunk chunk2 = (WorldChunk) chunk;
+                                    if(chunk!=null){
+                                        ((ChunkSetter)(Object)(map)).set(index,chunk2);
+                                    }
                                 }
+
 
                             }
 
