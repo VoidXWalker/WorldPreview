@@ -40,66 +40,48 @@ import java.util.function.Supplier;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<ServerTask> {
-    public MinecraftServerMixin(String string) {
-        super(string);
-    }
-
     @Shadow public abstract @Nullable ServerWorld getWorld(RegistryKey<World> key);
-
     @Shadow public abstract ServerWorld getOverworld();
-
     @Shadow public abstract Iterable<ServerWorld> getWorlds();
-
     @Shadow @Final private Snooper snooper;
-
     @Shadow private ServerResourceManager serverResourceManager;
-
     @Shadow @Final protected LevelStorage.Session session;
-
     @Shadow @Final private static Logger LOGGER;
-
     @Shadow public abstract @Nullable ServerNetworkIo getNetworkIo();
-
     @Shadow public abstract Thread getThread();
-
     @Shadow public abstract int getSpawnRadius(@Nullable ServerWorld world);
 
+    public MinecraftServerMixin(String string) { super(string); }
+    
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
-
-    public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        synchronized (WorldPreview.lock){
-            if(!WorldPreview.existingWorld){
+    public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci) {
+        synchronized (WorldPreview.lock) {
+            if (!WorldPreview.existingWorld) {
                 ServerWorld serverWorld = this.getOverworld();
-                WorldPreview.spawnPos= serverWorld.getSpawnPos();
-                WorldPreview.stop=false;
-                WorldPreview.world=this.getWorld(World.OVERWORLD);
+                WorldPreview.spawnPos = serverWorld.getSpawnPos();
+                WorldPreview.stop = false;
+                WorldPreview.world = this.getWorld(World.OVERWORLD);
                 RegistryKey<DimensionType> registryKey = DimensionType.OVERWORLD_REGISTRY_KEY;
                 RegistryKey<World> registryKey2 = World.OVERWORLD;
                 DimensionType dimensionType = DimensionType.getOverworldDimensionType();
                 ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, WorldPreview.world.getLevelProperties().isHardcore(), false);
-                WorldPreview.player=new CustomPlayerEntity(EntityType.PLAYER, WorldPreview.world, WorldPreview.spawnPos,0,0);
-                Supplier<Profiler>s=MinecraftClient.getInstance()::getProfiler;
-                long seed = BiomeAccess.hashSeed(((ServerWorld)(WorldPreview.world)).getSeed());
-                WorldPreview.clientWord = new ClientWorld(null,properties, registryKey2, registryKey, dimensionType,16 , s,null,false, seed);
+                WorldPreview.player = new CustomPlayerEntity(EntityType.PLAYER, WorldPreview.world, WorldPreview.spawnPos,0,0);
+                Supplier<Profiler>s = MinecraftClient.getInstance()::getProfiler;
+                long seed = BiomeAccess.hashSeed(((ServerWorld) (WorldPreview.world)).getSeed());
+                WorldPreview.clientWord = new ClientWorld(null, properties, registryKey2, registryKey, dimensionType, 16, s, null, false, seed);
                 calculateSpawn(serverWorld);
                 WorldPreview.player.calculatedSpawn=true;
-
             }
             WorldPreview.existingWorld=false;
-
         }
-
     }
+    
     private void calculateSpawn(ServerWorld serverWorld) {
         BlockPos blockPos = WorldPreview.spawnPos;
         int i = Math.max(0, this.getSpawnRadius((ServerWorld) WorldPreview.world));
         int j = MathHelper.floor(WorldPreview.world.getWorldBorder().getDistanceInsideBorder(blockPos.getX(), blockPos.getZ()));
-        if (j < i) {
-            i = j;
-        }
-        if (j <= 1) {
-            i = 1;
-        }
+        if (j < i) { i = j; }
+        if (j <= 1) { i = 1; }
         long l = i * 2L + 1;
         long m = l * l;
         int k = m > 2147483647L ? Integer.MAX_VALUE : (int) m;
@@ -113,69 +95,52 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn((ServerWorld) serverWorld, blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
             if (blockPos2 != null) {
                 WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                if (serverWorld.doesNotCollide(WorldPreview.player)) {
-                    break;
-                }
+                if (serverWorld.doesNotCollide(WorldPreview.player)) { break; }
             }
         }
     }
-    private int calculateSpawnOffsetMultiplier(int horizontalSpawnArea) {
-        return horizontalSpawnArea <= 16 ? horizontalSpawnArea - 1 : 17;
-    }
-    @Inject(method = "shutdown",at=@At(value = "HEAD"),cancellable = true)
-    public void kill(CallbackInfo ci){
-        if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen&&Thread.currentThread().getId()!=this.getThread().getId()) {
+    
+    private int calculateSpawnOffsetMultiplier(int horizontalSpawnArea) { return horizontalSpawnArea <= 16 ? horizontalSpawnArea - 1 : 17; }
+    
+    @Inject(method = "shutdown", at = @At(value = "HEAD"), cancellable = true)
+    public void kill(CallbackInfo ci) {
+        if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen && Thread.currentThread().getId() != this.getThread().getId()) {
            shutdownWithoutSave();
            ci.cancel();
         }
     }
 
-    @Inject(method="runServer",at=@At(value="INVOKE",target="Lnet/minecraft/server/MinecraftServer;setupServer()Z",shift = At.Shift.AFTER), cancellable = true)
-    public void kill2(CallbackInfo ci){
+    @Inject(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setupServer()Z", shift = At.Shift.AFTER), cancellable = true)
+    public void kill2(CallbackInfo ci) {
         WorldPreview.inPreview=false;
-        if(WorldPreview.kill==1){
-            ci.cancel();
-        }
+        if(WorldPreview.kill==1){ ci.cancel(); }
     }
 
-    public void shutdownWithoutSave(){
+    public void shutdownWithoutSave() {
         LOGGER.info("Stopping server");
-        if (this.getNetworkIo() != null) {
-            this.getNetworkIo().stop();
-        }
+        if (this.getNetworkIo() != null) { this.getNetworkIo().stop(); }
         Iterator var1 = this.getWorlds().iterator();
         ServerWorld serverWorld2;
-        while(var1.hasNext()) {
+        while (var1.hasNext()) {
             serverWorld2 = (ServerWorld)var1.next();
-            if (serverWorld2 != null) {
-                serverWorld2.savingDisabled = false;
-            }
+            if (serverWorld2 != null) { serverWorld2.savingDisabled = false; }
         }
         Iterator<ServerWorld> var2 = this.getWorlds().iterator();
         while(var2.hasNext()) {
             serverWorld2 = var2.next();
             if (serverWorld2 != null) {
-                try {
-                    serverWorld2.getChunkManager().threadedAnvilChunkStorage.close();
-                } catch (IOException var5) {
-                }
+                try { serverWorld2.getChunkManager().threadedAnvilChunkStorage.close(); }
+                catch (IOException var5) {}
             }
         }
-        if (this.snooper.isActive()) {
-            this.snooper.cancel();
-        }
+        if (this.snooper.isActive()) { this.snooper.cancel(); }
         this.serverResourceManager.close();
-        try {
-            this.session.close();
-        } catch (IOException var4) {
-            LOGGER.error("Failed to unlock level {}", this.session.getDirectoryName(), var4);
-        }
+        try { this.session.close(); }
+        catch (IOException var4) { LOGGER.error("Failed to unlock level {}", this.session.getDirectoryName(), var4); }
     }
 
-    @Inject(method = "prepareStartRegion",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/world/ServerChunkManager;getTotalChunksLoadedCount()I",shift = At.Shift.AFTER),cancellable = true)
+    @Inject(method = "prepareStartRegion", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerChunkManager;getTotalChunksLoadedCount()I", shift = At.Shift.AFTER), cancellable = true)
     public void kill(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        if(WorldPreview.kill==1){
-           ci.cancel();
-        }
+        if (WorldPreview.kill==1) { ci.cancel(); }
     }
 }
