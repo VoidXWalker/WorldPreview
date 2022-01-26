@@ -1,7 +1,5 @@
 package me.voidxwalker.worldpreview;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;

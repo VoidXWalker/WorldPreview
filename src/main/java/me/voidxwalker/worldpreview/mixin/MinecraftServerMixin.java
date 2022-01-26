@@ -30,7 +30,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.function.Supplier;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<ServerTask> {
