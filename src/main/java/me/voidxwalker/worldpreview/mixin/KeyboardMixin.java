@@ -24,8 +24,11 @@ public abstract class KeyboardMixin {
             if(i!=0) {
 
                 InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
-                if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292)) {
-                    WorldPreview.showMenu=!WorldPreview.showMenu;
+                if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292)&&WorldPreview.showMenu) {
+                    WorldPreview.showMenu= false;
+                }
+                else if (!WorldPreview.showMenu&&key == 256){
+                    WorldPreview.showMenu= true;
                 }
                 boolean bl2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292) && this.processF3(key);
                 if (bl2) {
