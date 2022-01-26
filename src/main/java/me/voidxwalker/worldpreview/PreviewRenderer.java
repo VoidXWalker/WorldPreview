@@ -379,11 +379,8 @@ public class PreviewRenderer {
 
 	public void reload() {
 		if (this.world != null) {
-			if (MinecraftClient.isFabulousGraphicsOrBetter()) {
-				this.loadTransparencyShader();
-			} else {
-				this.resetTransparencyShader();
-			}
+
+			this.resetTransparencyShader();
 
 			this.world.reloadColor();
 			if (this.chunkBuilder == null) {
@@ -394,7 +391,7 @@ public class PreviewRenderer {
 
 			this.needsTerrainUpdate = true;
 			this.cloudsDirty = true;
-			RenderLayers.setFancyGraphicsOrBetter(MinecraftClient.isFancyGraphicsOrBetter());
+			RenderLayers.setFancyGraphicsOrBetter(false);
 			this.renderDistance = this.client.options.viewDistance;
 			if (this.chunks != null) {
 				this.chunks.clear();
