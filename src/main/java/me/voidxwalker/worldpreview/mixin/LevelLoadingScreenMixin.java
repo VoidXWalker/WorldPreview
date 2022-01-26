@@ -35,37 +35,27 @@ import java.util.Iterator;
 
 @Mixin(LevelLoadingScreen.class)
 public abstract class LevelLoadingScreenMixin extends Screen {
-
     @Shadow @Final private WorldGenerationProgressTracker progressProvider;
-
     @Shadow public static void drawChunkMap(MatrixStack matrixStack, WorldGenerationProgressTracker worldGenerationProgressTracker, int i, int j, int k, int l) {}
-
     @Shadow private long field_19101;
-
     private boolean showMenu;
 
-    protected LevelLoadingScreenMixin(Text title) {
-        super(title);
-    }
+    protected LevelLoadingScreenMixin(Text title) { super(title); }
 
-    @Inject(method = "render",at=@At("HEAD"),cancellable = true)
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&!WorldPreview.stop) {
-            if(WorldPreview.worldRenderer==null){
-                WorldPreview.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
-            }
-            if(WorldPreview.worldRenderer.world==null&& WorldPreview.player.calculatedSpawn){
+        if (WorldPreview.world != null && WorldPreview.clientWord != null && !WorldPreview.stop) {
+            if (WorldPreview.worldRenderer == null) { WorldPreview.worldRenderer = new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage()); }
+            if (WorldPreview.worldRenderer.world == null && WorldPreview.player.calculatedSpawn) {
                 WorldPreview.worldRenderer.loadWorld(WorldPreview.clientWord);
                 WorldPreview.showMenu=true;
                 this.showMenu=true;
                 this.initWidgets();
             }
-            if (WorldPreview.worldRenderer.world!=null) {
-                if(this.showMenu!= WorldPreview.showMenu){
-                    if(!WorldPreview.showMenu){
-                        this.children.clear();
-                    }
-                    this.showMenu= WorldPreview.showMenu;
+            if (WorldPreview.worldRenderer.world != null) {
+                if (this.showMenu != WorldPreview.showMenu) {
+                    if (!WorldPreview.showMenu) { this.children.clear(); }
+                    this.showMenu = WorldPreview.showMenu;
                 }
                 MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
                 if (WorldPreview.camera == null) {
@@ -73,7 +63,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     WorldPreview.camera = new Camera();
                     WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, false, false, 0.2F);
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() - 1.5, WorldPreview.player.getZ(), 0.0F, 0.0F);
-                    WorldPreview.inPreview=true;
+                    WorldPreview.inPreview = true;
                     WorldPreview.log(Level.INFO,"Starting Preview");
                 }
                 MatrixStack matrixStack = new MatrixStack();
@@ -105,63 +95,54 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    private void renderPauseMenu(MatrixStack matrices, int mouseX, int mouseY, float delta){
-        if(WorldPreview.showMenu){
-            Iterator<AbstractButtonWidget> iterator =this.buttons.listIterator();
-            while(iterator.hasNext()){
-                iterator.next().render(matrices,mouseX,mouseY,delta);
-            }
+    private void renderPauseMenu(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        if (WorldPreview.showMenu) {
+            Iterator<AbstractButtonWidget> iterator = this.buttons.listIterator();
+            while(iterator.hasNext()) { iterator.next().render(matrices,mouseX,mouseY,delta); }
         }
-        else {
-            this.drawCenteredText(matrices, this.textRenderer, new TranslatableText("menu.paused"), this.width / 2, 10, 16777215);
-        }
+        else { this.drawCenteredText(matrices, this.textRenderer, new TranslatableText("menu.paused"), this.width / 2, 10, 16777215); }
     }
 
-    private void renderCustom(MatrixStack matrices){
+    private void renderCustom(MatrixStack matrices) {
         String string = MathHelper.clamp(this.progressProvider.getProgressPercentage(), 0, 100) + "%";
         long l = Util.getMeasuringTimeMs();
         if (l - this.field_19101 > 2000L) {
             this.field_19101 = l;
             NarratorManager.INSTANCE.narrate((new TranslatableText("narrator.loading", string)).getString());
         }
-        Point chunkMapPos =getChunkMapPos();
+        Point chunkMapPos = getChunkMapPos();
         drawChunkMap(matrices, this.progressProvider, chunkMapPos.x, chunkMapPos.y, 2, 0);
         TextRenderer var10002 = this.textRenderer;
-        this.drawCenteredString(matrices, var10002, string, chunkMapPos.x, chunkMapPos.y-60 - 9 / 2, 16777215);
+        this.drawCenteredString(matrices, var10002, string, chunkMapPos.x, chunkMapPos.y - 60 - 9 / 2, 16777215);
     }
 
-    private Point getChunkMapPos(){
-        switch (WorldPreview.chunkMapPos){
-            case 1:
-                return new Point(this.width -45,this.height -45);
-            case 2:
-                return new Point(this.width -45,75);
-            case 3:
-                return new Point(45,75);
-            default:
-                return new Point(45,this.height -45);
+    private Point getChunkMapPos() {
+        switch (WorldPreview.chunkMapPos) {
+            case 1: return new Point(this.width -45,this.height -45);
+            case 2: return new Point(this.width -45,75);
+            case 3: return new Point(45,75);
+            default: return new Point(45,this.height -45);
         }
     }
 
     public Matrix4f getBasicProjectionMatrix() {
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.peek().getModel().loadIdentity();
-        matrixStack.peek().getModel().multiply(Matrix4f.viewboxMatrix(client.options.fov, (float)this.client.getWindow().getFramebufferWidth() / (float)this.client.getWindow().getFramebufferHeight(), 0.05F, this.client.options.viewDistance*16 * 4.0F));
+        matrixStack.peek().getModel().multiply(Matrix4f.viewboxMatrix(client.options.fov, (float) this.client.getWindow().getFramebufferWidth() / (float) this.client.getWindow().getFramebufferHeight(), 0.05F, this.client.options.viewDistance * 16 * 4.0F));
         return matrixStack.peek().getModel();
     }
 
-    private void initWidgets(){
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame"), (ignored) -> {}));
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.advancements"), (ignored) -> {}));
-        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.stats"), (ignored) -> {}));
-
-        this .addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.sendFeedback"), (ignored) -> {}));
-        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.reportBugs"), (ignored) -> {}));
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.options"), (ignored) -> {}));
-        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.shareToLan"), (ignored) -> {}));
-        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 - 16, 204, 20, new TranslatableText("menu.returnToMenu"), (buttonWidgetX) -> {
-                WorldPreview.kill = -1;
-                buttonWidgetX.active = false;
+    private void initWidgets() {
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20,  new TranslatableText("menu.returnToGame"), (btn) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20,   new TranslatableText("gui.advancements"),  (btn) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 + 4,   this.height / 4 + 48 - 16, 98, 20,   new TranslatableText("gui.stats"),         (btn) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 72 - 16, 98, 20,   new TranslatableText("menu.sendFeedback"), (btn) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 + 4,   this.height / 4 + 72 - 16, 98, 20,   new TranslatableText("menu.reportBugs"),   (btn) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 - 16, 98, 20,   new TranslatableText("menu.options"),      (btn) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 + 4,   this.height / 4 + 96 - 16, 98, 20,   new TranslatableText("menu.shareToLan"),   (btn) -> {}));
+        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 - 16, 204, 20, new TranslatableText("menu.returnToMenu"), (btn) -> {
+            WorldPreview.kill = -1;
+            btn.active = false;
         }));
     }
 
