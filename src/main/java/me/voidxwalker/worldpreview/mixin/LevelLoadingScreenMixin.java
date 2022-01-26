@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import me.voidxwalker.worldpreview.PreviewRenderer;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.WorldGenerationProgressTracker;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -12,20 +11,18 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.CloudRenderMode;
 import net.minecraft.client.render.*;
 import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.NarratorManager;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Matrix4f;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.Level;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
@@ -33,25 +30,38 @@ import java.util.Iterator;
 
 @Mixin(LevelLoadingScreen.class)
 public abstract class LevelLoadingScreenMixin extends Screen {
-
-    @Shadow @Final private WorldGenerationProgressTracker progressProvider;
-
-
-
-    @Shadow private long field_19101;
-
-    @Shadow
-    public static void drawChunkMap(WorldGenerationProgressTracker progressProvider, int centerX, int centerY, int chunkSize, int i) {
-    }
-
-    private boolean showMenu;
+    private boolean drawingPreview=false;
 
     protected LevelLoadingScreenMixin(Text title) {
         super(title);
     }
 
+    @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground()V"))
+    public void stopBackgroundRender(LevelLoadingScreen instance){
+        if(!drawingPreview){
+            instance.renderBackground();
+        }
+    }
+    private boolean showMenu;
+    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
+    public int moveLoadingScreen(int i){
+        if(!drawingPreview){
+            return i;
+        }
+        return getChunkMapPos().x;
+    }
+    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
+    public int moveLoadingScreen2(int i){
+        if(!drawingPreview){
+            return i;
+        }
+        return getChunkMapPos().y;
+    }
     @Inject(method = "render",at=@At("HEAD"),cancellable = true)
     public void render(int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if(WorldPreview.stop){
+            drawingPreview=false;
+        }
         if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&!WorldPreview.stop) {
             if(WorldPreview.worldRenderer==null){
                 WorldPreview.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance());
@@ -63,6 +73,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 this.initWidgets();
             }
             if (WorldPreview.worldRenderer.world!=null) {
+                drawingPreview=true;
                 if(this.showMenu!= WorldPreview.showMenu){
                     if(!WorldPreview.showMenu){
                         this.children.clear();
@@ -89,17 +100,11 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 GlStateManager.loadIdentity();
                 GlStateManager.translatef(0.0F, 0.0F, -2000.0F);
                 this.renderPauseMenu(mouseX,mouseY,delta);
-                GlStateManager.clear(256, MinecraftClient.IS_SYSTEM_MAC);
-                this.renderCustom();
-                ci.cancel();
+
             }
         }
     }
     public void renderWorld(float tickDelta, long endTime) {
-
-
-
-
         GlStateManager.enableDepthTest();
         GlStateManager.enableAlphaTest();
         GlStateManager.alphaFunc(516, 0.5F);
@@ -243,37 +248,21 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    private void renderCustom(){
-        String string = MathHelper.clamp(this.progressProvider.getProgressPercentage(), 0, 100) + "%";
-        long l = Util.getMeasuringTimeMs();
-        if (l - this.field_19101 > 2000L) {
-            this.field_19101 = l;
-            NarratorManager.INSTANCE.narrate((new TranslatableText("narrator.loading", string)).getString());
-        }
-        Point chunkMapPos =getChunkMapPos();
-        drawChunkMap(this.progressProvider, chunkMapPos.x, chunkMapPos.y, 2, 0);
-        this.drawCenteredString(minecraft.textRenderer, string, chunkMapPos.x, chunkMapPos.y-60 - 9 / 2, 16777215);
-    }
+
+
 
     private Point getChunkMapPos(){
         switch (WorldPreview.chunkMapPos){
             case 1:
-                return new Point(this.width -45,this.height -45);
+                return new Point(this.width -45,this.height -75);
             case 2:
-                return new Point(this.width -45,75);
+                return new Point(this.width -45,105);
             case 3:
-                return new Point(45,75);
+                return new Point(45,105);
             default:
-                return new Point(45,this.height -45);
+                return new Point(45,this.height -75);
         }
     }
-
-   /* public Matrix4f getBasicProjectionMatrix() {
-        MatrixStack matrixStack = new MatrixStack();
-        matrixStack.peek().getModel().loadIdentity();
-        matrixStack.peek().getModel().multiply(Matrix4f.viewboxMatrix(minecraft.options.fov, (float)this.minecraft.getWindow().getFramebufferWidth() / (float)this.minecraft.getWindow().getFramebufferHeight(), 0.05F, this.minecraft.options.viewDistance*16 * 4.0F));
-        return matrixStack.peek().getModel();
-    }*/
 
     private void initWidgets(){
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame").getString(), (ignored) -> {}));

@@ -385,7 +385,7 @@ public class PreviewRenderer implements AutoCloseable, SynchronousResourceReload
 
 			this.needsTerrainUpdate = true;
 			this.cloudsDirty = true;
-			LeavesBlock.setRenderingMode(this.client.options.fancyGraphics);
+			LeavesBlock.setRenderingMode(false);
 			this.renderDistance = this.client.options.viewDistance;
 			boolean bl = this.vertexBufferObjectsEnabled;
 			this.vertexBufferObjectsEnabled = GLX.useVbo();
