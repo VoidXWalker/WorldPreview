@@ -82,7 +82,6 @@ public abstract class MinecraftClientMixin {
             this.soundManager.stopAll();
             this.cameraEntity = null;
             this.integratedServerConnection = null;
-            this.setScreen(screen);
             this.render(false);
             this.profiler.pop();
         }
