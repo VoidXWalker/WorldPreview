@@ -26,6 +26,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
@@ -34,25 +36,41 @@ import java.util.Objects;
 
 @Mixin(LevelLoadingScreen.class)
 public abstract class LevelLoadingScreenMixin extends Screen {
-    @Shadow @Final private WorldGenerationProgressTracker progressProvider;
 
-    @Shadow public static void drawChunkMap(MatrixStack matrixStack, WorldGenerationProgressTracker worldGenerationProgressTracker, int i, int j, int k, int l) {}
-
-
-
-    @Shadow private long lastNarrationTime;
-
-    @Shadow protected abstract String getPercentage();
+    private boolean drawingPreview=false;
 
     private boolean showMenu;
 
     protected LevelLoadingScreenMixin(Text title) {
         super(title);
     }
-
+    @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V"))
+    public void stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){
+        if(!drawingPreview){
+            instance.renderBackground(matrixStack);
+        }
+    }
+    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
+    public int moveLoadingScreen(int i){
+        if(!drawingPreview){
+            return i;
+        }
+        return getChunkMapPos().x;
+    }
+    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
+    public int moveLoadingScreen2(int i){
+        if(!drawingPreview){
+            return i;
+        }
+        return getChunkMapPos().y;
+    }
     @Inject(method = "render",at=@At("HEAD"),cancellable = true)
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if(WorldPreview.stop){
+            drawingPreview=false;
+        }
         if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&!WorldPreview.stop) {
+
             if(WorldPreview.worldRenderer==null){
                 WorldPreview.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
             }
@@ -63,6 +81,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 this.initWidgets();
             }
             if (WorldPreview.worldRenderer.world!=null) {
+                drawingPreview=true;
                 if(this.showMenu!= WorldPreview.showMenu){
                     if(!WorldPreview.showMenu){
                         this.clearChildren();
@@ -98,9 +117,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 DiffuseLighting.enableGuiDepthLighting();
                 this.renderPauseMenu(matrices,mouseX,mouseY,delta);
                 RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
-                this.renderCustom(matrices);
-                RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
-                ci.cancel();
+
             }
         }
     }
@@ -121,30 +138,16 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    private void renderCustom(MatrixStack matrices){
-        long l = Util.getMeasuringTimeMs();
-        if (l - this.lastNarrationTime > 2000L) {
-            this.lastNarrationTime = l;
-            this.narrateScreenIfNarrationEnabled(true);
-        }
-        Point chunkMapPos =getChunkMapPos();
-        drawChunkMap(matrices, this.progressProvider, chunkMapPos.x, chunkMapPos.y, 2, 0);
-        TextRenderer var10001 = this.textRenderer;
-        String var10002 = this.getPercentage();
-        Objects.requireNonNull(this.textRenderer);
-        drawCenteredText(matrices, var10001, var10002,  chunkMapPos.x, chunkMapPos.y-60 - 9 / 2, 16777215);
-    }
-
     private Point getChunkMapPos(){
         switch (WorldPreview.chunkMapPos){
             case 1:
-                return new Point(this.width -45,this.height -45);
+                return new Point(this.width -45,this.height -75);
             case 2:
-                return new Point(this.width -45,75);
+                return new Point(this.width -45,105);
             case 3:
-                return new Point(45,75);
+                return new Point(45,105);
             default:
-                return new Point(45,this.height -45);
+                return new Point(45,this.height -75);
         }
     }
 
