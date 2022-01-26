@@ -3,14 +3,9 @@ package me.voidxwalker.worldpreview;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap.Entry;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import me.voidxwalker.worldpreview.mixin.access.BuiltChunkStorageMixin;
 import net.fabricmc.api.EnvType;
@@ -18,18 +13,15 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.CloudRenderMode;
-import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.Option;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.chunk.ChunkBuilder;
+import net.minecraft.client.render.chunk.ChunkOcclusionDataBuilder;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.*;
@@ -41,15 +33,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.border.WorldBorder;
+import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -60,9 +50,7 @@ public class PreviewRenderer {
 	private static final Identifier SUN = new Identifier("textures/environment/sun.png");
 	private static final Identifier CLOUDS = new Identifier("textures/environment/clouds.png");
 	private static final Identifier END_SKY = new Identifier("textures/environment/end_sky.png");
-	private static final Identifier FORCEFIELD = new Identifier("textures/misc/forcefield.png");
-	private static final Identifier RAIN = new Identifier("textures/environment/rain.png");
-	private static final Identifier SNOW = new Identifier("textures/environment/snow.png");
+
 	public static final Direction[] DIRECTIONS = Direction.values();
 	private final MinecraftClient client;
 	private final TextureManager textureManager;
@@ -85,20 +73,8 @@ public class PreviewRenderer {
 	private VertexBuffer cloudsBuffer;
 	private final FpsSmoother chunkUpdateSmoother;
 	public int ticks;
-	private final Long2ObjectMap<SortedSet<BlockBreakingInfo>> blockBreakingProgressions;
 
-	@Nullable
-	private Framebuffer translucentFramebuffer;
-	@Nullable
-	private Framebuffer entityFramebuffer;
-	@Nullable
-	private Framebuffer particlesFramebuffer;
-	@Nullable
-	private Framebuffer weatherFramebuffer;
-	@Nullable
-	private Framebuffer cloudsFramebuffer;
-	@Nullable
-	private ShaderEffect transparencyShader;
+
 	private double lastCameraChunkUpdateX;
 	private double lastCameraChunkUpdateY;
 	private double lastCameraChunkUpdateZ;
@@ -128,14 +104,11 @@ public class PreviewRenderer {
 	private double lastTranslucentSortZ;
 	private boolean needsTerrainUpdate;
 	private int frame;
-	private final float[] field_20794;
-	private final float[] field_20795;
 
 	public PreviewRenderer(MinecraftClient client, BufferBuilderStorage bufferBuilders) {
 		this.skyVertexFormat = VertexFormats.POSITION;
 		this.cloudsDirty = true;
 		this.chunkUpdateSmoother = new FpsSmoother(100);
-		this.blockBreakingProgressions = new Long2ObjectOpenHashMap<>();
 		this.lastCameraChunkUpdateX = Double.MIN_VALUE;
 		this.lastCameraChunkUpdateY = Double.MIN_VALUE;
 		this.lastCameraChunkUpdateZ = Double.MIN_VALUE;
@@ -156,22 +129,11 @@ public class PreviewRenderer {
 		this.capturedFrustumOrientation = new Vector4f[8];
 		this.capturedFrustumPosition = new Vector3d(0.0D, 0.0D, 0.0D);
 		this.needsTerrainUpdate = true;
-		this.field_20794 = new float[1024];
-		this.field_20795 = new float[1024];
 		this.client = client;
 		this.entityRenderDispatcher = client.getEntityRenderManager();
 		this.bufferBuilders = bufferBuilders;
 		this.textureManager = client.getTextureManager();
 
-		for(int i = 0; i < 32; ++i) {
-			for(int j = 0; j < 32; ++j) {
-				float f = (float)(j - 16);
-				float g = (float)(i - 16);
-				float h = MathHelper.sqrt(f * f + g * g);
-				this.field_20794[i << 5 | j] = -g / h;
-				this.field_20795[i << 5 | j] = f / h;
-			}
-		}
 
 		this.renderStars();
 		this.renderLightSky();
@@ -180,66 +142,10 @@ public class PreviewRenderer {
 
 
 
-	public static int getLightmapCoordinates(BlockRenderView world, BlockPos pos) {
-		return getLightmapCoordinates(world, world.getBlockState(pos), pos);
-	}
-
-	public static int getLightmapCoordinates(BlockRenderView world, BlockState state, BlockPos pos) {
-		if (state.hasEmissiveLighting()) {
-			return 15728880;
-		} else {
-			int i = world.getLightLevel(LightType.SKY, pos);
-			int j = world.getLightLevel(LightType.BLOCK, pos);
-			int k = state.getLuminance();
-			if (j < k) {
-				j = k;
-			}
-
-			return i << 20 | j << 4;
-		}
-	}
 
 
-	private void loadTransparencyShader() {
-		this.resetTransparencyShader();
-		Identifier identifier = new Identifier("shaders/post/transparency.json");
 
-		try {
-			ShaderEffect shaderEffect = new ShaderEffect(this.client.getTextureManager(), this.client.getResourceManager(), this.client.getFramebuffer(), identifier);
-			shaderEffect.setupDimensions(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight());
-			Framebuffer framebuffer = shaderEffect.getSecondaryTarget("translucent");
-			Framebuffer framebuffer2 = shaderEffect.getSecondaryTarget("itemEntity");
-			Framebuffer framebuffer3 = shaderEffect.getSecondaryTarget("particles");
-			Framebuffer framebuffer4 = shaderEffect.getSecondaryTarget("weather");
-			Framebuffer framebuffer5 = shaderEffect.getSecondaryTarget("clouds");
-			this.transparencyShader = shaderEffect;
-			this.translucentFramebuffer = framebuffer;
-			this.entityFramebuffer = framebuffer2;
-			this.particlesFramebuffer = framebuffer3;
-			this.weatherFramebuffer = framebuffer4;
-			this.cloudsFramebuffer = framebuffer5;
-		} catch (Exception var8) {
 
-		}
-	}
-
-	private void resetTransparencyShader() {
-		if (this.transparencyShader != null) {
-			this.transparencyShader.close();
-			this.translucentFramebuffer.delete();
-			this.entityFramebuffer.delete();
-			this.particlesFramebuffer.delete();
-			this.weatherFramebuffer.delete();
-			this.cloudsFramebuffer.delete();
-			this.transparencyShader = null;
-			this.translucentFramebuffer = null;
-			this.entityFramebuffer = null;
-			this.particlesFramebuffer = null;
-			this.weatherFramebuffer = null;
-			this.cloudsFramebuffer = null;
-		}
-
-	}
 
 
 	private void renderDarkSky() {
@@ -417,7 +323,21 @@ public class PreviewRenderer {
 		this.chunksToRebuild.clear();
 		this.chunkBuilder.reset();
 	}
+	private Set<Direction> getOpenChunkFaces(BlockPos pos) {
+		ChunkOcclusionDataBuilder chunkOcclusionDataBuilder = new ChunkOcclusionDataBuilder();
+		BlockPos blockPos = new BlockPos(pos.getX() >> 4 << 4, pos.getY() >> 4 << 4, pos.getZ() >> 4 << 4);
+		WorldChunk worldChunk = this.world.getWorldChunk(blockPos);
+		Iterator var5 = BlockPos.iterate(blockPos, blockPos.add(15, 15, 15)).iterator();
 
+		while(var5.hasNext()) {
+			BlockPos blockPos2 = (BlockPos)var5.next();
+			if (worldChunk.getBlockState(blockPos2).isFullOpaque(this.world, blockPos2)) {
+				chunkOcclusionDataBuilder.markClosed(blockPos2);
+			}
+		}
+
+		return chunkOcclusionDataBuilder.getOpenFaces(pos);
+	}
 	private void setupTerrain(Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator) {
 		Vec3d vec3d = camera.getPos();
 		if (this.client.options.viewDistance != this.renderDistance) {
@@ -453,7 +373,7 @@ public class PreviewRenderer {
 		this.lastCameraPitch = g;
 		this.lastCameraYaw = h;
 		this.client.getProfiler().swap("update");
-		PreviewRenderer.ChunkInfo chunkInfo;
+		PreviewRenderer.ChunkInfo chunkInfo2;
 		ChunkBuilder.BuiltChunk builtChunk3;
 		if (!hasForcedFrustum && this.needsTerrainUpdate) {
 			this.needsTerrainUpdate = false;
@@ -465,10 +385,29 @@ public class PreviewRenderer {
 			int m;
 			int n;
 			if (builtChunk != null) {
+				boolean bl2 = false;
+				ChunkInfo chunkInfo = new ChunkInfo(builtChunk, null, 0);
+				Set<Direction> set = this.getOpenChunkFaces(blockPos);
+				if (set.size() == 1) {
+					Vector3f vector3f = camera.getHorizontalPlane();
+					Direction direction = Direction.getFacing(vector3f.getX(), vector3f.getY(), vector3f.getZ()).getOpposite();
+					set.remove(direction);
+				}
 
+				if (set.isEmpty()) {
+					bl2 = true;
+				}
 
-				builtChunk.setRebuildFrame(frame);
-				queue.add(new PreviewRenderer.ChunkInfo(builtChunk, null, 0));
+				if (bl2 && !spectator) {
+					this.visibleChunks.add(chunkInfo);
+				} else {
+					if (spectator && this.world.getBlockState(blockPos).isFullOpaque(this.world, blockPos)) {
+						bl = false;
+					}
+
+					builtChunk.setRebuildFrame(frame);
+					queue.add(chunkInfo);
+				}
 			} else {
 				int j = blockPos.getY() > 0 ? 248 : 8;
 				int k = MathHelper.floor(vec3d.x / 16.0D) * 16;
@@ -500,20 +439,20 @@ public class PreviewRenderer {
 			this.client.getProfiler().push("iteration");
 
 			while(!queue.isEmpty()) {
-				chunkInfo = queue.poll();
-				builtChunk3 = chunkInfo.chunk;
-				Direction direction = chunkInfo.direction;
-				this.visibleChunks.add(chunkInfo);
+				chunkInfo2 = queue.poll();
+				builtChunk3 = chunkInfo2.chunk;
+				Direction direction = chunkInfo2.direction;
+				this.visibleChunks.add(chunkInfo2);
 				Direction[] var36 = DIRECTIONS;
 				m = var36.length;
 
 				for(n = 0; n < m; ++n) {
 					Direction direction2 = var36[n];
 					ChunkBuilder.BuiltChunk builtChunk4 = this.getAdjacentChunk(blockPos2, builtChunk3, direction2);
-					if ((!bl || !chunkInfo.canCull(direction2.getOpposite())) && (!bl || direction == null || builtChunk3.getData().isVisibleThrough(direction.getOpposite(), direction2)) && builtChunk4 != null && builtChunk4.shouldBuild() && builtChunk4.setRebuildFrame(frame) && frustum.isVisible(builtChunk4.boundingBox)) {
-						PreviewRenderer.ChunkInfo chunkInfo2 = new PreviewRenderer.ChunkInfo(builtChunk4, direction2, chunkInfo.propagationLevel + 1);
-						chunkInfo2.updateCullingState(chunkInfo.cullingState, direction2);
-						queue.add(chunkInfo2);
+					if ((!bl || !chunkInfo2.canCull(direction2.getOpposite())) && (!bl || direction == null || builtChunk3.getData().isVisibleThrough(direction.getOpposite(), direction2)) && builtChunk4 != null && builtChunk4.shouldBuild() && builtChunk4.setRebuildFrame(frame) && frustum.isVisible(builtChunk4.boundingBox)) {
+						PreviewRenderer.ChunkInfo chunkInfo3 = new PreviewRenderer.ChunkInfo(builtChunk4, direction2, chunkInfo2.propagationLevel + 1);
+						chunkInfo3.updateCullingState(chunkInfo2.cullingState, direction2);
+						queue.add(chunkInfo3);
 					}
 				}
 			}
@@ -535,8 +474,8 @@ public class PreviewRenderer {
 						return;
 					}
 
-					chunkInfo = var31.next();
-					builtChunk3 = chunkInfo.chunk;
+					chunkInfo2 = var31.next();
+					builtChunk3 = chunkInfo2.chunk;
 				} while(!builtChunk3.needsRebuild() && !set.contains(builtChunk3));
 
 				this.needsTerrainUpdate = true;
@@ -657,14 +596,7 @@ public class PreviewRenderer {
 		int regularEntityCount = 0;
 		int blockEntityCount = 0;
 		profiler.swap("entities");
-		if (this.entityFramebuffer != null) {
-			this.entityFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
-			this.client.getFramebuffer().beginWrite(false);
-		}
 
-		if (this.weatherFramebuffer != null) {
-			this.weatherFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
-		}
 
 		VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
 		Iterator<Entity> var39 = this.world.getEntities().iterator();
@@ -1208,12 +1140,12 @@ public class PreviewRenderer {
 			RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
 			RenderSystem.enableFog();
 			RenderSystem.depthMask(true);
-			double e = (double)(((float)this.ticks + tickDelta) * 0.03F);
+			double e = ((float)this.ticks + tickDelta) * 0.03F;
 			double i = (cameraX + e) / 12.0D;
-			double j = (double)(this.world.dimension.getCloudHeight() - (float)cameraY + 0.33F);
+			double j = this.world.dimension.getCloudHeight() - (float)cameraY + 0.33F;
 			double k = cameraZ / 12.0D + 0.33000001311302185D;
-			i -= (double)(MathHelper.floor(i / 2048.0D) * 2048);
-			k -= (double)(MathHelper.floor(k / 2048.0D) * 2048);
+			i -= MathHelper.floor(i / 2048.0D) * 2048;
+			k -= MathHelper.floor(k / 2048.0D) * 2048;
 			float l = (float)(i - (double)MathHelper.floor(i));
 			float m = (float)(j / 4.0D - (double)MathHelper.floor(j / 4.0D)) * 4.0F;
 			float n = (float)(k - (double)MathHelper.floor(k));
@@ -1246,7 +1178,7 @@ public class PreviewRenderer {
 			this.textureManager.bindTexture(CLOUDS);
 			matrices.push();
 			matrices.scale(12.0F, 1.0F, 12.0F);
-			matrices.translate((double)(-l), (double)m, (double)(-n));
+			matrices.translate(-l, m, -n);
 			if (this.cloudsBuffer != null) {
 				this.cloudsBuffer.bind();
 				VertexFormats.POSITION_TEXTURE_COLOR_NORMAL.startDrawing(0L);
@@ -1304,53 +1236,53 @@ public class PreviewRenderer {
 					float ae = (float)(ac * 8);
 					float af = (float)(ad * 8);
 					if (ab > -5.0F) {
-						builder.vertex((double)(ae + 0.0F), (double)(ab + 0.0F), (double)(af + 8.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-						builder.vertex((double)(ae + 8.0F), (double)(ab + 0.0F), (double)(af + 8.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-						builder.vertex((double)(ae + 8.0F), (double)(ab + 0.0F), (double)(af + 0.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-						builder.vertex((double)(ae + 0.0F), (double)(ab + 0.0F), (double)(af + 0.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+						builder.vertex(ae + 0.0F, ab + 0.0F, af + 8.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+						builder.vertex(ae + 8.0F, ab + 0.0F, af + 8.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+						builder.vertex(ae + 8.0F, ab + 0.0F, af + 0.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+						builder.vertex(ae + 0.0F, ab + 0.0F, af + 0.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(s, t, u, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
 					}
 
 					if (ab <= 5.0F) {
-						builder.vertex((double)(ae + 0.0F), (double)(ab + 4.0F - 9.765625E-4F), (double)(af + 8.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
-						builder.vertex((double)(ae + 8.0F), (double)(ab + 4.0F - 9.765625E-4F), (double)(af + 8.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
-						builder.vertex((double)(ae + 8.0F), (double)(ab + 4.0F - 9.765625E-4F), (double)(af + 0.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
-						builder.vertex((double)(ae + 0.0F), (double)(ab + 4.0F - 9.765625E-4F), (double)(af + 0.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
+						builder.vertex(ae + 0.0F, ab + 4.0F - 9.765625E-4F, af + 8.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
+						builder.vertex(ae + 8.0F, ab + 4.0F - 9.765625E-4F, af + 8.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
+						builder.vertex(ae + 8.0F, ab + 4.0F - 9.765625E-4F, af + 0.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
+						builder.vertex(ae + 0.0F, ab + 4.0F - 9.765625E-4F, af + 0.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, 1.0F, 0.0F).next();
 					}
 
 					int aj;
 					if (ac > -1) {
 						for(aj = 0; aj < 8; ++aj) {
-							builder.vertex((double)(ae + (float)aj + 0.0F), (double)(ab + 0.0F), (double)(af + 8.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 0.0F), (double)(ab + 4.0F), (double)(af + 8.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 0.0F), (double)(ab + 4.0F), (double)(af + 0.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 0.0F), (double)(ab + 0.0F), (double)(af + 0.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 0.0F, ab + 0.0F, af + 8.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 0.0F, ab + 4.0F, af + 8.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 0.0F, ab + 4.0F, af + 0.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 0.0F, ab + 0.0F, af + 0.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(-1.0F, 0.0F, 0.0F).next();
 						}
 					}
 
 					if (ac <= 1) {
 						for(aj = 0; aj < 8; ++aj) {
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 0.0F), (double)(af + 8.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 4.0F), (double)(af + 8.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 4.0F), (double)(af + 0.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
-							builder.vertex((double)(ae + (float)aj + 1.0F - 9.765625E-4F), (double)(ab + 0.0F), (double)(af + 0.0F)).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 0.0F, af + 8.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 4.0F, af + 8.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 8.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 4.0F, af + 0.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
+							builder.vertex(ae + (float)aj + 1.0F - 9.765625E-4F, ab + 0.0F, af + 0.0F).texture((ae + (float)aj + 0.5F) * 0.00390625F + k, (af + 0.0F) * 0.00390625F + l).color(p, q, r, 0.8F).normal(1.0F, 0.0F, 0.0F).next();
 						}
 					}
 
 					if (ad > -1) {
 						for(aj = 0; aj < 8; ++aj) {
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 0.0F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 4.0F, af + (float)aj + 0.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 4.0F, af + (float)aj + 0.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 0.0F, af + (float)aj + 0.0F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 0.0F, af + (float)aj + 0.0F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, -1.0F).next();
 						}
 					}
 
 					if (ad <= 1) {
 						for(aj = 0; aj < 8; ++aj) {
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 4.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
-							builder.vertex((double)(ae + 8.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
-							builder.vertex((double)(ae + 0.0F), (double)(ab + 0.0F), (double)(af + (float)aj + 1.0F - 9.765625E-4F)).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 4.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 4.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 8.0F, ab + 0.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 8.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
+							builder.vertex(ae + 0.0F, ab + 0.0F, af + (float)aj + 1.0F - 9.765625E-4F).texture((ae + 0.0F) * 0.00390625F + k, (af + (float)aj + 0.5F) * 0.00390625F + l).color(v, w, aa, 0.8F).normal(0.0F, 0.0F, 1.0F).next();
 						}
 					}
 				}
@@ -1359,10 +1291,10 @@ public class PreviewRenderer {
 
 			for(int am = -32; am < 32; am += 32) {
 				for(int an = -32; an < 32; an += 32) {
-					builder.vertex((double)(am + 0), (double)ab, (double)(an + 32)).texture((float)(am + 0) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-					builder.vertex((double)(am + 32), (double)ab, (double)(an + 32)).texture((float)(am + 32) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-					builder.vertex((double)(am + 32), (double)ab, (double)(an + 0)).texture((float)(am + 32) * 0.00390625F + k, (float)(an + 0) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
-					builder.vertex((double)(am + 0), (double)ab, (double)(an + 0)).texture((float)(am + 0) * 0.00390625F + k, (float)(an + 0) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am , ab, an + 32).texture((float)(am ) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am + 32, ab, an + 32).texture((float)(am + 32) * 0.00390625F + k, (float)(an + 32) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am + 32, ab, an ).texture((float)(am + 32) * 0.00390625F + k, (float)(an ) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
+					builder.vertex(am , ab, an ).texture((float)(am ) * 0.00390625F + k, (float)(an ) * 0.00390625F + l).color(m, n, o, 0.8F).normal(0.0F, -1.0F, 0.0F).next();
 				}
 			}
 		}
