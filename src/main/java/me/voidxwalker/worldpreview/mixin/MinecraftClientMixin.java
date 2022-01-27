@@ -2,6 +2,7 @@ package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.sound.SoundManager;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
@@ -38,7 +40,12 @@ public abstract class MinecraftClientMixin {
 
     @Shadow private @Nullable ClientConnection integratedServerConnection;
     private int cycleCooldown;
-
+    @Inject(method = "isFabulousGraphicsOrBetter",at = @At(value = "RETURN"),cancellable = true)
+    private static void stopFabulous(CallbackInfoReturnable<Boolean> cir){
+        if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen &&MinecraftClient.getInstance().world==null){
+            cir.setReturnValue(false);
+        }
+    }
     @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void onHotKeyPressed( CallbackInfo ci){
         if(WorldPreview.inPreview){
