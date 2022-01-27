@@ -42,6 +42,7 @@ import net.minecraft.client.util.math.Vector4f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
@@ -201,7 +202,7 @@ public class PreviewRenderer {
 			RenderSystem.enableDepthTest();
 			int l = 5;
 
-			RenderSystem.depthMask(MinecraftClient.isFabulousGraphicsOrBetter());
+			RenderSystem.depthMask(false);
 			int m = -1;
 			float n = (float)this.ticks + f;
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -509,7 +510,7 @@ public class PreviewRenderer {
 
 	public void reload() {
 		if (this.world != null) {
-			if (MinecraftClient.isFabulousGraphicsOrBetter()) {
+			if (false) {
 				this.loadTransparencyShader();
 			} else {
 				this.resetTransparencyShader();
@@ -550,7 +551,16 @@ public class PreviewRenderer {
 		this.chunksToRebuild.clear();
 		this.chunkBuilder.reset();
 	}
+	public void apply(ResourceManager manager) {
+		this.textureManager.bindTexture(FORCEFIELD);
+		RenderSystem.texParameter(3553, 10242, 10497);
+		RenderSystem.texParameter(3553, 10243, 10497);
+		RenderSystem.bindTexture(0);
+		if (false) {
+			this.loadTransparencyShader();
+		}
 
+	}
 	private void setupTerrain(Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator) {
 		Vec3d vec3d = camera.getPos();
 		if (this.client.options.viewDistance != this.renderDistance) {
@@ -822,21 +832,21 @@ public class PreviewRenderer {
 							immediate.draw(RenderLayer.getEntityCutoutNoCull(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
 							immediate.draw(RenderLayer.getEntitySmoothCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
 							profiler.swap("blockentities");
-							ObjectListIterator<ChunkInfo> var53 = this.visibleChunks.iterator();
+							ObjectListIterator var53 = this.visibleChunks.iterator();
 
 							while(true) {
-								List<BlockEntity> list;
+								List list;
 								do {
 									if (!var53.hasNext()) {
 										synchronized(this.noCullingBlockEntities) {
-											Iterator<BlockEntity> var57 = this.noCullingBlockEntities.iterator();
+											Iterator var57 = this.noCullingBlockEntities.iterator();
 
 											while(true) {
 												if (!var57.hasNext()) {
 													break;
 												}
 
-												BlockEntity blockEntity2 = var57.next();
+												BlockEntity blockEntity2 = (BlockEntity)var57.next();
 												BlockPos blockPos2 = blockEntity2.getPos();
 												matrices.push();
 												matrices.translate((double)blockPos2.getX() - d, (double)blockPos2.getY() - e, (double)blockPos2.getZ() - f);
@@ -855,28 +865,8 @@ public class PreviewRenderer {
 										immediate.draw(TexturedRenderLayers.getChest());
 										this.bufferBuilders.getOutlineVertexConsumers().draw();
 
-										profiler.swap("destroyProgress");
-										ObjectIterator<Entry<SortedSet<BlockBreakingInfo>>> var54 = this.blockBreakingProgressions.long2ObjectEntrySet().iterator();
 
-										while(var54.hasNext()) {
-											Entry<SortedSet<BlockBreakingInfo>> entry2 = var54.next();
-											BlockPos blockPos3 = BlockPos.fromLong(entry2.getLongKey());
-											double h = (double)blockPos3.getX() - d;
-											double x = (double)blockPos3.getY() - e;
-											double y = (double)blockPos3.getZ() - f;
-											if (!(h * h + x * x + y * y > 1024.0D)) {
-												SortedSet<BlockBreakingInfo> sortedSet2 = entry2.getValue();
-												if (sortedSet2 != null && !sortedSet2.isEmpty()) {
-													int z = sortedSet2.last().getStage();
-													matrices.push();
-													matrices.translate((double)blockPos3.getX() - d, (double)blockPos3.getY() - e, (double)blockPos3.getZ() - f);
-													MatrixStack.Entry entry3 = matrices.peek();
-													VertexConsumer vertexConsumer2 = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer(ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(z)), entry3.getModel(), entry3.getNormal());
-													this.client.getBlockRenderManager().renderDamage(this.world.getBlockState(blockPos3), blockPos3, this.world, matrices, vertexConsumer2);
-													matrices.pop();
-												}
-											}
-										}
+
 
 										this.checkEmpty(matrices);
 										profiler.pop();
@@ -891,6 +881,9 @@ public class PreviewRenderer {
 											}
 										}
 
+										RenderSystem.pushMatrix();
+										RenderSystem.multMatrix(matrices.peek().getModel());
+										RenderSystem.popMatrix();
 										immediate.draw(TexturedRenderLayers.getEntityTranslucentCull());
 										immediate.draw(TexturedRenderLayers.getBannerPatterns());
 										immediate.draw(TexturedRenderLayers.getShieldPatterns());
@@ -964,24 +957,24 @@ public class PreviewRenderer {
 										return;
 									}
 
-									PreviewRenderer.ChunkInfo chunkInfo = var53.next();
+									PreviewRenderer.ChunkInfo chunkInfo = (	PreviewRenderer.ChunkInfo)var53.next();
 									list = chunkInfo.chunk.getData().getBlockEntities();
 								} while(list.isEmpty());
 
-								Iterator<BlockEntity> var61 = list.iterator();
+								Iterator var61 = list.iterator();
 
 								while(var61.hasNext()) {
-									BlockEntity blockEntity = var61.next();
+									BlockEntity blockEntity = (BlockEntity)var61.next();
 									BlockPos blockPos = blockEntity.getPos();
 									VertexConsumerProvider vertexConsumerProvider3 = immediate;
 									matrices.push();
 									matrices.translate((double)blockPos.getX() - d, (double)blockPos.getY() - e, (double)blockPos.getZ() - f);
-									SortedSet<BlockBreakingInfo> sortedSet = this.blockBreakingProgressions.get(blockPos.asLong());
+									SortedSet<BlockBreakingInfo> sortedSet = (SortedSet)this.blockBreakingProgressions.get(blockPos.asLong());
 									if (sortedSet != null && !sortedSet.isEmpty()) {
-										w = sortedSet.last().getStage();
+										w = ((BlockBreakingInfo)sortedSet.last()).getStage();
 										if (w >= 0) {
 											MatrixStack.Entry entry = matrices.peek();
-											VertexConsumer vertexConsumer = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer(ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(w)), entry.getModel(), entry.getNormal());
+											VertexConsumer vertexConsumer = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer)ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(w)), entry.getModel(), entry.getNormal());
 											vertexConsumerProvider3 = (renderLayer) -> {
 												VertexConsumer vertexConsumer2 = immediate.getBuffer(renderLayer);
 												return renderLayer.hasCrumbling() ? VertexConsumers.dual(vertexConsumer, vertexConsumer2) : vertexConsumer2;
@@ -989,25 +982,27 @@ public class PreviewRenderer {
 										}
 									}
 
-									BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrices, vertexConsumerProvider3);
+									BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider3);
 									matrices.pop();
 								}
 							}
 						}
 
-						entity = var39.next();
+						entity = (Entity)var39.next();
 					} while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(WorldPreview.player));
 				} while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
 			} while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
 
-			++regularEntityCount;
 			if (entity.age == 0) {
 				entity.lastRenderX = entity.getX();
 				entity.lastRenderY = entity.getY();
 				entity.lastRenderZ = entity.getZ();
 			}
 
-			Object vertexConsumerProvider2 = immediate;
+			Object vertexConsumerProvider2;
+
+			vertexConsumerProvider2 = immediate;
+
 			this.renderEntity(entity, d, e, f, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider2);
 		}
 	}
@@ -1656,7 +1651,7 @@ public class PreviewRenderer {
 			RenderSystem.enableDepthTest();
 			RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
 			this.textureManager.bindTexture(FORCEFIELD);
-			RenderSystem.depthMask(MinecraftClient.isFabulousGraphicsOrBetter());
+			RenderSystem.depthMask(false);
 			RenderSystem.pushMatrix();
 			int i = worldBorder.getStage().getColor();
 			float j = (float)(i >> 16 & 255) / 255.0F;
