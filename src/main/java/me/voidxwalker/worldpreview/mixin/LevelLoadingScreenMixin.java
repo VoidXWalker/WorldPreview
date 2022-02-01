@@ -79,6 +79,10 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     if(!WorldPreview.showMenu){
                         this.children.clear();
                     }
+                    else {
+                        this.initWidgets();
+
+                    }
                     this.showMenu= WorldPreview.showMenu;
                 }
                 MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
