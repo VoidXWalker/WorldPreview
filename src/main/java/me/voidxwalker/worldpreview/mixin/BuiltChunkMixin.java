@@ -1,6 +1,6 @@
 package me.voidxwalker.worldpreview.mixin;
 
-import me.voidxwalker.worldpreview.Main;
+import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.chunk.ChunkBuilder;
@@ -15,7 +15,7 @@ public class BuiltChunkMixin {
     @Redirect(method = "setNoCullingBlockEntities",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/render/WorldRenderer;updateNoCullingBlockEntities(Ljava/util/Collection;Ljava/util/Collection;)V"))
     public void sodiumCompatibility(WorldRenderer instance, Collection<BlockEntity> removed, Collection<BlockEntity> added){
         if(instance==null){
-            Main.worldRenderer.updateNoCullingBlockEntities(removed, added);
+            WorldPreview.worldRenderer.updateNoCullingBlockEntities(removed, added);
         }
         else {
             instance.updateNoCullingBlockEntities(removed,added);

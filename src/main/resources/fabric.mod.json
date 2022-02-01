@@ -14,7 +14,11 @@
   "icon": "assets/worldpreview/icon.png",
 
   "environment": "*",
-
+  "entrypoints": {
+    "main": [
+      "me.voidxwalker.worldpreview.WorldPreview"
+    ]
+  },
   "accessWidener": "worldpreview.accesswidener",
 
   "mixins": [

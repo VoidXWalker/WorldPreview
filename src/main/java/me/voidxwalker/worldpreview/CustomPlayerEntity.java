@@ -2,7 +2,7 @@ package me.voidxwalker.worldpreview;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,8 +13,8 @@ public class CustomPlayerEntity extends Entity  {
         super(type, world);
         this.setPos(pos.getX(),pos.getY(),pos.getZ());
         calculatedSpawn=false;
-        this.yaw=yaw;
-        this.pitch=pitch;
+        this.setYaw(yaw);
+        this.setPitch(pitch);
         this.prevX=pos.getX();
         this.prevY=pos.getY();
         this.prevZ=pos.getZ();
@@ -22,9 +22,16 @@ public class CustomPlayerEntity extends Entity  {
 
     @Override protected void initDataTracker() {}
 
-    @Override protected void readCustomDataFromTag(CompoundTag tag) {}
+    @Override
+    protected void readCustomDataFromNbt(NbtCompound nbt) {
 
-    @Override protected void writeCustomDataToTag(CompoundTag tag) {}
+    }
+
+    @Override
+    protected void writeCustomDataToNbt(NbtCompound nbt) {
+
+    }
+
 
     @Override public Packet<?> createSpawnPacket() {
         return null;

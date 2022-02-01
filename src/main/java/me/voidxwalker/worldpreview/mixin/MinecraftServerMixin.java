@@ -1,28 +1,26 @@
 package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.CustomPlayerEntity;
-import me.voidxwalker.worldpreview.Main;
-import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
+import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.SpawnLocatingMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.resource.ServerResourceManager;
-import net.minecraft.server.*;
-import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerNetworkIo;
+import net.minecraft.server.ServerTask;
+import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.util.snooper.Snooper;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +48,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow public abstract Iterable<ServerWorld> getWorlds();
 
-    @Shadow @Final private Snooper snooper;
 
     @Shadow private ServerResourceManager serverResourceManager;
 
@@ -67,33 +64,31 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        synchronized (Main.lock){
-            if(!Main.existingWorld&&((MinecraftClientMixin)MinecraftClient.getInstance()).getWorldGenProgressTracker().get().getProgressPercentage()<50){
+        synchronized (WorldPreview.lock){
+            if(!WorldPreview.existingWorld){
                 ServerWorld serverWorld = this.getOverworld();
-                Main.spawnPos= serverWorld.getSpawnPos();
-                Main.stop=false;
-                Main.world=this.getWorld(World.OVERWORLD);
-                RegistryKey<DimensionType> registryKey = DimensionType.OVERWORLD_REGISTRY_KEY;
+                WorldPreview.spawnPos= serverWorld.getSpawnPos();
+                WorldPreview.stop=false;
+                WorldPreview.world=this.getWorld(World.OVERWORLD);
                 RegistryKey<World> registryKey2 = World.OVERWORLD;
-                DimensionType dimensionType = DimensionType.getOverworldDimensionType();
-                ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, Main.world.getLevelProperties().isHardcore(), false);
-                Main.player=new CustomPlayerEntity(EntityType.PLAYER,Main.world,Main.spawnPos,0,0);
+                ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, WorldPreview.world.getLevelProperties().isHardcore(), false);
+                WorldPreview.player=new CustomPlayerEntity(EntityType.PLAYER, WorldPreview.world, WorldPreview.spawnPos,0,0);
                 Supplier<Profiler>s=MinecraftClient.getInstance()::getProfiler;
-                long seed = BiomeAccess.hashSeed(((ServerWorld)(Main.world)).getSeed());
-                Main.clientWord = new ClientWorld(null,properties, registryKey2, registryKey, dimensionType,16 , s,null,false, seed);
+                long seed = BiomeAccess.hashSeed(((ServerWorld)(WorldPreview.world)).getSeed());
+                WorldPreview.clientWorld = new ClientWorld(null,properties, registryKey2, serverWorld.getDimension(),16 ,16, s,null,false, seed);
                 calculateSpawn(serverWorld);
-                Main.player.calculatedSpawn=true;
+                WorldPreview.player.calculatedSpawn=true;
 
             }
-            Main.existingWorld=false;
+            WorldPreview.existingWorld=false;
 
         }
 
     }
     private void calculateSpawn(ServerWorld serverWorld) {
-        BlockPos blockPos = Main.spawnPos;
-        int i = Math.max(0, this.getSpawnRadius((ServerWorld) Main.world));
-        int j = MathHelper.floor(Main.world.getWorldBorder().getDistanceInsideBorder(blockPos.getX(), blockPos.getZ()));
+        BlockPos blockPos = WorldPreview.spawnPos;
+        int i = Math.max(0, this.getSpawnRadius((ServerWorld) WorldPreview.world));
+        int j = MathHelper.floor(WorldPreview.world.getWorldBorder().getDistanceInsideBorder(blockPos.getX(), blockPos.getZ()));
         if (j < i) {
             i = j;
         }
@@ -105,15 +100,15 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
         int k = m > 2147483647L ? Integer.MAX_VALUE : (int) m;
         int n = this.calculateSpawnOffsetMultiplier(k);
         int o = (new Random()).nextInt(k);
-        Main.playerSpawn = o;
+        WorldPreview.playerSpawn = o;
         for (int p = 0; p < k; ++p) {
             int q = (o + n * p) % k;
             int r = q % (i * 2 + 1);
             int s = q / (i * 2 + 1);
-            BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn((ServerWorld) serverWorld, blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
+            BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn((ServerWorld) serverWorld, blockPos.getX() + r - i, blockPos.getZ() + s - i);
             if (blockPos2 != null) {
-                Main.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                if (serverWorld.doesNotCollide(Main.player)) {
+                WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
+                if (serverWorld.isSpaceEmpty( WorldPreview.player)) {
                     break;
                 }
             }
@@ -132,8 +127,8 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Inject(method="runServer",at=@At(value="INVOKE",target="Lnet/minecraft/server/MinecraftServer;setupServer()Z",shift = At.Shift.AFTER), cancellable = true)
     public void kill2(CallbackInfo ci){
-        Main.inPreview=false;
-        if(Main.kill==1){
+        WorldPreview.inPreview=false;
+        if(WorldPreview.kill==1){
             ci.cancel();
         }
     }
@@ -161,9 +156,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 }
             }
         }
-        if (this.snooper.isActive()) {
-            this.snooper.cancel();
-        }
         this.serverResourceManager.close();
         try {
             this.session.close();
@@ -174,7 +166,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Inject(method = "prepareStartRegion",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/world/ServerChunkManager;getTotalChunksLoadedCount()I",shift = At.Shift.AFTER),cancellable = true)
     public void kill(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        if(Main.kill==1){
+        if(WorldPreview.kill==1){
            ci.cancel();
         }
     }

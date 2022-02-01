@@ -1,7 +1,7 @@
 package me.voidxwalker.worldpreview.mixin;
 
 import com.mojang.authlib.GameProfile;
-import me.voidxwalker.worldpreview.Main;
+import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -14,14 +14,17 @@ import java.util.Random;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
-    public ServerPlayerEntityMixin(World world, BlockPos blockPos, GameProfile gameProfile) {
-        super(world, blockPos, gameProfile);
+
+
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
+        super(world, pos, yaw, profile);
     }
+
     @Redirect(method = "moveToSpawn", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"))
     private int setSpawnPos(Random defaultRandom, int k){
-        if(Main.spawnPos != null){
-            int value = Main.playerSpawn;
-            Main.spawnPos=null;
+        if(WorldPreview.spawnPos != null){
+            int value = WorldPreview.playerSpawn;
+            WorldPreview.spawnPos=null;
             return value;
         }
         return defaultRandom.nextInt(k);

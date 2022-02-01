@@ -2,13 +2,13 @@ package me.voidxwalker.worldpreview.mixin;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import me.voidxwalker.worldpreview.Main;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.chunk.BlockBufferBuilderStorage;
 import net.minecraft.client.render.chunk.ChunkBuilder;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -32,7 +32,7 @@ public class ChunkBuilderMixin {
     @Shadow private volatile int bufferCount;
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
-    public void sodiumCompatibility(World world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
+    public void sodiumCompatibility(ClientWorld world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen) {
             int i = Math.max(1, (int) ((double) Runtime.getRuntime().maxMemory() * 0.3D) / (RenderLayer.getBlockLayers().stream().mapToInt(RenderLayer::getExpectedBufferSize).sum() * 4) - 1);
             int j = Runtime.getRuntime().availableProcessors();
