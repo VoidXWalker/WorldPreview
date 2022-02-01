@@ -78,6 +78,10 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     if(!WorldPreview.showMenu){
                         this.children.clear();
                     }
+                    else {
+                        this.initWidgets();
+
+                    }
                     this.showMenu= WorldPreview.showMenu;
                 }
                 if (WorldPreview.camera == null) {
