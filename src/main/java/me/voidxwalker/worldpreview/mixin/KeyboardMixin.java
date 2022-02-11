@@ -17,16 +17,27 @@ public abstract class KeyboardMixin {
     @Shadow @Final private MinecraftClient client;
 
 
+    @Shadow protected abstract boolean processF3(int key);
+
     @Inject(method = "onKey",at=@At("HEAD"))
     public void getF3ESCKey(long window, int key, int scancode, int i, int j, CallbackInfo ci){
         if( WorldPreview.inPreview&&window == this.client.getWindow().getHandle()){
             if(i!=0) {
 
+                InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
                 if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292)&&WorldPreview.showMenu) {
                     WorldPreview.showMenu= false;
                 }
                 else if (!WorldPreview.showMenu&&key == 256){
                     WorldPreview.showMenu= true;
+                }
+                boolean bl2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292) && this.processF3(key);
+                if (bl2) {
+                    KeyBinding.setKeyPressed(key2, false);
+                }
+                else {
+                    KeyBinding.setKeyPressed(key2, true);
+                    KeyBinding.onKeyPressed(key2);
                 }
             }
         }
