@@ -10,6 +10,7 @@ Minecraft mod that draws a preview of the world on the loading screen during chu
 - World preview **doesn't modify world generation** in any way. It simply takes already completed chunks, converts them to client chunks (Chunks minecraft can render) and then draws these chunks on the loading screen.
 - There are **no server side modifications** besides minecraft getting the random value for the player spawn earlier (Random is Random so it doesn't change anything)
 - You will not be able to reset after ~ when the chunk map reaches 100%. This is intentional
+
 ![F3 + Esc example](https://github.com/VoidXWalker/WorldPreview/blob/1.16.1/WorldPreview-example.png?raw=true)
 ## Usage
 The preview will always render when you create a world.
@@ -19,6 +20,7 @@ There are 5 ways the player can interact with the preview:
 **Direct Inputs**
 - Leave World Generation and Reset: Press the "Save and Quit to Title" button to instantly leave the World Generation to the title screen
 - F3 + Esc: Press F3 and Esc at the same time to switch the pause menu to the F3+Esc pause menu (shown below) and press Esc to switch back. This will make your run count as f3. 
+
 ![F3 + Esc example](https://github.com/VoidXWalker/WorldPreview/blob/1.16.1/WorldPreview-f3esc-example.png?raw=true)
 --------
 **Hotkeys**
