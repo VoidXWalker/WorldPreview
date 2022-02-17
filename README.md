@@ -1,7 +1,7 @@
 # World Preview
 
 Minecraft mod that draws a preview of the world on the loading screen during chunk generation.
-- **Not legal** for leaderboards yet
+- **Legal** for the minecraft java esition leaderboards
 - The **full chunk map** must be shown in the recording to get a run verified
 - Switching to the F3 + Esc menu will make your run **count as f3**
 - **Compatible** with all allowed mods and lazy stronghold
