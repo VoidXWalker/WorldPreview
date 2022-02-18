@@ -548,16 +548,8 @@ public class PreviewRenderer {
 				} while(!builtChunk3.needsRebuild() && !set.contains(builtChunk3));
 
 				this.needsTerrainUpdate = true;
-				BlockPos blockPos3 = builtChunk3.getOrigin().add(8, 8, 8);
-				boolean bl2 = blockPos3.getSquaredDistance(blockPos) < 768.0D;
-				if (!builtChunk3.needsImportantRebuild() && !bl2) {
-					this.chunksToRebuild.add(builtChunk3);
-				} else {
-					this.client.getProfiler().push("build near");
-					this.chunkBuilder.rebuild(builtChunk3);
+				this.chunksToRebuild.add(builtChunk3);
 
-					this.client.getProfiler().pop();
-				}
 			}
 		}
 	}

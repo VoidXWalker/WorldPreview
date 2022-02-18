@@ -96,7 +96,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 if (WorldPreview.camera == null) {
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() + 1.5, WorldPreview.player.getZ(), 0.0F, 0.0F);
                     WorldPreview.camera = new Camera();
-                    WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, false, false, 0.2F);
+                    WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, true, false, 0.2F);
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() - 1.5, WorldPreview.player.getZ(), 0.0F, 0.0F);
                     WorldPreview.inPreview=true;
                     WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.getX() + ", "+WorldPreview.player.getY()+ ", "+ WorldPreview.player.getZ()+")");
