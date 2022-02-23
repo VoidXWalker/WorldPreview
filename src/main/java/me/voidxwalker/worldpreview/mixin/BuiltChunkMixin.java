@@ -2,6 +2,10 @@ package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.LevelLoadingScreen;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.chunk.ChunkBuilder;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,5 +24,12 @@ public class BuiltChunkMixin {
         else {
             instance.updateNoCullingBlockEntities(removed,added);
         }
+    }
+    @Redirect(method = "getSquaredCameraDistance",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/render/GameRenderer;getCamera()Lnet/minecraft/client/render/Camera;"))
+    public Camera getCorrectPos(GameRenderer instance){
+        if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
+            return WorldPreview.camera;
+        }
+        return instance.getCamera();
     }
 }
