@@ -43,14 +43,23 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
     @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V"))
     public void worldpreview_stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){
+        if(!WorldPreview.inPreview){
+            instance.renderBackground(matrixStack);
+        }
     }
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
     public int worldpreview_moveLoadingScreen(int i){
+        if(!WorldPreview.inPreview){
+            return i;
+        }
         return worldpreview_getChunkMapPos().x;
     }
 
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
     public int moveLoadingScreen2(int i){
+        if(!WorldPreview.inPreview){
+            return i;
+        }
         return worldpreview_getChunkMapPos().y;
     }
     @Inject(method = "render",at=@At("HEAD"))
