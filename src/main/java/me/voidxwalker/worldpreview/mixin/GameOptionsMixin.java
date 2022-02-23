@@ -32,7 +32,7 @@ public class GameOptionsMixin {
         keysAll=ArrayUtils.add(keysAll, WorldPreview.stopKey);
         WorldPreview.cycleChunkMapKey=new KeyBinding(translate("Cycle Chunk Map","key.world_preview.cycle_chunkmap"),72, "key.categories.misc");
         keysAll=ArrayUtils.add(keysAll, WorldPreview.cycleChunkMapKey);
-        WorldPreview.freezeKey=new KeyBinding(translate("Freeze Preview","key.world_preview.freeze_preview"),72, "key.categories.misc");
+        WorldPreview.freezeKey=new KeyBinding(translate("Freeze Preview","key.world_preview.freeze_preview"),74, "key.categories.misc");
         keysAll=ArrayUtils.add(keysAll, WorldPreview.freezeKey);
     }
 
