@@ -121,7 +121,7 @@ public abstract class MinecraftClientMixin {
     public void smoothTransition(MinecraftClient instance, Screen screen){
         if(!WorldPreview.stop){
             this.profiler.push("forcedTick");
-            this.soundManager.stopAll();
+            //this.soundManager.stopAll();
             this.cameraEntity = null;
             this.connection = null;
             this.render(false);
