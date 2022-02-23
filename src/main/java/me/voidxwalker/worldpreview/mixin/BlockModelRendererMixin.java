@@ -7,6 +7,7 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
@@ -38,6 +39,10 @@ public abstract class BlockModelRendererMixin implements OldSodiumCompatibility 
             crashReportSection.add("Using AO", (Object)bl);
             throw new CrashException(crashReport);
         }
+    }
+    @Override
+    public void setWorldSafe(ClientWorld world){
+
     }
 
     
