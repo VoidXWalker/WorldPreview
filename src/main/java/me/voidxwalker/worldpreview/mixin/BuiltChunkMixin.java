@@ -18,7 +18,7 @@ import java.util.Collection;
 public class BuiltChunkMixin {
 
     @Redirect(method = "getSquaredCameraDistance",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/render/GameRenderer;getCamera()Lnet/minecraft/client/render/Camera;"))
-    public Camera getCorrectPos(GameRenderer instance){
+    public Camera worldpreview_getCorrectPos(GameRenderer instance){
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
             return WorldPreview.camera;
         }
