@@ -21,7 +21,6 @@
     "ServerChunkManagerMixin",
     "BuiltChunkMixin",
     "access.ChunkInfoMixin",
-    "GameRendererMixin",
     "access.KeyBindingMixin",
     "ClientWorldMixin",
     "WorldRendererMixin",
