@@ -28,7 +28,7 @@ public abstract class ServerChunkManagerMixin {
     @Shadow public @Nullable abstract WorldChunk getWorldChunk(int chunkX, int chunkZ);
 
     @Inject(method ="tick()Z",at = @At(value = "TAIL"))
-    public void getChunks(CallbackInfoReturnable<Boolean> cir){
+    public void worldpreview_getChunks(CallbackInfoReturnable<Boolean> cir){
         synchronized (WorldPreview.lock){
             if(WorldPreview.player!=null&& WorldPreview.calculatedSpawn&& !WorldPreview.stop&&MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
                 ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) WorldPreview.clientWord.getChunkManager()).getChunks()));

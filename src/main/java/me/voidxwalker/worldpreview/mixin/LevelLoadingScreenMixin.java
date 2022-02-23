@@ -5,10 +5,12 @@ import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.WorldGenerationProgressTracker;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
@@ -30,58 +32,48 @@ import java.util.Iterator;
 @Mixin(LevelLoadingScreen.class)
 public abstract class LevelLoadingScreenMixin extends Screen {
 
-    private boolean showMenu;
+    private boolean worldpreview_showMenu;
 
     protected LevelLoadingScreenMixin(Text title) {
         super(title);
     }
+    @Inject(method = "<init>",at = @At(value = "TAIL"))
+    public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
+        WorldPreview.freezePreview=false;
+    }
     @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V"))
-    public void stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){
-        if(!drawingPreview){
-            instance.renderBackground(matrixStack);
-        }
+    public void worldpreview_stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){
     }
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
-    public int moveLoadingScreen(int i){
-        if(!drawingPreview){
-            return i;
-        }
-        return getChunkMapPos().x;
+    public int worldpreview_moveLoadingScreen(int i){
+        return worldpreview_getChunkMapPos().x;
     }
-    private boolean drawingPreview=false;
+
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
     public int moveLoadingScreen2(int i){
-        if(!drawingPreview){
-            return i;
-        }
-        return getChunkMapPos().y;
+        return worldpreview_getChunkMapPos().y;
     }
     @Inject(method = "render",at=@At("HEAD"))
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(WorldPreview.stop){
-            drawingPreview=false;
-        }
+    public void worldpreview_render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null&&!WorldPreview.stop&&!WorldPreview.freezePreview) {
-            if(WorldPreview.worldRenderer==null){
-
-            }
             if(((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()==null&& WorldPreview.calculatedSpawn){
-                ((OldSodiumCompatibility)WorldPreview.worldRenderer).setWorldSafe(WorldPreview.clientWord);
+                ((OldSodiumCompatibility)WorldPreview.worldRenderer).worldpreview_setWorldSafe(WorldPreview.clientWord);
                 WorldPreview.showMenu=true;
-                this.showMenu=true;
-                this.initWidgets();
+                this.worldpreview_showMenu=true;
+                this.worldpreview_initWidgets();
             }
             if (((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null) {
-                drawingPreview=true;
-                if(this.showMenu!= WorldPreview.showMenu){
+                KeyBinding.unpressAll();
+                WorldPreview.kill=0;
+
+                if(this.worldpreview_showMenu!= WorldPreview.showMenu){
                     if(!WorldPreview.showMenu){
                         this.children.clear();
                     }
                     else {
-                        this.initWidgets();
-
+                        this.worldpreview_initWidgets();
                     }
-                    this.showMenu= WorldPreview.showMenu;
+                    this.worldpreview_showMenu= WorldPreview.showMenu;
                 }
                 MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager().update(0);
                 if (WorldPreview.camera == null) {
@@ -90,10 +82,10 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, this.client.options.perspective > 0, this.client.options.perspective == 2, 0.2F);
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() - 1.5, WorldPreview.player.getZ(), 0.0F, 0.0F);
                     WorldPreview.inPreview=true;
-                    WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.getX() + ", "+WorldPreview.player.getY()+ ", "+ WorldPreview.player.getZ()+")");
+                    WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.getX() + ", "+(double)Math.floor(WorldPreview.player.getY())+ ", "+ WorldPreview.player.getZ()+")");
                 }
                 MatrixStack matrixStack = new MatrixStack();
-                matrixStack.peek().getModel().multiply(this.getBasicProjectionMatrix());
+                matrixStack.peek().getModel().multiply(this.worldpreview_getBasicProjectionMatrix());
                 Matrix4f matrix4f = matrixStack.peek().getModel();
                 RenderSystem.matrixMode(5889);
                 RenderSystem.loadIdentity();
@@ -112,12 +104,12 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 RenderSystem.loadIdentity();
                 RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
                 DiffuseLighting.enableGuiDepthLighting();
-                this.renderPauseMenu(matrices,mouseX,mouseY,delta);
+                this.worldpreview_renderPauseMenu(matrices,mouseX,mouseY,delta);
             }
         }
     }
 
-    private void renderPauseMenu(MatrixStack matrices, int mouseX, int mouseY, float delta){
+    private void worldpreview_renderPauseMenu(MatrixStack matrices, int mouseX, int mouseY, float delta){
         if(WorldPreview.showMenu){
             Iterator<AbstractButtonWidget> iterator =this.buttons.listIterator();
             while(iterator.hasNext()){
@@ -129,7 +121,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    private Point getChunkMapPos(){
+    private Point worldpreview_getChunkMapPos(){
         switch (WorldPreview.chunkMapPos){
             case 1:
                 return new Point(this.width -45,this.height -75);
@@ -142,14 +134,14 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    public Matrix4f getBasicProjectionMatrix() {
+    public Matrix4f worldpreview_getBasicProjectionMatrix() {
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.peek().getModel().loadIdentity();
         matrixStack.peek().getModel().multiply(Matrix4f.viewboxMatrix(client.options.fov, (float)this.client.getWindow().getFramebufferWidth() / (float)this.client.getWindow().getFramebufferHeight(), 0.05F, this.client.options.viewDistance*16 * 4.0F));
         return matrixStack.peek().getModel();
     }
 
-    private void initWidgets(){
+    private void worldpreview_initWidgets(){
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame"), (ignored) -> {}));
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.advancements"), (ignored) -> {}));
         this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.stats"), (ignored) -> {}));
@@ -165,6 +157,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
 
     public void resize(MinecraftClient client, int width, int height) {
         this.init(client, width, height);
-        this.initWidgets();
+        this.worldpreview_initWidgets();
     }
 }

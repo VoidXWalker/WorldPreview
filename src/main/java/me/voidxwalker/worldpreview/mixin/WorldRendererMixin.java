@@ -160,21 +160,21 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     @Shadow @Final private Vector3d capturedFrustumPosition;
 
     @Redirect(method = "renderWeather", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld getCorrectWorld(MinecraftClient instance){
+    public ClientWorld worldpreview_getCorrectWorld(MinecraftClient instance){
         if(client.currentScreen instanceof LevelLoadingScreen){
             return this.world;
         }
         return  instance.world;
     }
     @Redirect(method = "tickRainSplashing", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld getCorrectWorld2(MinecraftClient instance){
+    public ClientWorld worldpreview_getCorrectWorld2(MinecraftClient instance){
         if(client.currentScreen instanceof LevelLoadingScreen){
             return this.world;
         }
         return  instance.world;
     }
     @Redirect(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
-    public Entity getCameraEntity(MinecraftClient instance){
+    public Entity worldpreview_getCameraEntity(MinecraftClient instance){
         if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
             return WorldPreview.player;
         }
@@ -182,13 +182,13 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Inject(method = "reload",at = @At(value = "TAIL"))
-    public void worldPreviewReload(CallbackInfo ci){
+    public void worldpreview_reload(CallbackInfo ci){
         if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen){
             this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, (WorldRenderer) (Object)this);
         }
     }
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;setupTerrain(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/Frustum;ZIZ)V"))
-    private void setupTerrain(WorldRenderer instance, Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator)  {
+    private void worldpreview_setupTerrain(WorldRenderer instance, Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator)  {
         if(!(client.currentScreen instanceof LevelLoadingScreen)){
             this.setupTerrain(camera,frustum,hasForcedFrustum,frame,spectator);
             return;
@@ -330,13 +330,13 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         }
     }
     @Inject(method = "render",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/render/BufferBuilderStorage;getEntityVertexConsumers()Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;"),cancellable = true)
-   public void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
+   public void worldpreview_render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
         if(client.currentScreen instanceof  LevelLoadingScreen) {
-            renderSafe(matrices,tickDelta,limitTime,renderBlockOutline,camera,gameRenderer,lightmapTextureManager,matrix4f);
+            worldpreview_renderSafe(matrices,tickDelta,limitTime,renderBlockOutline,camera,gameRenderer,lightmapTextureManager,matrix4f);
             ci.cancel();
         }
     }
-    public void renderSafe(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f){
+    public void worldpreview_renderSafe(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f){
             Profiler profiler = this.world.getProfiler();
             Vec3d vec3d = camera.getPos();
             double d = vec3d.getX();
@@ -474,9 +474,9 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                                 this.translucentFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
                                                 this.translucentFramebuffer.copyDepthFrom(this.client.getFramebuffer());
                                                 profiler.swap("translucent");
-                                                this.renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
+                                                this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
                                                 profiler.swap("string");
-                                                this.renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f);
+                                                this.worldpreview_renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f);
                                                 this.particlesFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
                                                 this.particlesFramebuffer.copyDepthFrom(this.client.getFramebuffer());
                                                 RenderPhaseMixin.getPARTICLES_TARGET().startDrawing();
@@ -485,9 +485,9 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                                 RenderPhaseMixin.getPARTICLES_TARGET().endDrawing();
                                             } else {
                                                 profiler.swap("translucent");
-                                                this.renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
+                                                this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
                                                 profiler.swap("string");
-                                                this.renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f);
+                                                this.worldpreview_renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f);
                                                 profiler.swap("particles");
                                                 this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
                                             }
@@ -592,7 +592,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     }
     @Override
-    public void setWorldSafe(@Nullable ClientWorld clientWorld) {
+    public void worldpreview_setWorldSafe(@Nullable ClientWorld clientWorld) {
         this.lastCameraChunkUpdateX = Double.MIN_VALUE;
         this.lastCameraChunkUpdateY = Double.MIN_VALUE;
         this.lastCameraChunkUpdateZ = Double.MIN_VALUE;
@@ -620,14 +620,14 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     }
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderLayer(Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/util/math/MatrixStack;DDD)V"))
-    private void renderLayer(WorldRenderer instance, RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f) {
+    private void worldpreview_renderLayer(WorldRenderer instance, RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f) {
         if (!(client.currentScreen instanceof LevelLoadingScreen)) {
             this.renderLayer(renderLayer, matrixStack, d, e, f);
             return;
         }
-        this.renderLayerSafe(renderLayer,matrixStack,d,e,f);
+        this.worldpreview_renderLayerSafe(renderLayer,matrixStack,d,e,f);
     }
-    private void renderLayerSafe( RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f) {
+    private void worldpreview_renderLayerSafe( RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f) {
 
         renderLayer.startDrawing();
         if (renderLayer == RenderLayer.getTranslucent()) {
@@ -689,44 +689,9 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         this.client.getProfiler().pop();
         renderLayer.endDrawing();
     }
-   /* @Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Ljava/util/Set;add(Ljava/lang/Object;)Z"))
-    public boolean e(Set instance, E e){
-        if(client.currentScreen instanceof LevelLoadingScreen){
-            BlockPos blockPos3 = ((ChunkBuilder.BuiltChunk)e).getOrigin().add(8, 8, 16);
-            boolean bl2 = WorldPreview.camera.getBlockPos().getZ()>0&&blockPos3.getSquaredDistance(WorldPreview.camera.getBlockPos()) < 11768.0D;
-            if ( bl2) {
-                chunksToRebuild.add(((ChunkBuilder.BuiltChunk)e));
-                //this.chunkBuilder.rebuild(((ChunkBuilder.BuiltChunk)e));
-                return true;
-            }
-            else {
-                return chunksToRebuild.add(((ChunkBuilder.BuiltChunk)e));
-            }
-
-        }
-        return  instance.add(e);
-    }
-    @Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/chunk/ChunkBuilder;rebuild(Lnet/minecraft/client/render/chunk/ChunkBuilder$BuiltChunk;)V"))
-    public void e2(ChunkBuilder instance, ChunkBuilder.BuiltChunk chunk){
-        if(client.currentScreen instanceof LevelLoadingScreen){
-            BlockPos blockPos3 = ((ChunkBuilder.BuiltChunk)chunk).getOrigin().add(8, 8, 16);
-            boolean bl2 = WorldPreview.camera.getBlockPos().getZ()>0&&blockPos3.getSquaredDistance(WorldPreview.camera.getBlockPos()) < 11768.0D;
-            if ( bl2) {
-                chunksToRebuild.add(((ChunkBuilder.BuiltChunk)chunk));
-              //  this.chunkBuilder.rebuild(chunk);
-                return;
-            }
-            else {
-                chunksToRebuild.add(((ChunkBuilder.BuiltChunk)chunk));
-                return;
-            }
-
-        }
-        instance.rebuild(chunk);
-    }*/
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getViewDistance()F"))
-    public float getViewDistance(GameRenderer instance){
+    public float worldpreview_getViewDistance(GameRenderer instance){
         if(client.currentScreen instanceof LevelLoadingScreen){
             return client.options.viewDistance*16;
         }
@@ -735,7 +700,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;targetedEntity:Lnet/minecraft/entity/Entity;", opcode = Opcodes.GETFIELD))
-    public Entity getCorrectTargetedPlayerEntity(MinecraftClient instance){
+    public Entity worldpreview_getCorrectTargetedPlayerEntity(MinecraftClient instance){
         if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
             return WorldPreview.player;
         }
@@ -743,7 +708,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld getCorrectWorld3(MinecraftClient instance){
+    public ClientWorld worldpreview_getCorrectWorld3(MinecraftClient instance){
         if(instance.currentScreen instanceof LevelLoadingScreen){
             return this.world;
         }
@@ -751,7 +716,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/SkyProperties;useThickFog(II)Z"))
-    public boolean shouldThickenFog(SkyProperties instance, int i, int j){
+    public boolean worldpreview_shouldThickenFog(SkyProperties instance, int i, int j){
         if(client.gameRenderer==null&&client.currentScreen instanceof LevelLoadingScreen){
            return false;
         }
@@ -760,7 +725,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", ordinal =1, opcode = Opcodes.GETFIELD))
-    public ClientPlayerEntity getCorrectPlayer2(MinecraftClient instance){
+    public ClientPlayerEntity worldpreview_getCorrectPlayer2(MinecraftClient instance){
         if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
             return WorldPreview.player;
         }
@@ -768,7 +733,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSpectator()Z"))
-    public boolean spectator(ClientPlayerEntity instance){
+    public boolean worldpreview_spectator(ClientPlayerEntity instance){
         if(client.currentScreen instanceof LevelLoadingScreen&&instance==null){
             return false;
         }
@@ -777,7 +742,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/debug/DebugRenderer;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;DDD)V"))
-    public void stopDebugRenderer(DebugRenderer instance, MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ){
+    public void worldpreview_stopDebugRenderer(DebugRenderer instance, MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ){
         if(client.currentScreen instanceof LevelLoadingScreen){
             return;
         }
@@ -786,7 +751,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld getCorrectWorld4(MinecraftClient instance){
+    public ClientWorld worldpreview_getCorrectWorld4(MinecraftClient instance){
         if(instance.world==null&&client.currentScreen instanceof LevelLoadingScreen){
             return this.world;
         }
@@ -795,7 +760,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getCamera()Lnet/minecraft/client/render/Camera;"))
-    public Camera getCamera(GameRenderer instance){
+    public Camera worldpreview_getCamera(GameRenderer instance){
         if(instance.getCamera()==null&&client.currentScreen instanceof LevelLoadingScreen){
             return WorldPreview.camera;
         }
@@ -803,7 +768,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
 
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
-    public ClientPlayerEntity getCorrectPlayer3(MinecraftClient instance){
+    public ClientPlayerEntity worldpreview_getCorrectPlayer3(MinecraftClient instance){
         if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
             return WorldPreview.player;
         }

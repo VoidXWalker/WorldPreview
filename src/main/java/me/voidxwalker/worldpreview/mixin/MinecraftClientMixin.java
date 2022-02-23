@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
@@ -17,6 +18,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.profiler.Profiler;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
@@ -53,15 +55,15 @@ public abstract class MinecraftClientMixin {
     @Mutable
     @Shadow @Final public WorldRenderer worldRenderer;
     @Shadow @Final private BufferBuilderStorage bufferBuilders;
-    private int cycleCooldown;
+    private int worldpreview_cycleCooldown;
     @Inject(method = "isFabulousGraphicsOrBetter",at = @At(value = "RETURN"),cancellable = true)
-    private static void stopFabulous(CallbackInfoReturnable<Boolean> cir){
+    private static void worldpreview_stopFabulous(CallbackInfoReturnable<Boolean> cir){
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen&&MinecraftClient.getInstance().world==null){
             cir.setReturnValue(false);
         }
     }
     @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
-    public void onHotKeyPressed( CallbackInfo ci){
+    public void worldpreview_onHotKeyPressed( CallbackInfo ci){
         if(WorldPreview.freezePreview){
             int i = (int)(this.mouse.getX() * (double)this.getWindow().getScaledWidth() / (double)this.getWindow().getWidth());
             int j = (int)(this.mouse.getY() * (double)this.getWindow().getScaledHeight() / (double)this.getWindow().getHeight());
@@ -69,29 +71,17 @@ public abstract class MinecraftClientMixin {
             this.currentScreen.render(new MatrixStack(),i,j,1);
         }
         if(WorldPreview.inPreview){
-
-            cycleCooldown++;
-
-            if(WorldPreview.stopKey.wasPressed()&&!WorldPreview.stop){
-
-                WorldPreview.inPreview=false;
-                WorldPreview.stop=true;
-                WorldPreview.log(Level.INFO,"Hiding Preview");
-            }
-
-            if(WorldPreview.cycleChunkMapKey.wasPressed()&&cycleCooldown>10&&!WorldPreview.stop){
-                cycleCooldown=0;
+            worldpreview_cycleCooldown++;
+            if(WorldPreview.cycleChunkMapKey.wasPressed()&&worldpreview_cycleCooldown>10&&!WorldPreview.stop){
+                worldpreview_cycleCooldown=0;
                 WorldPreview.chunkMapPos= WorldPreview.chunkMapPos<5? WorldPreview.chunkMapPos+1:1;
             }
-        }
-         if(currentScreen instanceof LevelLoadingScreen){
             if(WorldPreview.resetKey.wasPressed()|| WorldPreview.kill==-1){
-
+                soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 WorldPreview.log(Level.INFO,"Leaving world generation");
                 WorldPreview.kill = 1;
                 while(WorldPreview.inPreview){
                     Thread.yield();
-
                 }
                 this.server.shutdown();
                 MinecraftClient.getInstance().disconnect();
@@ -100,8 +90,7 @@ public abstract class MinecraftClientMixin {
                 ci.cancel();
             }
             if(WorldPreview.freezeKey.wasPressed()){
-
-                WorldPreview.inPreview=!WorldPreview.inPreview;
+                WorldPreview.stop=!WorldPreview.stop;
                 WorldPreview.freezePreview=!WorldPreview.freezePreview;
                 if(WorldPreview.freezePreview){
                     WorldPreview.log(Level.INFO,"Freezing Preview"); // insert anchiale joke
@@ -114,42 +103,44 @@ public abstract class MinecraftClientMixin {
     }
 
     @Inject(method="startIntegratedServer(Ljava/lang/String;)V",at=@At(value = "HEAD"))
-    public void isExistingWorld(String worldName, CallbackInfo ci){
+    public void worldpreview_isExistingWorld(String worldName, CallbackInfo ci){
         WorldPreview.existingWorld=true;
     }
+
     @Redirect(method="joinWorld",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;reset(Lnet/minecraft/client/gui/screen/Screen;)V"))
-    public void smoothTransition(MinecraftClient instance, Screen screen){
-        if(!WorldPreview.stop){
+    public void worldpreview_smoothTransition(MinecraftClient instance, Screen screen){
             this.profiler.push("forcedTick");
             //this.soundManager.stopAll();
             this.cameraEntity = null;
             this.connection = null;
             this.render(false);
             this.profiler.pop();
-        }
-        else {
-            this.reset(screen);
-        }
 
+    }
+    @Redirect(method = "reset",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
+    public void worldpreview_stopStopSound(SoundManager instance){
+        if(this.currentScreen instanceof LevelLoadingScreen){
+            return;
+        }
+        instance.stopAll();
     }
     //sodium
     @Inject(method="<init>",at=@At(value = "TAIL"))
-    public void createWorldRenderer(RunArgs args, CallbackInfo ci){
+    public void worldpreview_createWorldRenderer(RunArgs args, CallbackInfo ci){
         WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
         this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
     }
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
-    public void reset(Screen screen, CallbackInfo ci){
+    public void worldpreview_reset(Screen screen, CallbackInfo ci){
         synchronized (WorldPreview.lock){
             WorldPreview.world=null;
             WorldPreview.player=null;
             WorldPreview.clientWord=null;
             WorldPreview.camera=null;
             if(WorldPreview.worldRenderer!=null){
-                ((OldSodiumCompatibility)WorldPreview.worldRenderer).setWorldSafe(null);
+                ((OldSodiumCompatibility)WorldPreview.worldRenderer).worldpreview_setWorldSafe(null);
             }
-            cycleCooldown=0;
+            worldpreview_cycleCooldown=0;
         }
-
     }
 }

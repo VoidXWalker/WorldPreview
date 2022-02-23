@@ -28,7 +28,6 @@ public class WorldPreview {
    public static boolean stop;
    public static boolean calculatedSpawn;
    public static KeyBinding resetKey;
-   public static KeyBinding stopKey;
    public static KeyBinding freezeKey;
    public static KeyBinding cycleChunkMapKey;
    public static int chunkMapPos;
