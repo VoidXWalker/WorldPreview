@@ -18,7 +18,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         super(world, blockPos, gameProfile);
     }
     @Redirect(method = "moveToSpawn", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"))
-    private int setSpawnPos(Random defaultRandom, int k){
+    private int worldpreview_setSpawnPos(Random defaultRandom, int k){
         if(WorldPreview.spawnPos != null){
             int value = WorldPreview.playerSpawn;
             WorldPreview.spawnPos=null;
