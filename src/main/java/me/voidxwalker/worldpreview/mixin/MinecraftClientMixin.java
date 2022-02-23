@@ -1,7 +1,6 @@
 package me.voidxwalker.worldpreview.mixin;
 
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
-import me.voidxwalker.worldpreview.PreviewRenderer;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -136,7 +135,7 @@ public abstract class MinecraftClientMixin {
     //sodium
     @Inject(method="<init>",at=@At(value = "TAIL"))
     public void createWorldRenderer(RunArgs args, CallbackInfo ci){
-        WorldPreview.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
+        WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
         this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
     }
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
