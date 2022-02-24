@@ -70,7 +70,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             if(!WorldPreview.existingWorld){
                 ServerWorld serverWorld = this.getOverworld();
                 WorldPreview.spawnPos= serverWorld.getSpawnPos();
-                WorldPreview.stop=false;
                 WorldPreview.freezePreview=false;
                 WorldPreview.world=this.getWorld(World.OVERWORLD);
                 RegistryKey<World> registryKey2 = World.OVERWORLD;

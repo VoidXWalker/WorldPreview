@@ -14,18 +14,24 @@
     "access.WorldRendererMixin",
     "access.ChunkInfoMixin",
     "access.KeyBindingMixin",
-    "server.ServerPlayerEntityMixin",
+
+    "client.render.block.BlockModelRendererMixin",
+    "client.render.block.BlockRenderManagerMixin",
+
     "client.render.chunk.ChunkBuilderMixin",
-    "client.MinecraftClientMixin",
-    "client.KeyboardMixin",
-    "server.ServerChunkManagerMixin",
     "client.render.chunk.BuiltChunkMixin",
-    "client.ClientWorldMixin",
+
     "client.render.WorldRendererMixin",
     "client.render.LevelLoadingScreenMixin",
+
+    "client.MinecraftClientMixin",
+    "client.KeyboardMixin",
+    "client.ClientWorldMixin",
+    "client.GameOptionsMixin",
+
     "server.MinecraftServerMixin",
-    "client.render.block.BlockModelRendererMixin",
-    "client.render.block.BlockRenderManagerMixin"
+    "server.ServerChunkManagerMixin",
+    "server.ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

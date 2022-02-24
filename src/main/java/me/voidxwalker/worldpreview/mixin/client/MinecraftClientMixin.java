@@ -57,7 +57,7 @@ public abstract class MinecraftClientMixin {
 
         if(WorldPreview.inPreview){
             worldpreview_cycleCooldown++;
-            if(WorldPreview.cycleChunkMapKey.wasPressed()&&worldpreview_cycleCooldown>10&&!WorldPreview.stop){
+            if(WorldPreview.cycleChunkMapKey.wasPressed()&&worldpreview_cycleCooldown>10&&!WorldPreview.freezePreview){
                 worldpreview_cycleCooldown=0;
                 WorldPreview.chunkMapPos= WorldPreview.chunkMapPos<5? WorldPreview.chunkMapPos+1:1;
             }
@@ -78,7 +78,6 @@ public abstract class MinecraftClientMixin {
                 ci.cancel();
             }
             if(WorldPreview.freezeKey.wasPressed()){
-                WorldPreview.stop=!WorldPreview.stop;
                 WorldPreview.freezePreview=!WorldPreview.freezePreview;
                 if(WorldPreview.freezePreview){
                     WorldPreview.log(Level.INFO,"Freezing Preview"); // insert anchiale joke

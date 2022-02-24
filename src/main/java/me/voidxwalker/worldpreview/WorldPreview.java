@@ -1,5 +1,6 @@
 package me.voidxwalker.worldpreview;
 
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -8,6 +9,9 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
@@ -15,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-public class WorldPreview implements ModInitializer {
+public class WorldPreview implements ClientModInitializer {
    public static World world;
    public static ClientPlayerEntity player;
    public static ClientWorld clientWord;
@@ -27,7 +31,6 @@ public class WorldPreview implements ModInitializer {
    public static WorldRenderer worldRenderer;
    public static boolean existingWorld;
    public static boolean showMenu;
-   public static boolean stop;
    public static boolean calculatedSpawn;
    public static KeyBinding resetKey;
    public static KeyBinding freezeKey;
@@ -41,26 +44,34 @@ public class WorldPreview implements ModInitializer {
    }
 
    @Override
-   public void onInitialize() {
+   public void onInitializeClient() {
       resetKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-              "key.world_preview.reset",
+              this.translate("key.world_preview.reset","Leave Preview").getString(),
               InputUtil.Type.KEYSYM,
               GLFW.GLFW_KEY_H,
-              "key.categories.world_preview"
+              this.translate("key.categories.world_preview","World Preview").getString()
       ));
 
       freezeKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-              "key.world_preview.freeze",
+              this.translate("key.world_preview.freeze","Freeze Preview").getString(),
               InputUtil.Type.KEYSYM,
-              GLFW.GLFW_KEY_L,
-              "key.categories.world_preview"
+              GLFW.GLFW_KEY_J,
+              this.translate("key.categories.world_preview","World Preview").getString()
       ));
       cycleChunkMapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-              "key.world_preview.cycle_chunkmap",
+              this.translate("key.world_preview.cycle_chunkmap","Cycle ChunkMap Positions").getString(),
               InputUtil.Type.KEYSYM,
               GLFW.GLFW_KEY_K,
-              "key.categories.world_preview"
+              this.translate("key.categories.world_preview","World Preview").getString()
+
       ));
+   }
+   public Text translate(String key, String replacement ){
+      Text t = new TranslatableText(key);
+      if(t.getString().equals(key)){
+         return new LiteralText(replacement);
+      }
+      return t;
    }
 
 }

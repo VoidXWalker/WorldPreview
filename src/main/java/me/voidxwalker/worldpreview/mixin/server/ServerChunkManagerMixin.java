@@ -31,7 +31,7 @@ public abstract class ServerChunkManagerMixin {
     public void worldpreview_getChunks(CallbackInfoReturnable<Boolean> cir){
 
         synchronized (WorldPreview.lock){
-            if(WorldPreview.player!=null&& WorldPreview.calculatedSpawn&& !WorldPreview.stop&&MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
+            if(WorldPreview.player!=null&& WorldPreview.calculatedSpawn&& !WorldPreview.freezePreview&&MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen){
                 ClientChunkManager.ClientChunkMap map = ((((ClientChunkManagerMixin) WorldPreview.clientWord.getChunkManager()).getChunks()));
                 Iterator<ChunkHolder> iterator =  ((ThreadedAnvilChunkStorageMixin) this.threadedAnvilChunkStorage).getChunkHolders().values().stream().iterator();
                 while (iterator.hasNext()){
