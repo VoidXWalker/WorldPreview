@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.server;
 
 import com.mojang.authlib.GameProfile;
 import me.voidxwalker.worldpreview.WorldPreview;
@@ -21,7 +21,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     }
 
     @Redirect(method = "moveToSpawn", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"))
-    private int setSpawnPos(Random defaultRandom, int k){
+    private int worldpreview_setSpawnPos(Random defaultRandom, int k){
         if(WorldPreview.spawnPos != null){
             int value = WorldPreview.playerSpawn;
             WorldPreview.spawnPos=null;

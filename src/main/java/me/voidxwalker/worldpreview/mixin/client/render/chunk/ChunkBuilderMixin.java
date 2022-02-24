@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render.chunk;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -31,13 +31,13 @@ public class ChunkBuilderMixin {
     @Shadow private volatile int bufferCount;
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
-    public void sodiumCompatibility(World world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
+    public void worldpreview_sodiumCompatibility(World world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen) {
             int i = Math.max(1, (int) ((double) Runtime.getRuntime().maxMemory() * 0.3D) / (RenderLayer.getBlockLayers().stream().mapToInt(RenderLayer::getExpectedBufferSize).sum() * 4) - 1);
             int j = Runtime.getRuntime().availableProcessors();
             int k = is64Bits ? j : Math.min(j, 4);
             int l = Math.max(1, Math.min(k, i));
-            ArrayList list = this.getList(l);
+            ArrayList list = this.worldpreview_getList(l);
             try {
                 for (int m = 0; m < l; ++m) {
                     list.add(new BlockBufferBuilderStorage());
@@ -56,7 +56,7 @@ public class ChunkBuilderMixin {
             this.bufferCount = this.threadBuffers.size();
         }
     }
-    private ArrayList getList(int l) {
+    private ArrayList worldpreview_getList(int l) {
         return Lists.newArrayListWithExpectedSize(l);
     }
 }

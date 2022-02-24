@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render.block;
 
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import net.minecraft.block.BlockState;
@@ -18,7 +18,7 @@ import java.util.Random;
 @Mixin(BlockRenderManager.class)
 public class BlockRenderManagerMixin {
     @Redirect(method = "renderBlock",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/render/block/BlockModelRenderer;render(Lnet/minecraft/world/BlockRenderView;Lnet/minecraft/client/render/model/BakedModel;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;ZLjava/util/Random;JI)Z"))
-    public boolean oldSodiumCompatibility(BlockModelRenderer instance, BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay){
-        return ((OldSodiumCompatibility)instance).renderSafe(world, model, state, pos, matrix, vertexConsumer, cull, random, seed, overlay);
+    public boolean worldpreview_oldSodiumCompatibility(BlockModelRenderer instance, BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay){
+        return ((OldSodiumCompatibility)instance).worldpreview_renderSafe(world, model, state, pos, matrix, vertexConsumer, cull, random, seed, overlay);
     }
 }
