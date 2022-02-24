@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
@@ -13,7 +13,6 @@ import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
@@ -44,8 +43,6 @@ public abstract class MinecraftClientMixin {
     @Shadow @Final private SoundManager soundManager;
     @Shadow private Profiler profiler;
 
-    @Shadow protected abstract void reset(Screen screen);
-
     @Shadow @Nullable public ClientWorld world;
     @Shadow @Nullable public Screen currentScreen;
     @Shadow @Final public Mouse mouse;
@@ -64,20 +61,16 @@ public abstract class MinecraftClientMixin {
     }
     @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void worldpreview_onHotKeyPressed( CallbackInfo ci){
-        if(WorldPreview.freezePreview){
-            int i = (int)(this.mouse.getX() * (double)this.getWindow().getScaledWidth() / (double)this.getWindow().getWidth());
-            int j = (int)(this.mouse.getY() * (double)this.getWindow().getScaledHeight() / (double)this.getWindow().getHeight());
-
-            this.currentScreen.render(new MatrixStack(),i,j,1);
-        }
         if(WorldPreview.inPreview){
             worldpreview_cycleCooldown++;
-            if(WorldPreview.cycleChunkMapKey.wasPressed()&&worldpreview_cycleCooldown>10&&!WorldPreview.stop){
+            if(WorldPreview.cycleChunkMapKey.wasPressed()&&worldpreview_cycleCooldown>10&&!WorldPreview.freezePreview){
                 worldpreview_cycleCooldown=0;
                 WorldPreview.chunkMapPos= WorldPreview.chunkMapPos<5? WorldPreview.chunkMapPos+1:1;
             }
             if(WorldPreview.resetKey.wasPressed()|| WorldPreview.kill==-1){
-                soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                if(WorldPreview.resetKey.wasPressed()){
+                    soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                }
                 WorldPreview.log(Level.INFO,"Leaving world generation");
                 WorldPreview.kill = 1;
                 while(WorldPreview.inPreview){
@@ -90,7 +83,6 @@ public abstract class MinecraftClientMixin {
                 ci.cancel();
             }
             if(WorldPreview.freezeKey.wasPressed()){
-                WorldPreview.stop=!WorldPreview.stop;
                 WorldPreview.freezePreview=!WorldPreview.freezePreview;
                 if(WorldPreview.freezePreview){
                     WorldPreview.log(Level.INFO,"Freezing Preview"); // insert anchiale joke

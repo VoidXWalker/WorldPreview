@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
@@ -11,7 +11,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
@@ -39,6 +40,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     @Inject(method = "<init>",at = @At(value = "TAIL"))
     public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
         WorldPreview.freezePreview=false;
+        KeyBinding.unpressAll();
     }
     @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V"))
     public void worldpreview_stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){
@@ -63,7 +65,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
     @Inject(method = "render",at=@At("HEAD"))
     public void worldpreview_render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null&&!WorldPreview.stop&&!WorldPreview.freezePreview) {
+        if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null&&!WorldPreview.freezePreview) {
             if(((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()==null&& WorldPreview.calculatedSpawn){
                 ((OldSodiumCompatibility)WorldPreview.worldRenderer).worldpreview_setWorldSafe(WorldPreview.clientWord);
                 WorldPreview.showMenu=true;

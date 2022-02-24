@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render.block;
 
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import net.minecraft.block.BlockState;
