@@ -33,7 +33,6 @@ import java.util.Iterator;
 public abstract class LevelLoadingScreenMixin extends Screen {
 
     private boolean worldpreview_showMenu;
-
     protected LevelLoadingScreenMixin(Text title) {
         super(title);
     }
@@ -43,13 +42,13 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
     @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V"))
     public void worldpreview_stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){
-        if(!WorldPreview.inPreview){
+        if(WorldPreview.camera==null){
             instance.renderBackground(matrixStack);
         }
     }
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
     public int worldpreview_moveLoadingScreen(int i){
-        if(!WorldPreview.inPreview){
+        if(WorldPreview.camera==null){
             return i;
         }
         return worldpreview_getChunkMapPos().x;
@@ -57,7 +56,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
 
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
     public int moveLoadingScreen2(int i){
-        if(!WorldPreview.inPreview){
+        if(WorldPreview.camera==null){
             return i;
         }
         return worldpreview_getChunkMapPos().y;
@@ -74,7 +73,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
             if (((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null) {
                 KeyBinding.unpressAll();
                 WorldPreview.kill=0;
-
                 if(this.worldpreview_showMenu!= WorldPreview.showMenu){
                     if(!WorldPreview.showMenu){
                         this.children.clear();
