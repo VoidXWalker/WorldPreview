@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render.chunk;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
