@@ -3,7 +3,6 @@ package me.voidxwalker.worldpreview.mixin.client;
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -12,8 +11,6 @@ import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
-import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
@@ -47,9 +44,6 @@ public abstract class MinecraftClientMixin {
     @Mutable
     @Shadow @Final public WorldRenderer worldRenderer;
     @Shadow @Nullable public Screen currentScreen;
-    @Shadow @Final public Mouse mouse;
-
-    @Shadow public abstract Window getWindow();
 
     private int worldpreview_cycleCooldown;
     @Inject(method = "isFabulousGraphicsOrBetter",at = @At(value = "RETURN"),cancellable = true)

@@ -39,8 +39,11 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
     @Inject(method = "<init>",at = @At(value = "TAIL"))
     public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
+        KeyBinding.unpressAll();
         WorldPreview.stop=false;
+        WorldPreview.kill=0;
         WorldPreview.freezePreview=false;
+
     }
     @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V"))
     public void worldpreview_stopBackgroundRender(LevelLoadingScreen instance, MatrixStack matrixStack){

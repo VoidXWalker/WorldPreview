@@ -20,7 +20,6 @@ import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
-
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.Option;
 import net.minecraft.client.render.*;
@@ -50,7 +49,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
