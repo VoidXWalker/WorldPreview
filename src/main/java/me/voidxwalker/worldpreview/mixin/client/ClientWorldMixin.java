@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

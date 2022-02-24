@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.KeyBindingMixin;
@@ -30,7 +30,7 @@ public abstract class KeyboardMixin {
                     WorldPreview.showMenu= true;
                 }
                 boolean bl2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292);
-                KeyBinding k = KeyBindingMixin.getKeyToBindings().get(key2);
+                KeyBinding k = KeyBindingMixin.getKeyToBindings()==null?null: KeyBindingMixin.getKeyToBindings().get(key2);
                if(k!=null&&(WorldPreview.resetKey.compareTo(k)==0||WorldPreview.cycleChunkMapKey.compareTo(k)==0||WorldPreview.freezeKey.compareTo(k)==0)){
                    if (bl2) {
                        KeyBinding.setKeyPressed(key2, false);

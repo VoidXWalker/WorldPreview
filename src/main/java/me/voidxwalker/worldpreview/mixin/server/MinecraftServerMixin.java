@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.server;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.SpawnLocatingMixin;
@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.EntityType;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerNetworkIo;
@@ -72,7 +71,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             if(!WorldPreview.existingWorld){
                 ServerWorld serverWorld = this.getOverworld();
                 WorldPreview.spawnPos= serverWorld.getSpawnPos();
-                WorldPreview.stop=false;
+                WorldPreview.freezePreview=false;
                 WorldPreview.world=this.getWorld(World.OVERWORLD);
                 RegistryKey<DimensionType> registryKey = DimensionType.OVERWORLD_REGISTRY_KEY;
                 RegistryKey<World> registryKey2 = World.OVERWORLD;

@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render.chunk;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;

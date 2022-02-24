@@ -13,4 +13,8 @@ public interface KeyBindingMixin {
     static Map<InputUtil.Key, KeyBinding> getKeyToBindings() {
         throw new AssertionError();
     }
+    @Accessor("categoryOrderMap")
+    static Map<String, Integer> invokeGetCategoryMap() {
+        throw new AssertionError();
+    }
 }
