@@ -115,7 +115,6 @@ public abstract class MinecraftClientMixin {
     @Inject(method="<init>",at=@At(value = "TAIL"))
     public void worldpreview_createWorldRenderer(RunArgs args, CallbackInfo ci){
         WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
-        this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
     }
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
     public void worldpreview_reset(Screen screen, CallbackInfo ci){

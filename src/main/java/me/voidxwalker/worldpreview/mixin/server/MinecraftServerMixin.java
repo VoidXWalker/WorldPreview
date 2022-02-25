@@ -71,6 +71,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void worldpreview_getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
+        WorldPreview.calculatedSpawn=false;
         synchronized (WorldPreview.lock){
             if(!WorldPreview.existingWorld){
                 ServerWorld serverWorld = this.getOverworld();
@@ -85,7 +86,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 WorldPreview.player=new ClientPlayerEntity(MinecraftClient.getInstance(),WorldPreview.clientWord,new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,MinecraftClient.getInstance().getSession().getProfile()),null,null,false,false);
                 worldpreview_calculateSpawn(serverWorld);
                 WorldPreview.calculatedSpawn=true;
-                System.out.println(1);
 
             }
             WorldPreview.existingWorld=false;
@@ -111,7 +111,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
             int n = this.worldpreview_calculateSpawnOffsetMultiplier(k);
             int o = (new Random()).nextInt(k);
-
+            WorldPreview.playerSpawn=o;
             for(int p = 0; p < k; ++p) {
                 int q = (o + n * p) % k;
                 int r = q % (i * 2 + 1);
@@ -139,7 +139,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     public void worldpreview_kill(CallbackInfo ci){
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen&&Thread.currentThread().getId()!=this.getThread().getId()) {
             worldpreview_shutdownWithoutSave();
-           ci.cancel();
+            ci.cancel();
         }
     }
 
@@ -170,8 +170,8 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             if (serverWorld2 != null) {
                 try {
                     serverWorld2.getChunkManager().threadedAnvilChunkStorage.close();
-                } catch (IOException var5) {
                 }
+                catch (IOException ignored) {}
             }
         }
         if (this.snooper.isActive()) {
@@ -188,7 +188,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     @Inject(method = "prepareStartRegion",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/world/ServerChunkManager;getTotalChunksLoadedCount()I",shift = At.Shift.AFTER),cancellable = true)
     public void worldpreview_kill(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
         if(WorldPreview.kill==1){
-           ci.cancel();
+            ci.cancel();
         }
     }
 }

@@ -40,6 +40,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     @Inject(method = "<init>",at = @At(value = "TAIL"))
     public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
         KeyBinding.unpressAll();
+        WorldPreview.calculatedSpawn=false;
         WorldPreview.kill=0;
         WorldPreview.freezePreview=false;
 
@@ -103,7 +104,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 m.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(WorldPreview.camera.getPitch()));
                 m.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(WorldPreview.camera.getYaw() + 180.0F));
                 WorldPreview.worldRenderer.setupFrustum(m, WorldPreview.camera.getPos(), this.worldpreview_getBasicProjectionMatrix(this.client.options.fov));
-                WorldPreview.worldRenderer.render(m, 0.2F, 1000000, false, WorldPreview.camera, MinecraftClient.getInstance().gameRenderer, MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager(), matrix4f);
+                ((OldSodiumCompatibility)WorldPreview.worldRenderer).worldpreview_renderSafe(m, 0.2F, 1000000, false, WorldPreview.camera, MinecraftClient.getInstance().gameRenderer, MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager(), matrix4f);
                 Window window = this.client.getWindow();
                 RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
                 Matrix4f matrix4f2 = Matrix4f.projectionMatrix(0.0F, (float)((double)window.getFramebufferWidth() / window.getScaleFactor()), 0.0F, (float)((double)window.getFramebufferHeight() / window.getScaleFactor()), 1000.0F, 3000.0F);

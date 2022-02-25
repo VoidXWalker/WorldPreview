@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.google.common.collect.Sets;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -34,6 +35,7 @@ import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -154,8 +156,6 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Shadow @Final private Vector3d capturedFrustumPosition;
 
-    @Shadow protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrices, double d, double e, double f, Matrix4f matrix4f);
-
     @Shadow @Final private BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
     @Shadow public abstract void renderClouds(MatrixStack matrices, Matrix4f matrix4f, float f, double d, double e, double g);
@@ -166,130 +166,84 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Shadow @Final private ObjectArrayList<WorldRenderer.ChunkInfo> visibleChunks;
 
-    @Redirect(method = "renderWeather", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld worldpreview_getCorrectWorld(MinecraftClient instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
-            return this.world;
-        }
-        return  instance.world;
-    }
-    @Redirect(method = "tickRainSplashing", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld worldpreview_getCorrectWorld2(MinecraftClient instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
-            return this.world;
-        }
-        return  instance.world;
-    }
-    @Redirect(method = "reload()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
-    public Entity worldpreview_getCameraEntity(MinecraftClient instance){
-        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return WorldPreview.player;
-        }
-        return  instance.getCameraEntity();
-    }
+    @Shadow private @Nullable VertexBuffer lightSkyBuffer;
 
-    @Inject(method = "reload()V",at = @At(value = "TAIL"))
-    public void worldpreview_reload(CallbackInfo ci){
-        if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen){
-            this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, (WorldRenderer) (Object)this);
-        }
-    }
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;setupTerrain(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/Frustum;ZIZ)V"))
-    private void worldpreview_setupTerrain(WorldRenderer instance, Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator)  {
-        if(!(client.currentScreen instanceof LevelLoadingScreen)){
-            this.setupTerrain(camera,frustum,hasForcedFrustum,frame,spectator);
-            return;
-        }
-        Vec3d vec3d = camera.getPos();
-        if (this.client.options.viewDistance != this.viewDistance) {
-            this.reload();
-        }
+    @Shadow @Final private static Identifier SUN;
 
-        this.world.getProfiler().push("camera");
-        double d = WorldPreview.player.getX();
-        double e = WorldPreview.player.getY();
-        double f = WorldPreview.player.getZ();
-        double g = d - this.lastCameraChunkUpdateX;
-        double h = e - this.lastCameraChunkUpdateY;
-        double i = f - this.lastCameraChunkUpdateZ;
-        int j = ChunkSectionPos.getSectionCoord(d);
-        int k = ChunkSectionPos.getSectionCoord(e);
-        int l = ChunkSectionPos.getSectionCoord(f);
-        if (this.cameraChunkX != j || this.cameraChunkY != k || this.cameraChunkZ != l || g * g + h * h + i * i > 16.0D) {
-            this.lastCameraChunkUpdateX = d;
-            this.lastCameraChunkUpdateY = e;
-            this.lastCameraChunkUpdateZ = f;
-            this.cameraChunkX = j;
-            this.cameraChunkY = k;
-            this.cameraChunkZ = l;
-            this.chunks.updateCameraPosition(d, f);
-        }
+    @Shadow @Final private static Identifier MOON_PHASES;
 
-        this.chunkBuilder.setCameraPosition(vec3d);
-        this.world.getProfiler().swap("cull");
-        this.client.getProfiler().swap("culling");
-        BlockPos blockPos = camera.getBlockPos();
-        ChunkBuilder.BuiltChunk builtChunk = ((BuiltChunkStorageMixin)this.chunks).callGetRenderedChunk(blockPos);
-        BlockPos blockPos2 = new BlockPos(MathHelper.floor(vec3d.x / 16.0D) * 16, MathHelper.floor(vec3d.y / 16.0D) * 16, MathHelper.floor(vec3d.z / 16.0D) * 16);
-        float n = camera.getPitch();
-        float o = camera.getYaw();
-        this.needsTerrainUpdate = this.needsTerrainUpdate || !this.chunksToRebuild.isEmpty() || vec3d.x != this.lastCameraX || vec3d.y != this.lastCameraY || vec3d.z != this.lastCameraZ || (double)n != this.lastCameraPitch || (double)o != this.lastCameraYaw;
-        this.lastCameraX = vec3d.x;
-        this.lastCameraY = vec3d.y;
-        this.lastCameraZ = vec3d.z;
-        this.lastCameraPitch = (double)n;
-        this.lastCameraYaw = (double)o;
-        this.client.getProfiler().swap("update");
-        if (!hasForcedFrustum && this.needsTerrainUpdate) {
-            this.needsTerrainUpdate = false;
-            this.method_34808(frustum, frame, spectator, vec3d, blockPos, builtChunk, 16, blockPos2);
-        }
-        this.client.getProfiler().swap("rebuildNear");
-        Set<ChunkBuilder.BuiltChunk> set = this.chunksToRebuild;
-        this.chunksToRebuild = Sets.newLinkedHashSet();
-        ObjectListIterator var29 = this.visibleChunks.iterator();
+    @Shadow private @Nullable VertexBuffer starsBuffer;
 
-        while(true) {
-            while(true) {
-                ChunkBuilder.BuiltChunk builtChunk2;
-                do {
-                    if (!var29.hasNext()) {
-                        this.chunksToRebuild.addAll(set);
-                        this.client.getProfiler().pop();
-                        return;
-                    }
+    @Shadow private @Nullable VertexBuffer darkSkyBuffer;
 
-                    WorldRenderer.ChunkInfo chunkInfo = (WorldRenderer.ChunkInfo)var29.next();
-                    builtChunk2 =((ChunkInfoMixin)chunkInfo).getChunk();
-                } while(!builtChunk2.needsRebuild() && !set.contains(builtChunk2));
+    @Shadow public abstract void renderSky(MatrixStack matrices, Matrix4f matrix4f, float f, Runnable runnable);
 
-                this.needsTerrainUpdate = true;
-                BlockPos blockPos3 = builtChunk2.getOrigin().add(8, 8, 8);
-                boolean bl = blockPos3.getSquaredDistance(blockPos) < 768.0D;
-                if (!builtChunk2.needsImportantRebuild() && !bl) {
-                    this.chunksToRebuild.add(builtChunk2);
-                } else {
-                    this.client.getProfiler().push("build near");
-                    this.chunkBuilder.rebuild(builtChunk2);
-                   // builtChunk2.cancelRebuild();
-                    this.client.getProfiler().pop();
-                }
-            }
-        }
-    }
-    @Inject(method = "render",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/render/BufferBuilderStorage;getEntityVertexConsumers()Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;"),cancellable = true)
-    public void worldpreview_render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
-        if(client.currentScreen instanceof  LevelLoadingScreen) {
-            worldpreview_renderSafe(matrices,tickDelta,limitTime,renderBlockOutline,camera,gameRenderer,lightmapTextureManager,matrix4f);
-            ci.cancel();
-        }
-    }
-    public void worldpreview_renderSafe(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f){
+    @Shadow private int blockEntityCount;
+
+    @Shadow private @Nullable Framebuffer entityFramebuffer;
+
+    @Shadow private @Nullable Framebuffer weatherFramebuffer;
+
+    @Shadow private @Nullable Framebuffer entityOutlinesFramebuffer;
+
+    @Shadow protected abstract void updateChunks(long limitTime);
+
+    @Shadow private int frame;
+
+    @Shadow private boolean shouldCaptureFrustum;
+
+    @Shadow public abstract void captureFrustum();
+
+    @Shadow protected abstract void captureFrustum(Matrix4f modelMatrix, Matrix4f matrix4f, double x, double y, double z, Frustum frustum);
+
+    @Shadow private Frustum frustum;
+
+    @Shadow private WorldRenderer.ChunkInfoList chunkInfos;
+
+    @Override
+    public void worldpreview_renderSafe(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f) {
+        RenderSystem.setShaderGameTime(this.world.getTime(), tickDelta);
+        this.blockEntityRenderDispatcher.configure(this.world, camera, this.client.crosshairTarget);
         Profiler profiler = this.world.getProfiler();
+        profiler.swap("light_updates");
+       WorldPreview.clientWord.getChunkManager().getLightingProvider().doLightUpdates(Integer.MAX_VALUE, true, true);
         Vec3d vec3d = camera.getPos();
         double d = vec3d.getX();
         double e = vec3d.getY();
         double f = vec3d.getZ();
+        Matrix4f matrix4f2 = matrices.peek().getModel();
+        profiler.swap("culling");
+        boolean bl = this.capturedFrustum != null;
+        Frustum frustum2;
+        if (bl) {
+            frustum2 = this.capturedFrustum;
+            frustum2.setPosition(this.capturedFrustumPosition.x, this.capturedFrustumPosition.y, this.capturedFrustumPosition.z);
+        } else {
+            frustum2 = this.frustum;
+        }
+
+        this.client.getProfiler().swap("captureFrustum");
+        if (this.shouldCaptureFrustum) {
+            this.captureFrustum(matrix4f2, matrix4f, vec3d.x, vec3d.y, vec3d.z, bl ? new Frustum(matrix4f2, matrix4f) : frustum2);
+            this.shouldCaptureFrustum = false;
+        }
+
+        profiler.swap("clear");
+        BackgroundRenderer.render(camera, tickDelta,WorldPreview.clientWord, this.client.options.viewDistance, gameRenderer.getSkyDarkness(tickDelta));
+        BackgroundRenderer.setFogBlack();
+        RenderSystem.clear(16640, MinecraftClient.IS_SYSTEM_MAC);
+        float g = gameRenderer.getViewDistance();
+        boolean bl2 =WorldPreview.clientWord.getDimensionEffects().useThickFog(MathHelper.floor(d), MathHelper.floor(e));
+        profiler.swap("sky");
+        RenderSystem.setShader(GameRenderer::getPositionShader);
+        this.renderSkySafe(matrices, matrix4f, tickDelta, () -> {
+            BackgroundRenderer.applyFog(camera, BackgroundRenderer.FogType.FOG_SKY, g, bl2);
+        });
+        profiler.swap("fog");
+        BackgroundRenderer.applyFog(camera, BackgroundRenderer.FogType.FOG_TERRAIN, Math.max(g - 16.0F, 32.0F), bl2);
+        profiler.swap("terrain_setup");
+        this.worldpreview_setupTerrain(camera, frustum2, bl, this.frame++, false);
+        profiler.swap("updatechunks");
         int j = this.client.options.maxFps;
         long l = 33333333L;
         long n;
@@ -298,21 +252,35 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         } else {
             n = (long)(1000000000 / j);
         }
-        Frustum frustum2;
-        Matrix4f matrix4f2 = matrices.peek().getModel();
 
-        boolean bl = this.capturedFrustum != null;
-        if (bl) {
-            frustum2 = this.capturedFrustum;
-            frustum2.setPosition(this.capturedFrustumPosition.x, this.capturedFrustumPosition.y, this.capturedFrustumPosition.z);
-        } else {
-            frustum2 = new Frustum(matrix4f2, matrix4f);
-            frustum2.setPosition(d, e, f);
-        }
         long o = Util.getMeasuringTimeNano() - limitTime;
         long p = this.chunkUpdateSmoother.getTargetUsedTime(o);
         long q = p * 3L / 2L;
         long r = MathHelper.clamp(q, n, 33333333L);
+        this.updateChunks(limitTime + r);
+        profiler.swap("terrain");
+        this.worldpreview_renderLayerSafe(RenderLayer.getSolid(), matrices, d, e, f, matrix4f);
+        this.worldpreview_renderLayerSafe(RenderLayer.getCutoutMipped(), matrices, d, e, f, matrix4f);
+        this.worldpreview_renderLayerSafe(RenderLayer.getCutout(), matrices, d, e, f, matrix4f);
+        if (this.world.getDimensionEffects().isDarkened()) {
+            DiffuseLighting.enableForLevel(matrices.peek().getModel());
+        } else {
+            DiffuseLighting.disableForLevel(matrices.peek().getModel());
+        }
+
+        profiler.swap("entities");
+        this.regularEntityCount = 0;
+        this.blockEntityCount = 0;
+        if (this.entityFramebuffer != null) {
+            this.entityFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
+            this.entityFramebuffer.copyDepthFrom(this.client.getFramebuffer());
+            this.client.getFramebuffer().beginWrite(false);
+        }
+
+        if (this.weatherFramebuffer != null) {
+            this.weatherFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
+        }
+
         boolean bl3 = false;
         VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
         Iterator var39 = this.world.getEntities().iterator();
@@ -361,51 +329,16 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                         immediate.draw(TexturedRenderLayers.getSign());
                                         immediate.draw(TexturedRenderLayers.getChest());
                                         this.bufferBuilders.getOutlineVertexConsumers().draw();
-                                        if (bl3) {
-                                            this.entityOutlineShader.render(tickDelta);
-                                            this.client.getFramebuffer().beginWrite(false);
-                                        }
 
-                                        profiler.swap("destroyProgress");
-                                        ObjectIterator var54 = this.blockBreakingProgressions.long2ObjectEntrySet().iterator();
 
-                                        while(var54.hasNext()) {
-                                            Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>> entry2 = (Long2ObjectMap.Entry)var54.next();
-                                            BlockPos blockPos3 = BlockPos.fromLong(entry2.getLongKey());
-                                            double h = (double)blockPos3.getX() - d;
-                                            double x = (double)blockPos3.getY() - e;
-                                            double y = (double)blockPos3.getZ() - f;
-                                            if (!(h * h + x * x + y * y > 1024.0D)) {
-                                                SortedSet<BlockBreakingInfo> sortedSet2 = (SortedSet)entry2.getValue();
-                                                if (sortedSet2 != null && !sortedSet2.isEmpty()) {
-                                                    int z = ((BlockBreakingInfo)sortedSet2.last()).getStage();
-                                                    matrices.push();
-                                                    matrices.translate((double)blockPos3.getX() - d, (double)blockPos3.getY() - e, (double)blockPos3.getZ() - f);
-                                                    MatrixStack.Entry entry3 = matrices.peek();
-                                                    VertexConsumer vertexConsumer2 = new OverlayVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer)ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(z)), entry3.getModel(), entry3.getNormal());
-                                                    this.client.getBlockRenderManager().renderDamage(this.world.getBlockState(blockPos3), blockPos3, this.world, matrices, vertexConsumer2);
-                                                    matrices.pop();
-                                                }
-                                            }
-                                        }
+
 
                                         this.checkEmpty(matrices);
-                                        HitResult hitResult = this.client.crosshairTarget;
-                                        if (renderBlockOutline && hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
-                                            profiler.swap("outline");
-                                            BlockPos blockPos4 = ((BlockHitResult)hitResult).getBlockPos();
-                                            BlockState blockState = this.world.getBlockState(blockPos4);
-                                            if (!blockState.isAir() && this.world.getWorldBorder().contains(blockPos4)) {
-                                                VertexConsumer vertexConsumer3 = immediate.getBuffer(RenderLayer.getLines());
-                                                this.drawBlockOutline(matrices, vertexConsumer3, camera.getFocusedEntity(), d, e, f, blockPos4, blockState);
-                                            }
-                                        }
 
                                         MatrixStack matrixStack = RenderSystem.getModelViewStack();
                                         matrixStack.push();
                                         matrixStack.method_34425(matrices.peek().getModel());
                                         RenderSystem.applyModelViewMatrix();
-
                                         matrixStack.pop();
                                         RenderSystem.applyModelViewMatrix();
                                         immediate.draw(TexturedRenderLayers.getEntityTranslucentCull());
@@ -426,28 +359,21 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                             this.translucentFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
                                             this.translucentFramebuffer.copyDepthFrom(this.client.getFramebuffer());
                                             profiler.swap("translucent");
-                                            this.renderLayer(RenderLayer.getTranslucent(), matrices, d, e, f, matrix4f);
+                                            this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f, matrix4f);
                                             profiler.swap("string");
-                                            this.renderLayer(RenderLayer.getTripwire(), matrices, d, e, f, matrix4f);
-                                            this.particlesFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
-                                            this.particlesFramebuffer.copyDepthFrom(this.client.getFramebuffer());
-                                            RenderPhaseMixin.getPARTICLES_TARGET().startDrawing();
-                                            profiler.swap("particles");
-                                            this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
-                                            RenderPhaseMixin.getPARTICLES_TARGET().endDrawing();
+                                            this.worldpreview_renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f, matrix4f);
                                         } else {
                                             profiler.swap("translucent");
                                             if (this.translucentFramebuffer != null) {
                                                 this.translucentFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
                                             }
 
-                                            this.renderLayer(RenderLayer.getTranslucent(), matrices, d, e, f, matrix4f);
+                                            this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f, matrix4f);
                                             immediate.draw(RenderLayer.getLines());
                                             immediate.draw();
                                             profiler.swap("string");
-                                            this.renderLayer(RenderLayer.getTripwire(), matrices, d, e, f, matrix4f);
-                                            profiler.swap("particles");
-                                            this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
+                                            this.worldpreview_renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f, matrix4f);
+
                                         }
 
                                         matrixStack.push();
@@ -504,18 +430,8 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                     VertexConsumerProvider vertexConsumerProvider3 = immediate;
                                     matrices.push();
                                     matrices.translate((double)blockPos.getX() - d, (double)blockPos.getY() - e, (double)blockPos.getZ() - f);
-                                    SortedSet<BlockBreakingInfo> sortedSet = (SortedSet)this.blockBreakingProgressions.get(blockPos.asLong());
-                                    if (sortedSet != null && !sortedSet.isEmpty()) {
-                                        w = ((BlockBreakingInfo)sortedSet.last()).getStage();
-                                        if (w >= 0) {
-                                            MatrixStack.Entry entry = matrices.peek();
-                                            VertexConsumer vertexConsumer = new OverlayVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer)ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(w)), entry.getModel(), entry.getNormal());
-                                            vertexConsumerProvider3 = (renderLayer) -> {
-                                                VertexConsumer vertexConsumer2 = immediate.getBuffer(renderLayer);
-                                                return renderLayer.hasCrumbling() ? VertexConsumers.union(vertexConsumer, vertexConsumer2) : vertexConsumer2;
-                                            };
-                                        }
-                                    }
+
+
                                     this.blockEntityRenderDispatcher.render(blockEntity, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider3);
                                     matrices.pop();
                                 }
@@ -523,35 +439,129 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                         }
 
                         entity = (Entity)var39.next();
-                    } while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(WorldPreview.player));
+                    } while(false );
                 } while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
             } while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
 
-            ++this.regularEntityCount;
-            if (entity.age == 0) {
-                entity.lastRenderX = entity.getX();
-                entity.lastRenderY = entity.getY();
-                entity.lastRenderZ = entity.getZ();
-            }
 
-            Object vertexConsumerProvider2;
-            if (this.canDrawEntityOutlines() && this.client.hasOutline(entity)) {
-                bl3 = true;
-                OutlineVertexConsumerProvider outlineVertexConsumerProvider = this.bufferBuilders.getOutlineVertexConsumers();
-                vertexConsumerProvider2 = outlineVertexConsumerProvider;
-                int k = entity.getTeamColorValue();
-                int t = k >> 16 & 255;
-                int u = k >> 8 & 255;
-                w = k & 255;
-                outlineVertexConsumerProvider.setColor(t, u, w, 255);
-            } else {
-                vertexConsumerProvider2 = immediate;
-            }
-
-            this.renderEntity(entity, d, e, f, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider2);
         }
-
     }
+    @Redirect(method = "renderWeather", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
+    public ClientWorld worldpreview_getCorrectWorld(MinecraftClient instance){
+        if(client.currentScreen instanceof LevelLoadingScreen){
+            return this.world;
+        }
+        return  instance.world;
+    }
+    @Redirect(method = "tickRainSplashing", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
+    public ClientWorld worldpreview_getCorrectWorld2(MinecraftClient instance){
+        if(client.currentScreen instanceof LevelLoadingScreen){
+            return this.world;
+        }
+        return  instance.world;
+    }
+    @Redirect(method = "reload()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
+    public Entity worldpreview_getCameraEntity(MinecraftClient instance){
+        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
+            return WorldPreview.player;
+        }
+        return  instance.getCameraEntity();
+    }
+
+    @Inject(method = "reload()V",at = @At(value = "TAIL"))
+    public void worldpreview_reload(CallbackInfo ci){
+        if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen){
+            this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, ((WorldRenderer) (Object)this));
+            this.chunkInfos = new WorldRenderer.ChunkInfoList(this.chunks.chunks.length);
+            if (this.world != null) {
+                Entity entity = WorldPreview.player;
+                if (entity != null) {
+                    this.chunks.updateCameraPosition(entity.getX(), entity.getZ());
+                }
+            }
+        }
+    }
+
+    private void worldpreview_setupTerrain( Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator)  {
+       Vec3d vec3d = camera.getPos();
+       if (this.client.options.viewDistance != this.viewDistance) {
+           this.reload();
+       }
+
+       this.world.getProfiler().push("camera");
+       double d = WorldPreview.player.getX();
+       double e = WorldPreview.player.getY();
+       double f = WorldPreview.player.getZ();
+       double g = d - this.lastCameraChunkUpdateX;
+       double h = e - this.lastCameraChunkUpdateY;
+       double i = f - this.lastCameraChunkUpdateZ;
+       int j = ChunkSectionPos.getSectionCoord(d);
+       int k = ChunkSectionPos.getSectionCoord(e);
+       int l = ChunkSectionPos.getSectionCoord(f);
+       if (this.cameraChunkX != j || this.cameraChunkY != k || this.cameraChunkZ != l || g * g + h * h + i * i > 16.0D) {
+           this.lastCameraChunkUpdateX = d;
+           this.lastCameraChunkUpdateY = e;
+           this.lastCameraChunkUpdateZ = f;
+           this.cameraChunkX = j;
+           this.cameraChunkY = k;
+           this.cameraChunkZ = l;
+           this.chunks.updateCameraPosition(d, f);
+       }
+
+       this.chunkBuilder.setCameraPosition(vec3d);
+       this.world.getProfiler().swap("cull");
+       this.client.getProfiler().swap("culling");
+       BlockPos blockPos = camera.getBlockPos();
+       ChunkBuilder.BuiltChunk builtChunk = ((BuiltChunkStorageMixin)this.chunks).callGetRenderedChunk(blockPos);
+       BlockPos blockPos2 = new BlockPos(MathHelper.floor(vec3d.x / 16.0D) * 16, MathHelper.floor(vec3d.y / 16.0D) * 16, MathHelper.floor(vec3d.z / 16.0D) * 16);
+       float n = camera.getPitch();
+       float o = camera.getYaw();
+       this.needsTerrainUpdate = this.needsTerrainUpdate || !this.chunksToRebuild.isEmpty() || vec3d.x != this.lastCameraX || vec3d.y != this.lastCameraY || vec3d.z != this.lastCameraZ || (double)n != this.lastCameraPitch || (double)o != this.lastCameraYaw;
+       this.lastCameraX = vec3d.x;
+       this.lastCameraY = vec3d.y;
+       this.lastCameraZ = vec3d.z;
+       this.lastCameraPitch = (double)n;
+       this.lastCameraYaw = (double)o;
+       this.client.getProfiler().swap("update");
+       if (!hasForcedFrustum && this.needsTerrainUpdate) {
+           this.needsTerrainUpdate = false;
+           this.method_34808(frustum, frame, spectator, vec3d, blockPos, builtChunk, 16, blockPos2);
+       }
+
+       this.client.getProfiler().swap("rebuildNear");
+       Set<ChunkBuilder.BuiltChunk> set = this.chunksToRebuild;
+       this.chunksToRebuild = Sets.newLinkedHashSet();
+       ObjectListIterator var29 = this.visibleChunks.iterator();
+
+       while(true) {
+           while(true) {
+               ChunkBuilder.BuiltChunk builtChunk2;
+               do {
+                   if (!var29.hasNext()) {
+                       this.chunksToRebuild.addAll(set);
+                       this.client.getProfiler().pop();
+                       return;
+                   }
+
+                   WorldRenderer.ChunkInfo chunkInfo = (WorldRenderer.ChunkInfo)var29.next();
+                   builtChunk2 = ((ChunkInfoMixin)chunkInfo).getChunk();
+               } while(!builtChunk2.needsRebuild() && !set.contains(builtChunk2));
+
+               this.needsTerrainUpdate = true;
+               BlockPos blockPos3 = builtChunk2.getOrigin().add(8, 8, 8);
+               boolean bl = blockPos3.getSquaredDistance(blockPos) < 768.0D;
+               if (!builtChunk2.needsImportantRebuild() && !bl) {
+                   this.chunksToRebuild.add(builtChunk2);
+               } else {
+                   this.client.getProfiler().push("build near");
+                   this.chunkBuilder.rebuild(builtChunk2);
+                  // builtChunk2.cancelRebuild();
+                   this.client.getProfiler().pop();
+               }
+           }
+       }
+    }
+
     @Override
     public void worldpreview_setWorldSafe(@Nullable ClientWorld clientWorld) {
         this.lastCameraChunkUpdateX = Double.MIN_VALUE;
@@ -580,14 +590,124 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         }
 
     }
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderLayer(Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/util/math/MatrixStack;DDDLnet/minecraft/util/math/Matrix4f;)V"))
-    private void worldpreview_renderLayer(WorldRenderer instance, RenderLayer renderLayer, MatrixStack matrices, double d, double e, double f, Matrix4f matrix4f) {
-        if (!(client.currentScreen instanceof LevelLoadingScreen)) {
-            this.renderLayer(renderLayer, matrices, d, e, f,matrix4f);
-            return;
+    public void renderSkySafe(MatrixStack matrices, Matrix4f matrix4f, float f, Runnable runnable) {
+            runnable.run();
+            if (WorldPreview.clientWord.getDimensionEffects().getSkyType() == DimensionEffects.SkyType.NORMAL) {
+                RenderSystem.disableTexture();
+                Vec3d vec3d = this.world.getSkyColor(WorldPreview.camera.getPos(), f);
+                float g = (float)vec3d.x;
+                float h = (float)vec3d.y;
+                float i = (float)vec3d.z;
+                BackgroundRenderer.setFogBlack();
+                BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+                RenderSystem.depthMask(false);
+                RenderSystem.setShaderColor(g, h, i, 1.0F);
+                Shader shader = RenderSystem.getShader();
+                this.lightSkyBuffer.setShader(matrices.peek().getModel(), matrix4f, shader);
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+                float[] fs = this.world.getDimensionEffects().getFogColorOverride(this.world.getSkyAngle(f), f);
+                float s;
+                float t;
+                float p;
+                float q;
+                float r;
+                if (fs != null) {
+                    RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                    RenderSystem.disableTexture();
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                    matrices.push();
+                    matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+                    s = MathHelper.sin(this.world.getSkyAngleRadians(f)) < 0.0F ? 180.0F : 0.0F;
+                    matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(s));
+                    matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
+                    float k = fs[0];
+                    t = fs[1];
+                    float m = fs[2];
+                    Matrix4f matrix4f2 = matrices.peek().getModel();
+                    bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+                    bufferBuilder.vertex(matrix4f2, 0.0F, 100.0F, 0.0F).color(k, t, m, fs[3]).next();
+
+                    for(int o = 0; o <= 16; ++o) {
+                        p = (float)o * 6.2831855F / 16.0F;
+                        q = MathHelper.sin(p);
+                        r = MathHelper.cos(p);
+                        bufferBuilder.vertex(matrix4f2, q * 120.0F, r * 120.0F, -r * 40.0F * fs[3]).color(fs[0], fs[1], fs[2], 0.0F).next();
+                    }
+
+                    bufferBuilder.end();
+                    BufferRenderer.draw(bufferBuilder);
+                    matrices.pop();
+                }
+
+                RenderSystem.enableTexture();
+                RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
+                matrices.push();
+                s = 1.0F - this.world.getRainGradient(f);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, s);
+                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90.0F));
+                matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(this.world.getSkyAngle(f) * 360.0F));
+                Matrix4f matrix4f3 = matrices.peek().getModel();
+                t = 30.0F;
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, SUN);
+                bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+                bufferBuilder.vertex(matrix4f3, -t, 100.0F, -t).texture(0.0F, 0.0F).next();
+                bufferBuilder.vertex(matrix4f3, t, 100.0F, -t).texture(1.0F, 0.0F).next();
+                bufferBuilder.vertex(matrix4f3, t, 100.0F, t).texture(1.0F, 1.0F).next();
+                bufferBuilder.vertex(matrix4f3, -t, 100.0F, t).texture(0.0F, 1.0F).next();
+                bufferBuilder.end();
+                BufferRenderer.draw(bufferBuilder);
+                t = 20.0F;
+                RenderSystem.setShaderTexture(0, MOON_PHASES);
+                int u = this.world.getMoonPhase();
+                int v = u % 4;
+                int w = u / 4 % 2;
+                float x = (float)(v + 0) / 4.0F;
+                p = (float)(w + 0) / 2.0F;
+                q = (float)(v + 1) / 4.0F;
+                r = (float)(w + 1) / 2.0F;
+                bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+                bufferBuilder.vertex(matrix4f3, -t, -100.0F, t).texture(q, r).next();
+                bufferBuilder.vertex(matrix4f3, t, -100.0F, t).texture(x, r).next();
+                bufferBuilder.vertex(matrix4f3, t, -100.0F, -t).texture(x, p).next();
+                bufferBuilder.vertex(matrix4f3, -t, -100.0F, -t).texture(q, p).next();
+                bufferBuilder.end();
+                BufferRenderer.draw(bufferBuilder);
+                RenderSystem.disableTexture();
+                float ab = this.world.method_23787(f) * s;
+                if (ab > 0.0F) {
+                    RenderSystem.setShaderColor(ab, ab, ab, ab);
+                    BackgroundRenderer.method_23792();
+                    this.starsBuffer.setShader(matrices.peek().getModel(), matrix4f, GameRenderer.getPositionShader());
+                    runnable.run();
+                }
+
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.disableBlend();
+                matrices.pop();
+                RenderSystem.disableTexture();
+                RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
+                double d = WorldPreview.player.getCameraPosVec(f).y - this.world.getLevelProperties().getSkyDarknessHeight(this.world);
+                if (d < 0.0D) {
+                    matrices.push();
+                    matrices.translate(0.0D, 12.0D, 0.0D);
+                    this.darkSkyBuffer.setShader(matrices.peek().getModel(), matrix4f, shader);
+                    matrices.pop();
+                }
+
+                if (this.world.getDimensionEffects().isAlternateSkyColor()) {
+                    RenderSystem.setShaderColor(g * 0.2F + 0.04F, h * 0.2F + 0.04F, i * 0.6F + 0.1F, 1.0F);
+                } else {
+                    RenderSystem.setShaderColor(g, h, i, 1.0F);
+                }
+
+                RenderSystem.enableTexture();
+                RenderSystem.depthMask(true);
+            }
         }
-        this.worldpreview_renderLayerSafe(renderLayer,matrices,d,e,f,matrix4f);
-    }
+
+
     private void worldpreview_renderLayerSafe(RenderLayer renderLayer, MatrixStack matrices, double d, double e, double f, Matrix4f matrix4f) {
         RenderSystem.assertThread(RenderSystem::isOnRenderThread);
         renderLayer.startDrawing();
@@ -700,88 +820,17 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         }
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getViewDistance()F"))
-    public float worldpreview_getViewDistance(GameRenderer instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
-            return client.options.viewDistance*16;
-        }
 
-        return instance.getViewDistance();
-    }
 
-    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;targetedEntity:Lnet/minecraft/entity/Entity;", opcode = Opcodes.GETFIELD))
-    public Entity worldpreview_getCorrectTargetedPlayerEntity(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return WorldPreview.player;
-        }
-        return instance.targetedEntity ;
-    }
 
-    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld worldpreview_getCorrectWorld3(MinecraftClient instance){
-        if(instance.currentScreen instanceof LevelLoadingScreen){
-            return this.world;
-        }
-        return  instance.world;
-    }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/DimensionEffects;useThickFog(II)Z"))
-    public boolean worldpreview_shouldThickenFog(DimensionEffects instance, int i, int j){
-        if(client.gameRenderer==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return false;
-        }
 
-        return  instance.useThickFog(i, j);
-    }
 
-    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", ordinal =1, opcode = Opcodes.GETFIELD))
-    public ClientPlayerEntity worldpreview_getCorrectPlayer2(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return WorldPreview.player;
-        }
-        return instance.player ;
-    }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSpectator()Z"))
-    public boolean worldpreview_spectator(ClientPlayerEntity instance){
-        if(client.currentScreen instanceof LevelLoadingScreen&&instance==null){
-            return false;
-        }
 
-        return instance.isSpectator();
-    }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/debug/DebugRenderer;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;DDD)V"))
-    public void worldpreview_stopDebugRenderer(DebugRenderer instance, MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ){
-        if(client.currentScreen instanceof LevelLoadingScreen){
-            return;
-        }
 
-        instance.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
-    }
 
-    @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld worldpreview_getCorrectWorld4(MinecraftClient instance){
-        if(instance.world==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return this.world;
-        }
-        return instance.world;
 
-    }
 
-    @Redirect(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getCamera()Lnet/minecraft/client/render/Camera;"))
-    public Camera worldpreview_getCamera(GameRenderer instance){
-        if(instance.getCamera()==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return WorldPreview.camera;
-        }
-        return  instance.getCamera();
-    }
-
-    @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
-    public ClientPlayerEntity worldpreview_getCorrectPlayer3(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return WorldPreview.player;
-        }
-        return instance.player ;
-    }
 }

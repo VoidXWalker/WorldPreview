@@ -2,3 +2,5 @@ accessWidener   v1      named
 accessible    class    net/minecraft/client/world/ClientChunkManager$ClientChunkMap
 accessible    class    net/minecraft/client/render/WorldRenderer$ChunkInfo
 accessible    class    net/minecraft/client/render/RenderPhase$Target
+accessible    class    net/minecraft/client/render/WorldRenderer$ChunkInfoList
+accessible    method    net/minecraft/client/render/WorldRenderer$ChunkInfoList    <init>    (I)V
