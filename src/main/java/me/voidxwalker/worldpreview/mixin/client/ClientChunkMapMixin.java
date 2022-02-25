@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.ChunkSetter;
 import me.voidxwalker.worldpreview.mixin.access.ClientChunkManagerMixin;

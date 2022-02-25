@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.block.entity.BlockEntity;

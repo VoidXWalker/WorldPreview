@@ -16,7 +16,11 @@
   "environment": "*",
 
   "accessWidener": "worldpreview.accesswidener",
-
+  "entrypoints": {
+    "client": [
+      "me.voidxwalker.worldpreview.WorldPreview"
+    ]
+  },
   "mixins": [
     "worldpreview.mixins.json"
   ],

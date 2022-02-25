@@ -1,14 +1,16 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import me.voidxwalker.worldpreview.PreviewRenderer;
 import me.voidxwalker.worldpreview.WorldPreview;
+import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.WorldGenerationProgressTracker;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.CloudRenderMode;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.*;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.Window;
@@ -30,71 +32,72 @@ import java.util.Iterator;
 
 @Mixin(LevelLoadingScreen.class)
 public abstract class LevelLoadingScreenMixin extends Screen {
-    private boolean drawingPreview=false;
-
+    private boolean worldpreview_showMenu;
+    private BackgroundRenderer backgroundRenderer;
     protected LevelLoadingScreenMixin(Text title) {
         super(title);
     }
-
+    @Inject(method = "<init>",at = @At(value = "TAIL"))
+    public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
+        backgroundRenderer= new BackgroundRenderer(MinecraftClient.getInstance().gameRenderer);
+        WorldPreview.freezePreview=false;
+        KeyBinding.unpressAll();
+    }
+    private int field_4021;
     @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground()V"))
     public void stopBackgroundRender(LevelLoadingScreen instance){
-        if(!drawingPreview){
+        if(WorldPreview.camera==null){
             instance.renderBackground();
         }
     }
-    private boolean showMenu;
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
     public int moveLoadingScreen(int i){
-        if(!drawingPreview){
+        if(WorldPreview.camera==null){
             return i;
         }
-        return getChunkMapPos().x;
+        return worldpreview_getChunkMapPos().x;
     }
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
     public int moveLoadingScreen2(int i){
-        if(!drawingPreview){
+        if(WorldPreview.camera==null){
             return i;
         }
-        return getChunkMapPos().y;
+        return worldpreview_getChunkMapPos().y;
     }
     @Inject(method = "render",at=@At("HEAD"),cancellable = true)
     public void render(int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(WorldPreview.stop){
-            drawingPreview=false;
+        if(WorldPreview.worldRenderer==null){
+            WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
         }
-        if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&!WorldPreview.stop) {
-            if(WorldPreview.worldRenderer==null){
-                WorldPreview.worldRenderer=new PreviewRenderer(MinecraftClient.getInstance());
-            }
-            if(WorldPreview.worldRenderer.world==null&& WorldPreview.player.calculatedSpawn){
+        if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null&&!WorldPreview.freezePreview) {
+            if(((me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin)WorldPreview.worldRenderer).getWorld()==null&& WorldPreview.calculatedSpawn){
                 WorldPreview.worldRenderer.setWorld(WorldPreview.clientWord);
                 WorldPreview.showMenu=true;
-                this.showMenu=true;
-                this.initWidgets();
+                this.worldpreview_showMenu=true;
+                this.worldpreview_initWidgets();
             }
-            if (WorldPreview.worldRenderer.world!=null) {
-                drawingPreview=true;
-                if(this.showMenu!= WorldPreview.showMenu){
+            if (((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null) {
+                KeyBinding.unpressAll();
+                WorldPreview.kill=0;
+                if(this.worldpreview_showMenu!= WorldPreview.showMenu){
                     if(!WorldPreview.showMenu){
                         this.children.clear();
                     }
                     else {
-                        this.initWidgets();
-
+                        this.worldpreview_initWidgets();
                     }
-                    this.showMenu= WorldPreview.showMenu;
+                    this.worldpreview_showMenu= WorldPreview.showMenu;
                 }
                 if (WorldPreview.camera == null) {
-                    WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y + 1.5, WorldPreview.player.z, 0.0F, 0.0F);
+                    WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y +(WorldPreview.player.getBoundingBox().y2-WorldPreview.player.getBoundingBox().y1), WorldPreview.player.z, 0.0F, 0.0F);
                     WorldPreview.camera = new Camera();
-                    WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, false, false, 0.2F);
+                    WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, 0.2F);
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y - 1.5, WorldPreview.player.z, 0.0F, 0.0F);
                     WorldPreview.inPreview=true;
-                    WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.x + ", "+WorldPreview.player.y+ ", "+ WorldPreview.player.z+")");
+                    WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.x + ", "+(double)Math.floor(WorldPreview.player.y)+ ", "+ WorldPreview.player.z+")");
                 }
 
                 renderWorld(delta,(long)(1000000000 / 60 / 4) );
-                WorldPreview.worldRenderer.ticks++;
                 Window window = this.minecraft.window;
                 GlStateManager.clear(256, MinecraftClient.IS_SYSTEM_MAC);
                 GlStateManager.matrixMode(5889);
@@ -116,18 +119,18 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
 
     private void renderCenter(float tickDelta, long endTime) {
-       PreviewRenderer worldRenderer = WorldPreview.worldRenderer;
+       WorldRenderer worldRenderer = WorldPreview.worldRenderer;
 
         GlStateManager.enableCull();
         this.minecraft.getProfiler().swap("camera");
         this.applyCameraTransformations(tickDelta);
         Camera camera = WorldPreview.camera;
-        camera.update(WorldPreview.worldRenderer.world, (Entity)(WorldPreview.player), this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, tickDelta);
+        camera.update(WorldPreview.clientWord, (Entity)(WorldPreview.player), this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, tickDelta);
         Frustum frustum = GlMatrixFrustum.get();
         worldRenderer.method_21595(camera);
         this.minecraft.getProfiler().swap("clear");
         GlStateManager.viewport(0, 0, this.minecraft.window.getFramebufferWidth(), this.minecraft.window.getFramebufferHeight());
-        WorldPreview.worldRenderer.backgroundRenderer.renderBackground(camera, tickDelta);
+        this.backgroundRenderer.renderBackground(camera, tickDelta);
         GlStateManager.clear(16640, MinecraftClient.IS_SYSTEM_MAC);
         this.minecraft.getProfiler().swap("culling");
         VisibleRegion visibleRegion = new FrustumWithOrigin(frustum);
@@ -136,7 +139,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         double f = camera.getPos().z;
         visibleRegion.setOrigin(d, e, f);
         if (this.minecraft.options.viewDistance >= 4) {
-            WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, -1);
+            this.backgroundRenderer.applyFog(camera, -1);
             this.minecraft.getProfiler().swap("sky");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
@@ -149,19 +152,19 @@ public abstract class LevelLoadingScreenMixin extends Screen {
             GlStateManager.matrixMode(5888);
         }
 
-        WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+       this.backgroundRenderer.applyFog(camera, 0);
         GlStateManager.shadeModel(7425);
         if (camera.getPos().y < 128.0D) {
             this.renderAboveClouds(camera, tickDelta, d, e, f);
         }
 
         this.minecraft.getProfiler().swap("prepareterrain");
-        WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+       this.backgroundRenderer.applyFog(camera, 0);
         this.minecraft.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         DiffuseLighting.disable();
         this.minecraft.getProfiler().swap("terrain_setup");
-        WorldPreview.worldRenderer.world.getChunkManager().getLightingProvider().doLightUpdates(Integer.MAX_VALUE, true, true);
-        worldRenderer.setUpTerrain(camera, visibleRegion, WorldPreview.field_4021++, false);
+        WorldPreview.clientWord.getChunkManager().getLightingProvider().doLightUpdates(Integer.MAX_VALUE, true, true);
+        worldRenderer.setUpTerrain(camera, visibleRegion,this.field_4021++, false);
         this.minecraft.getProfiler().swap("updatechunks");
         WorldPreview.worldRenderer.updateChunks(endTime);
         this.minecraft.getProfiler().swap("terrain");
@@ -188,7 +191,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         GlStateManager.enableCull();
         GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.alphaFunc(516, 0.1F);
-        WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+        this.backgroundRenderer.applyFog(camera, 0);
         GlStateManager.enableBlend();
         GlStateManager.depthMask(false);
         this.minecraft.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
@@ -216,7 +219,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
             GlStateManager.multMatrix(Matrix4f.method_4929(minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance *16 * 4.0F));
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();
-            WorldPreview.worldRenderer.backgroundRenderer.applyFog(camera, 0);
+            this.backgroundRenderer.applyFog(camera, 0);
             WorldPreview.worldRenderer.renderClouds(tickDelta, cameraX, cameraY, cameraZ);
             GlStateManager.disableFog();
             GlStateManager.popMatrix();
@@ -255,7 +258,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
 
 
 
-    private Point getChunkMapPos(){
+    private Point worldpreview_getChunkMapPos(){
         switch (WorldPreview.chunkMapPos){
             case 1:
                 return new Point(this.width -45,this.height -75);
@@ -268,7 +271,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
     }
 
-    private void initWidgets(){
+    private void worldpreview_initWidgets(){
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame").getString(), (ignored) -> {}));
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.advancements").getString(), (ignored) -> {}));
         this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.stats").getString(), (ignored) -> {}));
@@ -285,6 +288,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
 
     public void resize(MinecraftClient client, int width, int height) {
         this.init(client, width, height);
-        this.initWidgets();
+        this.worldpreview_initWidgets();
     }
 }
