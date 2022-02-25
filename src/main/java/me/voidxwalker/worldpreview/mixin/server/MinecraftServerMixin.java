@@ -54,13 +54,13 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow public abstract ServerWorld getWorld(DimensionType dimensionType);
 
-    @Shadow public abstract void setServerIp(String serverIp);
-
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
+        WorldPreview.calculatedSpawn=false;
         synchronized (WorldPreview.lock){
             if(!WorldPreview.existingWorld){
+
                 ServerWorld serverWorld = this.getWorld(DimensionType.OVERWORLD);
                 WorldPreview.spawnPos= serverWorld.getSpawnPos();
                 WorldPreview.freezePreview=false;
@@ -77,36 +77,45 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
         }
 
     }
-    private void worldpreview_calculateSpawn(ServerWorld serverWorld) {
-        BlockPos blockPos = serverWorld.getSpawnPos();
-        int i = Math.max(0, getSpawnRadius(serverWorld));
-        int j = MathHelper.floor(serverWorld.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
-        if (j < i) {
-            i = j;
-        }
-
-        if (j <= 1) {
-            i = 1;
-        }
-
-        long l = (long)(i * 2 + 1);
-        long m = l * l;
-        int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
-        int n = k <= 16 ? k - 1 : 17;
-        int o = (new Random()).nextInt(k);
-        WorldPreview.playerSpawn=o;
-        for(int p = 0; p < k; ++p) {
-            int q = (o + n * p) % k;
-            int r = q % (i * 2 + 1);
-            int s = q / (i * 2 + 1);
-            BlockPos blockPos2 = serverWorld.getDimension().getTopSpawningBlockPosition(blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
-            if (blockPos2 != null) {
-                WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                if (serverWorld.doesNotCollide(WorldPreview.player)) {
-                    break;
+    private void worldpreview_calculateSpawn(ServerWorld world) {
+        BlockPos blockPos = world.getSpawnPos();
+        if (world.dimension.hasSkyLight() && world.getLevelProperties().getGameMode() != GameMode.ADVENTURE) {
+            int i = Math.max(0, this.getSpawnRadius(world));
+            int j = MathHelper.floor(world.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
+            if (j < i) {
+                i = j;
+            }
+            if (j <= 1) {
+                i = 1;
+            }
+            long l = (long)(i * 2 + 1);
+            long m = l * l;
+            int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
+            int n = this.method_14244(k);
+            int o = (new Random()).nextInt(k);
+            WorldPreview.playerSpawn=o;
+            for(int p = 0; p < k; ++p) {
+                int q = (o + n * p) % k;
+                int r = q % (i * 2 + 1);
+                int s = q / (i * 2 + 1);
+                BlockPos blockPos2 = world.getDimension().getTopSpawningBlockPosition(blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
+                if (blockPos2 != null) {
+                   WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
+                    if (world.doesNotCollide(  WorldPreview.player)) {
+                        break;
+                    }
                 }
             }
+        } else {
+            WorldPreview.player.refreshPositionAndAngles(blockPos, 0.0F, 0.0F);
+
+            while(!world.doesNotCollide( WorldPreview.player) &&  WorldPreview.player.getY() < 255.0D) {
+                WorldPreview.player.updatePosition( WorldPreview.player.getX(),  WorldPreview.player.getY() + 1.0D,  WorldPreview.player.getZ());
+            }
         }
+    }
+    private int method_14244(int i) {
+        return i <= 16 ? i - 1 : 17;
     }
     @Inject(method = "shutdown",at=@At(value = "HEAD"),cancellable = true)
     public void kill(CallbackInfo ci){

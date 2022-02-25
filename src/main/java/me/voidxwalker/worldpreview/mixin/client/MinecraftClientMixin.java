@@ -106,6 +106,7 @@ public abstract class MinecraftClientMixin {
             WorldPreview.player=null;
             WorldPreview.clientWord=null;
             WorldPreview.camera=null;
+            WorldPreview.calculatedSpawn=false;
             if(WorldPreview.worldRenderer!=null){
                 ((OldSodiumCompatibility)WorldPreview.worldRenderer).worldpreview_setWorldSafe(null);
             }
