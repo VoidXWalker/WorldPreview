@@ -371,7 +371,6 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
             while(true) {
                 Entity entity;
                 int w;
-                do {
                     do {
                         do {
                             if (!var39.hasNext()) {
@@ -413,50 +412,15 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                             immediate.draw(TexturedRenderLayers.getSign());
                                             immediate.draw(TexturedRenderLayers.getChest());
                                             this.bufferBuilders.getOutlineVertexConsumers().draw();
-                                            if (bl3) {
-                                                this.entityOutlineShader.render(tickDelta);
-                                                this.client.getFramebuffer().beginWrite(false);
-                                            }
 
-                                            profiler.swap("destroyProgress");
-                                            ObjectIterator var54 = this.blockBreakingProgressions.long2ObjectEntrySet().iterator();
 
-                                            while(var54.hasNext()) {
-                                                Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>> entry2 = (Long2ObjectMap.Entry)var54.next();
-                                                BlockPos blockPos3 = BlockPos.fromLong(entry2.getLongKey());
-                                                double h = (double)blockPos3.getX() - d;
-                                                double x = (double)blockPos3.getY() - e;
-                                                double y = (double)blockPos3.getZ() - f;
-                                                if (!(h * h + x * x + y * y > 1024.0D)) {
-                                                    SortedSet<BlockBreakingInfo> sortedSet2 = (SortedSet)entry2.getValue();
-                                                    if (sortedSet2 != null && !sortedSet2.isEmpty()) {
-                                                        int z = ((BlockBreakingInfo)sortedSet2.last()).getStage();
-                                                        matrices.push();
-                                                        matrices.translate((double)blockPos3.getX() - d, (double)blockPos3.getY() - e, (double)blockPos3.getZ() - f);
-                                                        MatrixStack.Entry entry3 = matrices.peek();
-                                                        VertexConsumer vertexConsumer2 = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer) ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(z)), entry3.getModel(), entry3.getNormal());
-                                                        this.client.getBlockRenderManager().renderDamage(this.world.getBlockState(blockPos3), blockPos3, this.world, matrices, vertexConsumer2);
-                                                        matrices.pop();
-                                                    }
-                                                }
-                                            }
+
 
                                             this.checkEmpty(matrices);
                                             profiler.pop();
-                                            HitResult hitResult = this.client.crosshairTarget;
-                                            if (renderBlockOutline && hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
-                                                profiler.swap("outline");
-                                                BlockPos blockPos4 = ((BlockHitResult)hitResult).getBlockPos();
-                                                BlockState blockState = this.world.getBlockState(blockPos4);
-                                                if (!blockState.isAir() && this.world.getWorldBorder().contains(blockPos4)) {
-                                                    VertexConsumer vertexConsumer3 = immediate.getBuffer(RenderLayer.getLines());
-                                                    this.drawBlockOutline(matrices, vertexConsumer3, camera.getFocusedEntity(), d, e, f, blockPos4, blockState);
-                                                }
-                                            }
 
                                             RenderSystem.pushMatrix();
                                             RenderSystem.multMatrix(matrices.peek().getModel());
-                                            this.client.debugRenderer.render(matrices, immediate, d, e, f);
                                             RenderSystem.popMatrix();
                                             immediate.draw(TexturedRenderLayers.getEntityTranslucentCull());
                                             immediate.draw(TexturedRenderLayers.getBannerPatterns());
@@ -476,12 +440,6 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                                 this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
                                                 profiler.swap("string");
                                                 this.worldpreview_renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f);
-                                                this.particlesFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
-                                                this.particlesFramebuffer.copyDepthFrom(this.client.getFramebuffer());
-                                                RenderPhaseMixin.getPARTICLES_TARGET().startDrawing();
-                                                profiler.swap("particles");
-                                                this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
-                                                RenderPhaseMixin.getPARTICLES_TARGET().endDrawing();
                                             } else {
                                                 profiler.swap("translucent");
                                                 this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
@@ -542,18 +500,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                         VertexConsumerProvider vertexConsumerProvider3 = immediate;
                                         matrices.push();
                                         matrices.translate((double)blockPos.getX() - d, (double)blockPos.getY() - e, (double)blockPos.getZ() - f);
-                                        SortedSet<BlockBreakingInfo> sortedSet = (SortedSet)this.blockBreakingProgressions.get(blockPos.asLong());
-                                        if (sortedSet != null && !sortedSet.isEmpty()) {
-                                            w = ((BlockBreakingInfo)sortedSet.last()).getStage();
-                                            if (w >= 0) {
-                                                MatrixStack.Entry entry = matrices.peek();
-                                                VertexConsumer vertexConsumer = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer)ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(w)), entry.getModel(), entry.getNormal());
-                                                vertexConsumerProvider3 = (renderLayer) -> {
-                                                    VertexConsumer vertexConsumer2 = immediate.getBuffer(renderLayer);
-                                                    return renderLayer.hasCrumbling() ? VertexConsumers.dual(vertexConsumer, vertexConsumer2) : vertexConsumer2;
-                                                };
-                                            }
-                                        }
+
 
                                         BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider3);
                                         matrices.pop();
@@ -564,29 +511,8 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                             entity = (Entity)var39.next();
                         } while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(this.client.player));
                     } while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
-                } while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
 
-                ++this.regularEntityCount;
-                if (entity.age == 0) {
-                    entity.lastRenderX = entity.getX();
-                    entity.lastRenderY = entity.getY();
-                    entity.lastRenderZ = entity.getZ();
-                }
 
-                Object vertexConsumerProvider2;
-                if (this.canDrawEntityOutlines() && this.client.method_27022(entity)) {
-                    bl3 = true;
-                    OutlineVertexConsumerProvider outlineVertexConsumerProvider = this.bufferBuilders.getOutlineVertexConsumers();
-                    vertexConsumerProvider2 = outlineVertexConsumerProvider;
-                    int k = entity.getTeamColorValue();
-                    int t = k >> 16 & 255;
-                    int u = k >> 8 & 255;
-                    w = k & 255;
-                    outlineVertexConsumerProvider.setColor(t, u, w, 255);
-                } else {
-                    vertexConsumerProvider2 = immediate;
-                }
-                this.renderEntity(entity, d, e, f, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider2);
             }
 
     }
