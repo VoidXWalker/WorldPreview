@@ -10,7 +10,7 @@ import java.util.Map;
 @Mixin(KeyBinding.class)
 public interface KeyBindingMixin {
     @Accessor
-    static Map<InputUtil.Key, KeyBinding> getKeyToBindings() {
+    static Map<InputUtil.KeyCode, KeyBinding> getKeysByCode() {
         throw new AssertionError();
     }
     @Accessor("categoryOrderMap")
