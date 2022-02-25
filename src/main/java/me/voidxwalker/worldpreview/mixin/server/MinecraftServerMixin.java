@@ -1,6 +1,5 @@
 package me.voidxwalker.worldpreview.mixin.server;
 
-import me.voidxwalker.worldpreview.CustomPlayerEntity;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
