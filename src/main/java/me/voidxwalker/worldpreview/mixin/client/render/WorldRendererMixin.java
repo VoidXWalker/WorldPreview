@@ -473,7 +473,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                                         immediate.draw(RenderLayer.getLines());
                                         immediate.draw();
                                         profiler.swap("translucent");
-                                        this.renderLayer(RenderLayer.getTranslucent(), matrices, d, e, f);
+                                        this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
                                         profiler.swap("particles");
                                         this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
                                         RenderSystem.pushMatrix();

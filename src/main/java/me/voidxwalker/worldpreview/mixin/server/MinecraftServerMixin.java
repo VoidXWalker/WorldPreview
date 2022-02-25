@@ -55,6 +55,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void worldpreview_getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
+        WorldPreview.calculatedSpawn=false;
         synchronized (WorldPreview.lock){
             if(!WorldPreview.existingWorld){
                 ServerWorld serverWorld = this.getWorld(DimensionType.OVERWORLD);
