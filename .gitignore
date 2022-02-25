@@ -2,3 +2,4 @@
 /.gradle/
 # Project exclude paths
 /build/
+/run/
