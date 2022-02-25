@@ -39,6 +39,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
     @Inject(method = "<init>",at = @At(value = "TAIL"))
     public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
+        WorldPreview.calculatedSpawn=true;
         WorldPreview.freezePreview=false;
         KeyBinding.unpressAll();
     }
