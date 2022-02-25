@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
@@ -30,16 +30,16 @@ public class ClientWorldMixin {
     @Inject(method ="<init>",at=@At("TAIL"))
     public void oldSodiumCompatibility(ClientPlayNetworkHandler netHandler, ClientWorld.Properties properties, RegistryKey registryRef, DimensionType dimensionType, int loadDistance, int simulationDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci){
         if(WorldPreview.camera==null&& WorldPreview.world!=null&& WorldPreview.spawnPos!=null){
-            this.chunkManager=getChunkManager(loadDistance);
+            this.chunkManager=worldpreview_getChunkManager(loadDistance);
         }
 
     }
 
-    private ClientChunkManager getChunkManager(int i){
+    private ClientChunkManager worldpreview_getChunkManager(int i){
         return new ClientChunkManager((ClientWorld) (Object)this, i);
     }
     @Redirect(method ="getRegistryManager",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;getRegistryManager()Lnet/minecraft/util/registry/DynamicRegistryManager;"))
-    public DynamicRegistryManager getRegistryManager(ClientPlayNetworkHandler instance){
+    public DynamicRegistryManager worldpreview_getRegistryManager(ClientPlayNetworkHandler instance){
 
         return client.getServer().getRegistryManager();
     }

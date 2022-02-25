@@ -1,4 +1,4 @@
-package me.voidxwalker.worldpreview.mixin;
+package me.voidxwalker.worldpreview.mixin.server;
 
 import com.mojang.authlib.GameProfile;
 import me.voidxwalker.worldpreview.WorldPreview;
