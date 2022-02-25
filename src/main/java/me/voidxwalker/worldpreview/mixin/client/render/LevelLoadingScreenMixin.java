@@ -40,7 +40,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     @Inject(method = "<init>",at = @At(value = "TAIL"))
     public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
         KeyBinding.unpressAll();
-        WorldPreview.stop=false;
         WorldPreview.kill=0;
         WorldPreview.freezePreview=false;
 
@@ -67,7 +66,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
     @Inject(method = "render",at=@At("HEAD"),cancellable = true)
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null&&!WorldPreview.stop&&!WorldPreview.freezePreview) {
+        if(WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null&&!WorldPreview.freezePreview) {
             if(((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()==null&& WorldPreview.calculatedSpawn){
                 ((OldSodiumCompatibility)WorldPreview.worldRenderer).worldpreview_setWorldSafe(WorldPreview.clientWord);
                 WorldPreview.showMenu=true;

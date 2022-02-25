@@ -12,6 +12,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerNetworkIo;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.WorldGenerationProgressListener;
+import net.minecraft.server.network.SpawnLocating;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -20,6 +21,8 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.snooper.Snooper;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.GameMode;
+import net.minecraft.world.SaveProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.level.storage.LevelStorage;
@@ -63,6 +66,8 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow public abstract int getSpawnRadius(@Nullable ServerWorld world);
 
+    @Shadow public abstract SaveProperties getSaveProperties();
+
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
     public void worldpreview_getWorld(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
@@ -78,9 +83,9 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 long seed = BiomeAccess.hashSeed(((ServerWorld)(WorldPreview.world)).getSeed());
                 WorldPreview.clientWord = new ClientWorld(null,properties, registryKey2, serverWorld.getDimension(),16 , s,null,false, seed);
                 WorldPreview.player=new ClientPlayerEntity(MinecraftClient.getInstance(),WorldPreview.clientWord,new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,MinecraftClient.getInstance().getSession().getProfile()),null,null,false,false);
-
                 worldpreview_calculateSpawn(serverWorld);
                 WorldPreview.calculatedSpawn=true;
+                System.out.println(1);
 
             }
             WorldPreview.existingWorld=false;
@@ -90,30 +95,40 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     }
     private void worldpreview_calculateSpawn(ServerWorld serverWorld) {
         BlockPos blockPos = WorldPreview.spawnPos;
-        int i = Math.max(0, this.getSpawnRadius((ServerWorld) WorldPreview.world));
-        int j = MathHelper.floor(WorldPreview.world.getWorldBorder().getDistanceInsideBorder(blockPos.getX(), blockPos.getZ()));
-        if (j < i) {
-            i = j;
-        }
-        if (j <= 1) {
-            i = 1;
-        }
-        long l = i * 2L + 1;
-        long m = l * l;
-        int k = m > 2147483647L ? Integer.MAX_VALUE : (int) m;
-        int n = this.worldpreview_calculateSpawnOffsetMultiplier(k);
-        int o = (new Random()).nextInt(k);
-        WorldPreview.playerSpawn = o;
-        for (int p = 0; p < k; ++p) {
-            int q = (o + n * p) % k;
-            int r = q % (i * 2 + 1);
-            int s = q / (i * 2 + 1);
-            BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn((ServerWorld) serverWorld, blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
-            if (blockPos2 != null) {
-                WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                if (serverWorld.isSpaceEmpty( WorldPreview.player)) {
-                    break;
+        if (WorldPreview.world.getDimension().hasSkyLight() && this.getSaveProperties().getGameMode() != GameMode.ADVENTURE) {
+            int i = Math.max(0, this.getSpawnRadius((ServerWorld) WorldPreview.world));
+            int j = MathHelper.floor(WorldPreview.world.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
+            if (j < i) {
+                i = j;
+            }
+
+            if (j <= 1) {
+                i = 1;
+            }
+
+            long l = (long)(i * 2 + 1);
+            long m = l * l;
+            int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
+            int n = this.worldpreview_calculateSpawnOffsetMultiplier(k);
+            int o = (new Random()).nextInt(k);
+
+            for(int p = 0; p < k; ++p) {
+                int q = (o + n * p) % k;
+                int r = q % (i * 2 + 1);
+                int s = q / (i * 2 + 1);
+                BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn((ServerWorld) WorldPreview.world, blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
+                if (blockPos2 != null) {
+                    WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
+                    if (((ServerWorld) WorldPreview.world).isSpaceEmpty(WorldPreview.player)) {
+                        break;
+                    }
                 }
+            }
+        } else {
+            WorldPreview.player.refreshPositionAndAngles(blockPos, 0.0F, 0.0F);
+
+            while(!WorldPreview.world.isSpaceEmpty(WorldPreview.player) && WorldPreview.player.getY() < (double)WorldPreview.world.getTopY() - 1) {
+                WorldPreview.player.setPosition(WorldPreview.player.getX(), WorldPreview.player.getY() + 1.0D,WorldPreview.player.getZ());
             }
         }
     }
