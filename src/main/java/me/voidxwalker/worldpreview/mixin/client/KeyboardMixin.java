@@ -18,11 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class KeyboardMixin {
     @Shadow @Final private MinecraftClient client;
 
+    @Shadow protected abstract boolean processF3(int key);
+
     @Inject(method = "onKey",at=@At("HEAD"))
-    public void worldpreview_getF3ESCKey(long window, int key, int scancode, int i, int j, CallbackInfo ci){
+    public void getF3ESCKey(long window, int key, int scancode, int i, int j, CallbackInfo ci){
         if( client.currentScreen instanceof LevelLoadingScreen &&window == this.client.getWindow().getHandle()){
             if(i!=0) {
-                InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
+                InputUtil.KeyCode key2 = InputUtil.getKeyCode(key, scancode);
                 if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292)&&WorldPreview.showMenu) {
                     WorldPreview.showMenu= false;
                 }
@@ -30,15 +32,15 @@ public abstract class KeyboardMixin {
                     WorldPreview.showMenu= true;
                 }
                 boolean bl2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292);
-                KeyBinding k = KeyBindingMixin.getKeyToBindings()==null?null: KeyBindingMixin.getKeyToBindings().get(key2);
-               if(k!=null&&(WorldPreview.resetKey.compareTo(k)==0||WorldPreview.cycleChunkMapKey.compareTo(k)==0||WorldPreview.freezeKey.compareTo(k)==0)){
-                   if (bl2) {
-                       KeyBinding.setKeyPressed(key2, false);
-                   }
-                   else {
-                       KeyBinding.setKeyPressed(key2, true);
-                       KeyBinding.onKeyPressed(key2);
-                   }
+                KeyBinding k = KeyBindingMixin.getKeysByCode()==null?null: KeyBindingMixin.getKeysByCode().get(key2);
+                if(k!=null&&(WorldPreview.resetKey.compareTo(k)==0||WorldPreview.cycleChunkMapKey.compareTo(k)==0||WorldPreview.freezeKey.compareTo(k)==0)){
+                    if (bl2) {
+                        KeyBinding.setKeyPressed(key2, false);
+                    }
+                    else {
+                        KeyBinding.setKeyPressed(key2, true);
+                        KeyBinding.onKeyPressed(key2);
+                    }
                 }
 
             }

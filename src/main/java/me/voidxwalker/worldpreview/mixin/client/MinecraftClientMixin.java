@@ -5,7 +5,6 @@ import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.RunArgs;
-import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.BufferBuilderStorage;
@@ -19,6 +18,8 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.level.LevelInfo;
+import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -29,7 +30,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
@@ -52,14 +52,12 @@ public abstract class MinecraftClientMixin {
     @Mutable
     @Shadow @Final public WorldRenderer worldRenderer;
     @Shadow @Final private BufferBuilderStorage bufferBuilders;
+
+    @Shadow public abstract LevelStorage getLevelStorage();
+
     private int worldpreview_cycleCooldown;
-    @Inject(method = "isFabulousGraphicsOrBetter",at = @At(value = "RETURN"),cancellable = true)
-    private static void worldpreview_stopFabulous(CallbackInfoReturnable<Boolean> cir){
-        if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen&&MinecraftClient.getInstance().world==null){
-            cir.setReturnValue(false);
-        }
-    }
-    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
+
+    @Inject(method = "startIntegratedServer",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void worldpreview_onHotKeyPressed( CallbackInfo ci){
         if(WorldPreview.inPreview){
             worldpreview_cycleCooldown++;
@@ -94,27 +92,16 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method="startIntegratedServer(Ljava/lang/String;)V",at=@At(value = "HEAD"))
-    public void worldpreview_isExistingWorld(String worldName, CallbackInfo ci){
-        WorldPreview.existingWorld=true;
+    @Inject(method="startIntegratedServer",at=@At(value = "HEAD"))
+    public void isExistingWorld(String name, String displayName, LevelInfo levelInfo, CallbackInfo ci){
+        WorldPreview.existingWorld=this.getLevelStorage().levelExists(name);
     }
-
     @Redirect(method="joinWorld",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;reset(Lnet/minecraft/client/gui/screen/Screen;)V"))
-    public void worldpreview_smoothTransition(MinecraftClient instance, Screen screen){
-            this.profiler.push("forcedTick");
-            //this.soundManager.stopAll();
-            this.cameraEntity = null;
-            this.connection = null;
-            this.render(false);
-            this.profiler.pop();
+    public void smoothTransition(MinecraftClient instance, Screen screen){
+        this.cameraEntity = null;
+        this.connection = null;
+        this.render(false);
 
-    }
-    @Redirect(method = "reset",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
-    public void worldpreview_stopStopSound(SoundManager instance){
-        if(this.currentScreen instanceof LevelLoadingScreen){
-            return;
-        }
-        instance.stopAll();
     }
     //sodium
     @Inject(method="<init>",at=@At(value = "TAIL"))
@@ -123,7 +110,7 @@ public abstract class MinecraftClientMixin {
         this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
     }
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
-    public void worldpreview_reset(Screen screen, CallbackInfo ci){
+    public void reset(Screen screen, CallbackInfo ci){
         synchronized (WorldPreview.lock){
             WorldPreview.world=null;
             WorldPreview.player=null;
@@ -134,5 +121,6 @@ public abstract class MinecraftClientMixin {
             }
             worldpreview_cycleCooldown=0;
         }
+
     }
 }

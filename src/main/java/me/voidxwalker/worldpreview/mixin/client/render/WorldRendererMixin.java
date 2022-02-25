@@ -1,5 +1,6 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
@@ -12,11 +13,9 @@ import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.BuiltChunkStorageMixin;
 import me.voidxwalker.worldpreview.mixin.access.ChunkInfoMixin;
-import me.voidxwalker.worldpreview.mixin.access.RenderPhaseMixin;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
@@ -32,6 +31,7 @@ import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3d;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -40,6 +40,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.dimension.Dimension;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -136,15 +137,9 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Shadow protected abstract void renderWeather(LightmapTextureManager manager, float f, double d, double e, double g);
 
-    @Shadow private @Nullable ShaderEffect transparencyShader;
-
-    @Shadow private @Nullable Framebuffer cloudsFramebuffer;
 
     @Shadow public abstract void renderClouds(MatrixStack matrices, float tickDelta, double cameraX, double cameraY, double cameraZ);
 
-    @Shadow private @Nullable Framebuffer particlesFramebuffer;
-
-    @Shadow private @Nullable Framebuffer translucentFramebuffer;
 
     @Shadow protected abstract void drawBlockOutline(MatrixStack matrixStack, VertexConsumer vertexConsumer, Entity entity, double d, double e, double f, BlockPos blockPos, BlockState blockState);
 
@@ -158,15 +153,10 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Shadow @Final private Vector3d capturedFrustumPosition;
 
+    @Shadow protected abstract Set<Direction> getOpenChunkFaces(BlockPos pos);
+
     @Redirect(method = "renderWeather", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
     public ClientWorld worldpreview_getCorrectWorld(MinecraftClient instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
-            return this.world;
-        }
-        return  instance.world;
-    }
-    @Redirect(method = "tickRainSplashing", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-    public ClientWorld worldpreview_getCorrectWorld2(MinecraftClient instance){
         if(client.currentScreen instanceof LevelLoadingScreen){
             return this.world;
         }
@@ -226,25 +216,40 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         this.lastCameraPitch = (double)g;
         this.lastCameraYaw = (double)h;
         this.client.getProfiler().swap("update");
-        WorldRenderer.ChunkInfo chunkInfo;
+        WorldRenderer.ChunkInfo chunkInfo2;
         ChunkBuilder.BuiltChunk builtChunk3;
         if (!hasForcedFrustum && this.needsTerrainUpdate) {
             this.needsTerrainUpdate = false;
             this.visibleChunks.clear();
             Queue<WorldRenderer.ChunkInfo> queue = Queues.newArrayDeque();
-            Entity.setRenderDistanceMultiplier(MathHelper.clamp((double)this.client.options.viewDistance / 8.0D, 1.0D, 2.5D) * (double)this.client.options.entityDistanceScaling);
+            Entity.setRenderDistanceMultiplier(MathHelper.clamp((double)this.client.options.viewDistance / 8.0D, 1.0D, 2.5D));
             boolean bl = this.client.chunkCullingEnabled;
             int m;
             int n;
             if (builtChunk != null) {
-                if (spectator && this.world.getBlockState(blockPos).isOpaqueFullCube(this.world, blockPos)) {
-                    bl = false;
+                boolean bl2 = false;
+                WorldRenderer.ChunkInfo chunkInfo = ((WorldRenderer)(Object)this).new ChunkInfo(builtChunk, (Direction)null, 0);
+                Set<Direction> set = this.getOpenChunkFaces(blockPos);
+                if (set.size() == 1) {
+                    Vector3f vector3f = camera.getHorizontalPlane();
+                    Direction direction = Direction.getFacing(vector3f.getX(), vector3f.getY(), vector3f.getZ()).getOpposite();
+                    set.remove(direction);
                 }
 
-                builtChunk.setRebuildFrame(frame);
-                queue.add(((WorldRenderer)(Object)this).new ChunkInfo(builtChunk, (Direction)null, 0));
+                if (set.isEmpty()) {
+                    bl2 = true;
+                }
 
+                if (bl2 && !spectator) {
+                    this.visibleChunks.add(chunkInfo);
+                } else {
+                    if (spectator && this.world.getBlockState(blockPos).hasInWallOverlay(this.world, blockPos)) {
+                        bl = false;
+                    }
 
+                    builtChunk.setRebuildFrame(frame);
+                    queue.add(chunkInfo);
+                }
             } else {
                 int j = blockPos.getY() > 0 ? 248 : 8;
                 int k = MathHelper.floor(vec3d.x / 16.0D) * 16;
@@ -266,8 +271,6 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                         if (builtChunk2 != null && frustum.isVisible(builtChunk2.boundingBox)) {
                             builtChunk2.setRebuildFrame(frame);
                             list.add(((WorldRenderer)(Object)this).new ChunkInfo(builtChunk2, (Direction)null, 0));
-
-
                         }
                     }
 
@@ -278,316 +281,280 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
             this.client.getProfiler().push("iteration");
 
             while(!queue.isEmpty()) {
-                chunkInfo = (WorldRenderer.ChunkInfo)queue.poll();
-                builtChunk3 = ((ChunkInfoMixin)chunkInfo).getChunk();
-                Direction direction = ((ChunkInfoMixin)chunkInfo).getDirection();
-                this.visibleChunks.add(chunkInfo);
-                Direction[] var36 = DIRECTIONS;
-                m = var36.length;
+                chunkInfo2 = (WorldRenderer.ChunkInfo)queue.poll();
+                builtChunk3 =((ChunkInfoMixin)chunkInfo2).getChunk();
+                Direction direction2 = ((ChunkInfoMixin)chunkInfo2).getDirection();
+                this.visibleChunks.add(chunkInfo2);
+                Direction[] var40 = DIRECTIONS;
+                m = var40.length;
 
                 for(n = 0; n < m; ++n) {
-                    Direction direction2 = var36[n];
-                    ChunkBuilder.BuiltChunk builtChunk4 = this.getAdjacentChunk(blockPos2, builtChunk3, direction2);
-                    if ((!bl || !chunkInfo.canCull(direction2.getOpposite())) && (!bl || direction == null || builtChunk3.getData().isVisibleThrough(direction.getOpposite(), direction2)) && builtChunk4 != null && builtChunk4.shouldBuild() && builtChunk4.setRebuildFrame(frame) && frustum.isVisible(builtChunk4.boundingBox)) {
-                            WorldRenderer.ChunkInfo chunkInfo2 = ((WorldRenderer)(Object)this).new ChunkInfo(builtChunk4, direction2, ((ChunkInfoMixin)chunkInfo).getPropagationLevel() + 1);
-                            chunkInfo2.updateCullingState(((ChunkInfoMixin)chunkInfo).getCullingState(), direction2);
-                            queue.add(chunkInfo2);
+                    Direction direction3 = var40[n];
+                    ChunkBuilder.BuiltChunk builtChunk4 = this.getAdjacentChunk(blockPos2, builtChunk3, direction3);
+                    if ((!bl || !chunkInfo2.canCull(direction3.getOpposite())) && (!bl || direction2 == null || builtChunk3.getData().isVisibleThrough(direction2.getOpposite(), direction3)) && builtChunk4 != null && builtChunk4.shouldBuild() && builtChunk4.setRebuildFrame(frame) && frustum.isVisible(builtChunk4.boundingBox)) {
+                        WorldRenderer.ChunkInfo chunkInfo3 = ((WorldRenderer)(Object)this).new ChunkInfo(builtChunk4, direction3, ((ChunkInfoMixin)chunkInfo2).getPropagationLevel() + 1);
+                        chunkInfo3.updateCullingState(((ChunkInfoMixin)chunkInfo2).getCullingState(), direction3);
+                        queue.add(chunkInfo3);
                     }
                 }
             }
 
             this.client.getProfiler().pop();
         }
+
         this.client.getProfiler().swap("rebuildNear");
-        Set<ChunkBuilder.BuiltChunk> set = this.chunksToRebuild;
+        Set<ChunkBuilder.BuiltChunk> set2 = this.chunksToRebuild;
         this.chunksToRebuild = Sets.newLinkedHashSet();
         ObjectListIterator var31 = this.visibleChunks.iterator();
+
         while(true) {
             while(true) {
                 do {
                     if (!var31.hasNext()) {
-                        this.chunksToRebuild.addAll(set);
+                        this.chunksToRebuild.addAll(set2);
                         this.client.getProfiler().pop();
                         return;
                     }
-                    chunkInfo = (WorldRenderer.ChunkInfo)var31.next();
-                    builtChunk3 = ((ChunkInfoMixin)chunkInfo).getChunk();
-                } while(!builtChunk3.needsRebuild() && !set.contains(builtChunk3));
+
+                    chunkInfo2 = (WorldRenderer.ChunkInfo)var31.next();
+                    builtChunk3 =((ChunkInfoMixin)chunkInfo2).getChunk();
+                } while(!builtChunk3.needsRebuild() && !set2.contains(builtChunk3));
 
                 this.needsTerrainUpdate = true;
                 BlockPos blockPos3 = builtChunk3.getOrigin().add(8, 8, 8);
-                boolean bl2 = blockPos3.getSquaredDistance(blockPos) < 768.0D;
-                if (!builtChunk3.needsImportantRebuild() && !bl2) {
+                boolean bl3 = blockPos3.getSquaredDistance(blockPos) < 768.0D;
+                if (!builtChunk3.needsImportantRebuild() && !bl3) {
                     this.chunksToRebuild.add(builtChunk3);
                 } else {
                     this.client.getProfiler().push("build near");
                     this.chunkBuilder.rebuild(builtChunk3);
-                   // builtChunk3.cancelRebuild();
+                    //builtChunk3.cancelRebuild();
                     this.client.getProfiler().pop();
                 }
             }
         }
     }
     @Inject(method = "render",at=@At(value = "INVOKE",target = "Lnet/minecraft/client/render/BufferBuilderStorage;getEntityVertexConsumers()Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;"),cancellable = true)
-   public void worldpreview_render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
+    public void worldpreview_render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
         if(client.currentScreen instanceof  LevelLoadingScreen) {
             worldpreview_renderSafe(matrices,tickDelta,limitTime,renderBlockOutline,camera,gameRenderer,lightmapTextureManager,matrix4f);
             ci.cancel();
         }
     }
     public void worldpreview_renderSafe(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f){
-            Profiler profiler = this.world.getProfiler();
-            Vec3d vec3d = camera.getPos();
-            double d = vec3d.getX();
-            double e = vec3d.getY();
-            double f = vec3d.getZ();
-            int j = this.client.options.maxFps;
-            long l = 33333333L;
-            long n;
-            if ((double)j == Option.FRAMERATE_LIMIT.getMax()) {
-                n = 0L;
-            } else {
-                n = (long)(1000000000 / j);
-            }
-            Frustum frustum2;
-            Matrix4f matrix4f2 = matrices.peek().getModel();
+        Profiler profiler = this.world.getProfiler();
+        Vec3d vec3d = camera.getPos();
+        double d = vec3d.getX();
+        double e = vec3d.getY();
+        double f = vec3d.getZ();
+        int j = this.client.options.maxFps;
+        long l = 33333333L;
+        long n;
+        if ((double)j == Option.FRAMERATE_LIMIT.getMax()) {
+            n = 0L;
+        } else {
+            n = (long)(1000000000 / j);
+        }
+        Frustum frustum2;
+        Matrix4f matrix4f2 = matrices.peek().getModel();
 
-            boolean bl = this.capturedFrustum != null;
-            if (bl) {
-                frustum2 = this.capturedFrustum;
-                frustum2.setPosition(this.capturedFrustumPosition.x, this.capturedFrustumPosition.y, this.capturedFrustumPosition.z);
-            } else {
-                frustum2 = new Frustum(matrix4f2, matrix4f);
-                frustum2.setPosition(d, e, f);
-            }
-            long o = Util.getMeasuringTimeNano() - limitTime;
-            long p = this.chunkUpdateSmoother.getTargetUsedTime(o);
-            long q = p * 3L / 2L;
-            long r = MathHelper.clamp(q, n, 33333333L);
-            boolean bl3 = false;
-            VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
-            Iterator var39 = this.world.getEntities().iterator();
+        boolean bl = this.capturedFrustum != null;
+        if (bl) {
+            frustum2 = this.capturedFrustum;
+            frustum2.setPosition(this.capturedFrustumPosition.x, this.capturedFrustumPosition.y, this.capturedFrustumPosition.z);
+        } else {
+            frustum2 = new Frustum(matrix4f2, matrix4f);
+            frustum2.setPosition(d, e, f);
+        }
+        long o = Util.getMeasuringTimeNano() - limitTime;
+        long p = this.chunkUpdateSmoother.getTargetUsedTime(o);
+        long q = p * 3L / 2L;
+        long r = MathHelper.clamp(q, n, 33333333L);
+        boolean bl3 = false;
+        VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
+        Iterator var39 = this.world.getEntities().iterator();
 
-            while(true) {
-                Entity entity;
-                int w;
+        while(true) {
+            Entity entity;
+            int w;
+            do {
                 do {
                     do {
-                        do {
-                            if (!var39.hasNext()) {
-                                this.checkEmpty(matrices);
-                                immediate.draw(RenderLayer.getEntitySolid(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
-                                immediate.draw(RenderLayer.getEntityCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
-                                immediate.draw(RenderLayer.getEntityCutoutNoCull(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
-                                immediate.draw(RenderLayer.getEntitySmoothCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
-                                profiler.swap("blockentities");
-                                ObjectListIterator var53 = this.visibleChunks.iterator();
+                        if (!var39.hasNext()) {
+                            this.checkEmpty(matrices);
+                            immediate.draw(RenderLayer.getEntitySolid(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
+                            immediate.draw(RenderLayer.getEntityCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
+                            immediate.draw(RenderLayer.getEntityCutoutNoCull(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
+                            immediate.draw(RenderLayer.getEntitySmoothCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
+                            profiler.swap("blockentities");
+                            ObjectListIterator var52 = this.visibleChunks.iterator();
 
-                                while(true) {
-                                    List list;
-                                    do {
-                                        if (!var53.hasNext()) {
-                                            synchronized(this.noCullingBlockEntities) {
-                                                Iterator var57 = this.noCullingBlockEntities.iterator();
+                            while(true) {
+                                List list;
+                                do {
+                                    if (!var52.hasNext()) {
+                                        synchronized(this.noCullingBlockEntities) {
+                                            Iterator var56 = this.noCullingBlockEntities.iterator();
 
-                                                while(true) {
-                                                    if (!var57.hasNext()) {
-                                                        break;
-                                                    }
+                                            while(true) {
+                                                if (!var56.hasNext()) {
+                                                    break;
+                                                }
 
-                                                    BlockEntity blockEntity2 = (BlockEntity)var57.next();
-                                                    BlockPos blockPos2 = blockEntity2.getPos();
+                                                BlockEntity blockEntity2 = (BlockEntity)var56.next();
+                                                BlockPos blockPos2 = blockEntity2.getPos();
+                                                matrices.push();
+                                                matrices.translate((double)blockPos2.getX() - d, (double)blockPos2.getY() - e, (double)blockPos2.getZ() - f);
+                                                BlockEntityRenderDispatcher.INSTANCE.render(blockEntity2, tickDelta, matrices, immediate);
+                                                matrices.pop();
+                                            }
+                                        }
+
+                                        this.checkEmpty(matrices);
+                                        immediate.draw(RenderLayer.getSolid());
+                                        immediate.draw(TexturedRenderLayers.getEntitySolid());
+                                        immediate.draw(TexturedRenderLayers.getEntityCutout());
+                                        immediate.draw(TexturedRenderLayers.getBeds());
+                                        immediate.draw(TexturedRenderLayers.getShulkerBoxes());
+                                        immediate.draw(TexturedRenderLayers.getSign());
+                                        immediate.draw(TexturedRenderLayers.getChest());
+                                        this.bufferBuilders.getOutlineVertexConsumers().draw();
+                                        if (bl3) {
+                                            this.entityOutlineShader.render(tickDelta);
+                                            this.client.getFramebuffer().beginWrite(false);
+                                        }
+
+                                        profiler.swap("destroyProgress");
+                                        ObjectIterator var53 = this.blockBreakingProgressions.long2ObjectEntrySet().iterator();
+
+                                        while(var53.hasNext()) {
+                                            Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>> entry = (Long2ObjectMap.Entry)var53.next();
+                                            BlockPos blockPos3 = BlockPos.fromLong(entry.getLongKey());
+                                            double h = (double)blockPos3.getX() - d;
+                                            double x = (double)blockPos3.getY() - e;
+                                            double y = (double)blockPos3.getZ() - f;
+                                            if (!(h * h + x * x + y * y > 1024.0D)) {
+                                                SortedSet<BlockBreakingInfo> sortedSet2 = (SortedSet)entry.getValue();
+                                                if (sortedSet2 != null && !sortedSet2.isEmpty()) {
+                                                    int z = ((BlockBreakingInfo)sortedSet2.last()).getStage();
                                                     matrices.push();
-                                                    matrices.translate((double)blockPos2.getX() - d, (double)blockPos2.getY() - e, (double)blockPos2.getZ() - f);
-                                                    BlockEntityRenderDispatcher.INSTANCE.render(blockEntity2, tickDelta, matrices, immediate);
+                                                    matrices.translate((double)blockPos3.getX() - d, (double)blockPos3.getY() - e, (double)blockPos3.getZ() - f);
+                                                    VertexConsumer vertexConsumer2 = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer)ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(z)), matrices.peek());
+                                                    this.client.getBlockRenderManager().renderDamage(this.world.getBlockState(blockPos3), blockPos3, this.world, matrices, vertexConsumer2);
                                                     matrices.pop();
                                                 }
                                             }
-
-                                            this.checkEmpty(matrices);
-                                            immediate.draw(RenderLayer.getSolid());
-                                            immediate.draw(TexturedRenderLayers.getEntitySolid());
-                                            immediate.draw(TexturedRenderLayers.getEntityCutout());
-                                            immediate.draw(TexturedRenderLayers.getBeds());
-                                            immediate.draw(TexturedRenderLayers.getShulkerBoxes());
-                                            immediate.draw(TexturedRenderLayers.getSign());
-                                            immediate.draw(TexturedRenderLayers.getChest());
-                                            this.bufferBuilders.getOutlineVertexConsumers().draw();
-                                            if (bl3) {
-                                                this.entityOutlineShader.render(tickDelta);
-                                                this.client.getFramebuffer().beginWrite(false);
-                                            }
-
-                                            profiler.swap("destroyProgress");
-                                            ObjectIterator var54 = this.blockBreakingProgressions.long2ObjectEntrySet().iterator();
-
-                                            while(var54.hasNext()) {
-                                                Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>> entry2 = (Long2ObjectMap.Entry)var54.next();
-                                                BlockPos blockPos3 = BlockPos.fromLong(entry2.getLongKey());
-                                                double h = (double)blockPos3.getX() - d;
-                                                double x = (double)blockPos3.getY() - e;
-                                                double y = (double)blockPos3.getZ() - f;
-                                                if (!(h * h + x * x + y * y > 1024.0D)) {
-                                                    SortedSet<BlockBreakingInfo> sortedSet2 = (SortedSet)entry2.getValue();
-                                                    if (sortedSet2 != null && !sortedSet2.isEmpty()) {
-                                                        int z = ((BlockBreakingInfo)sortedSet2.last()).getStage();
-                                                        matrices.push();
-                                                        matrices.translate((double)blockPos3.getX() - d, (double)blockPos3.getY() - e, (double)blockPos3.getZ() - f);
-                                                        MatrixStack.Entry entry3 = matrices.peek();
-                                                        VertexConsumer vertexConsumer2 = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer) ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(z)), entry3.getModel(), entry3.getNormal());
-                                                        this.client.getBlockRenderManager().renderDamage(this.world.getBlockState(blockPos3), blockPos3, this.world, matrices, vertexConsumer2);
-                                                        matrices.pop();
-                                                    }
-                                                }
-                                            }
-
-                                            this.checkEmpty(matrices);
-                                            profiler.pop();
-                                            HitResult hitResult = this.client.crosshairTarget;
-                                            if (renderBlockOutline && hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
-                                                profiler.swap("outline");
-                                                BlockPos blockPos4 = ((BlockHitResult)hitResult).getBlockPos();
-                                                BlockState blockState = this.world.getBlockState(blockPos4);
-                                                if (!blockState.isAir() && this.world.getWorldBorder().contains(blockPos4)) {
-                                                    VertexConsumer vertexConsumer3 = immediate.getBuffer(RenderLayer.getLines());
-                                                    this.drawBlockOutline(matrices, vertexConsumer3, camera.getFocusedEntity(), d, e, f, blockPos4, blockState);
-                                                }
-                                            }
-
-                                            RenderSystem.pushMatrix();
-                                            RenderSystem.multMatrix(matrices.peek().getModel());
-                                            this.client.debugRenderer.render(matrices, immediate, d, e, f);
-                                            RenderSystem.popMatrix();
-                                            immediate.draw(TexturedRenderLayers.getEntityTranslucentCull());
-                                            immediate.draw(TexturedRenderLayers.getBannerPatterns());
-                                            immediate.draw(TexturedRenderLayers.getShieldPatterns());
-                                            immediate.draw(RenderLayer.getArmorGlint());
-                                            immediate.draw(RenderLayer.getArmorEntityGlint());
-                                            immediate.draw(RenderLayer.getGlint());
-                                            immediate.draw(RenderLayer.getEntityGlint());
-                                            immediate.draw(RenderLayer.getWaterMask());
-                                            this.bufferBuilders.getEffectVertexConsumers().draw();
-                                            immediate.draw(RenderLayer.getLines());
-                                            immediate.draw();
-                                            if (this.transparencyShader != null) {
-                                                this.translucentFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
-                                                this.translucentFramebuffer.copyDepthFrom(this.client.getFramebuffer());
-                                                profiler.swap("translucent");
-                                                this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
-                                                profiler.swap("string");
-                                                this.worldpreview_renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f);
-                                                this.particlesFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
-                                                this.particlesFramebuffer.copyDepthFrom(this.client.getFramebuffer());
-                                                RenderPhaseMixin.getPARTICLES_TARGET().startDrawing();
-                                                profiler.swap("particles");
-                                                this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
-                                                RenderPhaseMixin.getPARTICLES_TARGET().endDrawing();
-                                            } else {
-                                                profiler.swap("translucent");
-                                                this.worldpreview_renderLayerSafe(RenderLayer.getTranslucent(), matrices, d, e, f);
-                                                profiler.swap("string");
-                                                this.worldpreview_renderLayerSafe(RenderLayer.getTripwire(), matrices, d, e, f);
-                                                profiler.swap("particles");
-                                                this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
-                                            }
-
-                                            RenderSystem.pushMatrix();
-                                            RenderSystem.multMatrix(matrices.peek().getModel());
-                                            if (this.client.options.getCloudRenderMode() != CloudRenderMode.OFF) {
-                                                if (this.transparencyShader != null) {
-                                                    this.cloudsFramebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
-                                                    RenderPhaseMixin.getCLOUDS_TARGET().startDrawing();
-                                                    profiler.swap("clouds");
-                                                    this.renderClouds(matrices, tickDelta, d, e, f);
-                                                    RenderPhaseMixin.getCLOUDS_TARGET().endDrawing();
-                                                } else {
-                                                    profiler.swap("clouds");
-                                                    this.renderClouds(matrices, tickDelta, d, e, f);
-                                                }
-                                            }
-
-                                            if (this.transparencyShader != null) {
-                                                RenderPhaseMixin.getWEATHER_TARGET().startDrawing();
-                                                profiler.swap("weather");
-                                                this.renderWeather(lightmapTextureManager, tickDelta, d, e, f);
-                                                this.renderWorldBorder(camera);
-                                                RenderPhaseMixin.getWEATHER_TARGET().endDrawing();
-                                                this.transparencyShader.render(tickDelta);
-                                                this.client.getFramebuffer().beginWrite(false);
-                                            } else {
-                                                RenderSystem.depthMask(false);
-                                                profiler.swap("weather");
-                                                this.renderWeather(lightmapTextureManager, tickDelta, d, e, f);
-                                                this.renderWorldBorder(camera);
-                                                RenderSystem.depthMask(true);
-                                            }
-                                            this.renderChunkDebugInfo(camera);
-                                            RenderSystem.shadeModel(7424);
-                                            RenderSystem.depthMask(true);
-                                            RenderSystem.disableBlend();
-                                            RenderSystem.popMatrix();
-                                            BackgroundRenderer.method_23792();
-                                            return;
                                         }
 
-                                        WorldRenderer.ChunkInfo chunkInfo = (WorldRenderer.ChunkInfo)var53.next();
-                                        list = ((ChunkInfoMixin)chunkInfo).getChunk().getData().getBlockEntities();
-                                    } while(list.isEmpty());
-
-                                    Iterator var61 = list.iterator();
-
-                                    while(var61.hasNext()) {
-                                        BlockEntity blockEntity = (BlockEntity)var61.next();
-                                        BlockPos blockPos = blockEntity.getPos();
-                                        VertexConsumerProvider vertexConsumerProvider3 = immediate;
-                                        matrices.push();
-                                        matrices.translate((double)blockPos.getX() - d, (double)blockPos.getY() - e, (double)blockPos.getZ() - f);
-                                        SortedSet<BlockBreakingInfo> sortedSet = (SortedSet)this.blockBreakingProgressions.get(blockPos.asLong());
-                                        if (sortedSet != null && !sortedSet.isEmpty()) {
-                                            w = ((BlockBreakingInfo)sortedSet.last()).getStage();
-                                            if (w >= 0) {
-                                                MatrixStack.Entry entry = matrices.peek();
-                                                VertexConsumer vertexConsumer = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer)ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(w)), entry.getModel(), entry.getNormal());
-                                                vertexConsumerProvider3 = (renderLayer) -> {
-                                                    VertexConsumer vertexConsumer2 = immediate.getBuffer(renderLayer);
-                                                    return renderLayer.hasCrumbling() ? VertexConsumers.dual(vertexConsumer, vertexConsumer2) : vertexConsumer2;
-                                                };
+                                        this.checkEmpty(matrices);
+                                        profiler.pop();
+                                        HitResult hitResult = this.client.crosshairTarget;
+                                        if (renderBlockOutline && hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
+                                            profiler.swap("outline");
+                                            BlockPos blockPos4 = ((BlockHitResult)hitResult).getBlockPos();
+                                            BlockState blockState = this.world.getBlockState(blockPos4);
+                                            if (!blockState.isAir() && this.world.getWorldBorder().contains(blockPos4)) {
+                                                VertexConsumer vertexConsumer3 = immediate.getBuffer(RenderLayer.getLines());
+                                                this.drawBlockOutline(matrices, vertexConsumer3, camera.getFocusedEntity(), d, e, f, blockPos4, blockState);
                                             }
                                         }
 
-                                        BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider3);
-                                        matrices.pop();
+                                        RenderSystem.pushMatrix();
+                                        RenderSystem.multMatrix(matrices.peek().getModel());
+                                        this.renderWorldBorder(camera);
+                                        RenderSystem.popMatrix();
+                                        immediate.draw(TexturedRenderLayers.getEntityTranslucentCull());
+                                        immediate.draw(TexturedRenderLayers.getBannerPatterns());
+                                        immediate.draw(TexturedRenderLayers.getShieldPatterns());
+                                        immediate.draw(RenderLayer.getGlint());
+                                        immediate.draw(RenderLayer.getEntityGlint());
+                                        immediate.draw(RenderLayer.getWaterMask());
+                                        this.bufferBuilders.getEffectVertexConsumers().draw();
+                                        immediate.draw(RenderLayer.getLines());
+                                        immediate.draw();
+                                        profiler.swap("translucent");
+                                        this.renderLayer(RenderLayer.getTranslucent(), matrices, d, e, f);
+                                        profiler.swap("particles");
+                                        this.client.particleManager.renderParticles(matrices, immediate, lightmapTextureManager, camera, tickDelta);
+                                        RenderSystem.pushMatrix();
+                                        RenderSystem.multMatrix(matrices.peek().getModel());
+                                        profiler.swap("cloudsLayers");
+                                        if (this.client.options.getCloudRenderMode() != CloudRenderMode.OFF) {
+                                            profiler.swap("clouds");
+                                            this.renderClouds(matrices, tickDelta, d, e, f);
+                                        }
+
+                                        RenderSystem.depthMask(false);
+                                        profiler.swap("weather");
+                                        this.renderWeather(lightmapTextureManager, tickDelta, d, e, f);
+                                        RenderSystem.depthMask(true);
+                                        this.renderChunkDebugInfo(camera);
+                                        RenderSystem.shadeModel(7424);
+                                        RenderSystem.depthMask(true);
+                                        RenderSystem.disableBlend();
+                                        RenderSystem.popMatrix();
+                                        BackgroundRenderer.method_23792();
+                                        return;
                                     }
+
+                                    WorldRenderer.ChunkInfo chunkInfo = (WorldRenderer.ChunkInfo)var52.next();
+                                    list = ((ChunkInfoMixin)chunkInfo).getChunk().getData().getBlockEntities();
+                                } while(list.isEmpty());
+
+                                Iterator var60 = list.iterator();
+
+                                while(var60.hasNext()) {
+                                    BlockEntity blockEntity = (BlockEntity)var60.next();
+                                    BlockPos blockPos = blockEntity.getPos();
+                                    VertexConsumerProvider vertexConsumerProvider3 = immediate;
+                                    matrices.push();
+                                    matrices.translate((double)blockPos.getX() - d, (double)blockPos.getY() - e, (double)blockPos.getZ() - f);
+                                    SortedSet<BlockBreakingInfo> sortedSet = (SortedSet)this.blockBreakingProgressions.get(blockPos.asLong());
+                                    if (sortedSet != null && !sortedSet.isEmpty()) {
+                                        w = ((BlockBreakingInfo)sortedSet.last()).getStage();
+                                        if (w >= 0) {
+                                            VertexConsumer vertexConsumer = new TransformingVertexConsumer(this.bufferBuilders.getEffectVertexConsumers().getBuffer((RenderLayer)ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(w)), matrices.peek());
+                                            vertexConsumerProvider3 = (renderLayer) -> {
+                                                VertexConsumer vertexConsumer2 = immediate.getBuffer(renderLayer);
+                                                return renderLayer.hasCrumbling() ? VertexConsumers.dual(vertexConsumer, vertexConsumer2) : vertexConsumer2;
+                                            };
+                                        }
+                                    }
+
+                                    BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider3);
+                                    matrices.pop();
                                 }
                             }
+                        }
 
-                            entity = (Entity)var39.next();
-                        } while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(this.client.player));
-                    } while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
-                } while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
+                        entity = (Entity)var39.next();
+                    } while(!this.entityRenderDispatcher.shouldRender(entity, frustum2, d, e, f) && !entity.hasPassengerDeep(WorldPreview.player));
+                } while(entity == camera.getFocusedEntity() && !camera.isThirdPerson() && (!(camera.getFocusedEntity() instanceof LivingEntity) || !((LivingEntity)camera.getFocusedEntity()).isSleeping()));
+            } while(entity instanceof ClientPlayerEntity && camera.getFocusedEntity() != entity);
 
-                ++this.regularEntityCount;
-                if (entity.age == 0) {
-                    entity.lastRenderX = entity.getX();
-                    entity.lastRenderY = entity.getY();
-                    entity.lastRenderZ = entity.getZ();
-                }
-
-                Object vertexConsumerProvider2;
-                if (this.canDrawEntityOutlines() && this.client.method_27022(entity)) {
-                    bl3 = true;
-                    OutlineVertexConsumerProvider outlineVertexConsumerProvider = this.bufferBuilders.getOutlineVertexConsumers();
-                    vertexConsumerProvider2 = outlineVertexConsumerProvider;
-                    int k = entity.getTeamColorValue();
-                    int t = k >> 16 & 255;
-                    int u = k >> 8 & 255;
-                    w = k & 255;
-                    outlineVertexConsumerProvider.setColor(t, u, w, 255);
-                } else {
-                    vertexConsumerProvider2 = immediate;
-                }
-                this.renderEntity(entity, d, e, f, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider2);
+            ++this.regularEntityCount;
+            if (entity.age == 0) {
+                entity.lastRenderX = entity.getX();
+                entity.lastRenderY = entity.getY();
+                entity.lastRenderZ = entity.getZ();
             }
+
+            Object vertexConsumerProvider2;
+            if (this.canDrawEntityOutlines() && entity.isGlowing()) {
+                bl3 = true;
+                OutlineVertexConsumerProvider outlineVertexConsumerProvider = this.bufferBuilders.getOutlineVertexConsumers();
+                vertexConsumerProvider2 = outlineVertexConsumerProvider;
+                int k = entity.getTeamColorValue();
+                int t = k >> 16 & 255;
+                int u = k >> 8 & 255;
+                w = k & 255;
+                outlineVertexConsumerProvider.setColor(t, u, w, 255);
+            } else {
+                vertexConsumerProvider2 = immediate;
+            }
+
+            this.renderEntity(entity, d, e, f, tickDelta, matrices, (VertexConsumerProvider)vertexConsumerProvider2);
+        }
 
     }
     @Override
@@ -711,16 +678,23 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         if(instance.currentScreen instanceof LevelLoadingScreen){
             return this.world;
         }
-       return  instance.world;
+        return  instance.world;
+    }
+    @Redirect(method = "renderClouds(Lnet/minecraft/client/util/math/MatrixStack;FDDD)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
+    public ClientWorld worldpreview_getCorrectWorld5(MinecraftClient instance){
+        if(instance.currentScreen instanceof LevelLoadingScreen){
+            return this.world;
+        }
+        return  instance.world;
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/SkyProperties;useThickFog(II)Z"))
-    public boolean worldpreview_shouldThickenFog(SkyProperties instance, int i, int j){
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/Dimension;isFogThick(II)Z"))
+    public boolean worldpreview_shouldThickenFog(Dimension instance, int i, int j){
         if(client.gameRenderer==null&&client.currentScreen instanceof LevelLoadingScreen){
-           return false;
+            return false;
         }
 
-        return  instance.useThickFog(i, j);
+        return  instance.isFogThick(i, j);
     }
 
     @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", ordinal =1, opcode = Opcodes.GETFIELD))
@@ -746,7 +720,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
             return;
         }
 
-       instance.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
+        instance.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
     }
 
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))

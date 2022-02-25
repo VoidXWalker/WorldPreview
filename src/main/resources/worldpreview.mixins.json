@@ -9,8 +9,6 @@
     "access.ClientChunkManagerMixin",
     "access.ClientChunkMapMixin",
     "access.ThreadedAnvilChunkStorageMixin",
-    "access.RenderPhaseMixin",
-    "access.SpawnLocatingMixin",
     "access.ChunkInfoMixin",
     "access.KeyBindingMixin",
     "access.WorldRendererMixin",
@@ -25,7 +23,7 @@
     "client.MinecraftClientMixin",
     "client.KeyboardMixin",
     "client.GameOptionsMixin",
-    "client.ClientWorldMixin",
+    "client.WorldMixin",
 
     "server.MinecraftServerMixin",
     "server.ServerChunkManagerMixin",
