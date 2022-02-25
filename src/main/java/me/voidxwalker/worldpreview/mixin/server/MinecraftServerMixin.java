@@ -64,6 +64,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 WorldPreview.spawnPos= serverWorld.getSpawnPos();
                 WorldPreview.freezePreview=false;
                 WorldPreview.world= this.getWorld(DimensionType.OVERWORLD);
+                WorldPreview.camera=null;
                 LevelInfo properties = new LevelInfo(WorldPreview.world.getLevelProperties().getSeed(), GameMode.SURVIVAL, false, WorldPreview.world.getLevelProperties().isHardcore(), WorldPreview.world.getLevelProperties().getGeneratorType());
 
                 WorldPreview.clientWord = new ClientWorld(null,properties, DimensionType.OVERWORLD,16 , MinecraftClient.getInstance().getProfiler(),null);
@@ -82,6 +83,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     }
     private void worldpreview_calculateSpawn(ServerWorld serverWorld) {
         BlockPos blockPos = serverWorld.getSpawnPos();
+        if (serverWorld.dimension.hasSkyLight() && serverWorld.getLevelProperties().getGameMode() != GameMode.ADVENTURE) {
             int i = Math.max(0, this.getSpawnRadius(serverWorld));
             int j = MathHelper.floor(serverWorld.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
             if (j < i) {
@@ -94,7 +96,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
             long l = (long)(i * 2 + 1);
             long m = l * l;
-            int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
+            int k = m > 2147483647L ? 2147483647 : (int)m;
             int n = this.method_14244(k);
             int o = (new Random()).nextInt(k);
             WorldPreview.playerSpawn=o;
@@ -104,14 +106,19 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 int s = q / (i * 2 + 1);
                 BlockPos blockPos2 = serverWorld.getDimension().getTopSpawningBlockPosition(blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
                 if (blockPos2 != null) {
-                    WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                    WorldPreview.player.y+=1.8F;
-
-                    if (serverWorld.doesNotCollide(WorldPreview.player)) {
+                   WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
+                    if (serverWorld.doesNotCollide( WorldPreview.player)) {
                         break;
                     }
                 }
             }
+        } else {
+            WorldPreview.player.refreshPositionAndAngles(blockPos, 0.0F, 0.0F);
+
+            while(!serverWorld.doesNotCollide( WorldPreview.player) &&  WorldPreview.player.y < 255.0D) {
+                WorldPreview.player.updatePosition( WorldPreview.player.x,  WorldPreview.player.y + 1.0D,  WorldPreview.player.z);
+            }
+        }
 
     }
 

@@ -46,10 +46,19 @@ public class BackgroundRendererMixin {
             return instance.getBossBarHud();
         }
     }
+    @Redirect(method = "applyFog",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/render/GameRenderer;getViewDistance()F"))
+    public float getCorrectDistance(GameRenderer instance){
+        if(instance==null&&client.currentScreen instanceof LevelLoadingScreen){
+            return client.options.viewDistance*16;
+        }
+        else {
+            return instance.getViewDistance();
+        }
+    }
     @Redirect(method = "renderBackground",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/render/GameRenderer;getSkyDarkness(F)F"))
     public float getCorrectSkyDarkness(GameRenderer instance, float tickDelta){
         if(instance==null&&client.currentScreen instanceof LevelLoadingScreen){
-            return 0;
+            return 0.5F;
         }
         else {
             return instance.getSkyDarkness(tickDelta);

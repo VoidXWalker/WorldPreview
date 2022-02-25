@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -68,7 +69,6 @@ public abstract class WorldRendererMixin<E> {
         }
         return  instance.getCamera();
     }
-
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
     public ClientPlayerEntity worldpreview_getCorrectPlayer3(MinecraftClient instance){
         if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
