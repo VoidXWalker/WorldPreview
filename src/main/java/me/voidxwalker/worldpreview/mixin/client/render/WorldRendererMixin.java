@@ -564,30 +564,33 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Override
     public void worldpreview_setWorldSafe(@Nullable ClientWorld clientWorld) {
-        this.lastCameraChunkUpdateX = Double.MIN_VALUE;
-        this.lastCameraChunkUpdateY = Double.MIN_VALUE;
-        this.lastCameraChunkUpdateZ = Double.MIN_VALUE;
-        this.cameraChunkX = Integer.MIN_VALUE;
-        this.cameraChunkY = Integer.MIN_VALUE;
-        this.cameraChunkZ = Integer.MIN_VALUE;
-        this.entityRenderDispatcher.setWorld(clientWorld);
-        this.world = clientWorld;
-        if (clientWorld != null) {
-            this.reload();
-        } else {
-            this.chunksToRebuild.clear();
-            this.visibleChunks.clear();
-            if (this.chunks != null) {
-                this.chunks.clear();
-                this.chunks = null;
+            this.lastCameraChunkUpdateX = Double.MIN_VALUE;
+            this.lastCameraChunkUpdateY = Double.MIN_VALUE;
+            this.lastCameraChunkUpdateZ = Double.MIN_VALUE;
+            this.cameraChunkX = Integer.MIN_VALUE;
+            this.cameraChunkY = Integer.MIN_VALUE;
+            this.cameraChunkZ = Integer.MIN_VALUE;
+            this.entityRenderDispatcher.setWorld(world);
+            this.world = clientWorld;
+            if (world != null) {
+                this.visibleChunks.ensureCapacity(4356 * world.countVerticalSections());
+                this.reload();
+            } else {
+                this.chunksToRebuild.clear();
+                this.visibleChunks.clear();
+                if (this.chunks != null) {
+                    this.chunks.clear();
+                    this.chunks = null;
+                }
+
+                if (this.chunkBuilder != null) {
+                    this.chunkBuilder.stop();
+                }
+
+                this.chunkBuilder = null;
+                this.noCullingBlockEntities.clear();
             }
 
-            if (this.chunkBuilder != null) {
-                this.chunkBuilder.stop();
-            }
-            this.chunkBuilder = null;
-            this.noCullingBlockEntities.clear();
-        }
 
     }
     public void renderSkySafe(MatrixStack matrices, Matrix4f matrix4f, float f, Runnable runnable) {
