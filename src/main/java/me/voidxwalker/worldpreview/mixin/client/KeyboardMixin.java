@@ -20,7 +20,7 @@ public abstract class KeyboardMixin {
 
     @Inject(method = "onKey",at=@At("HEAD"))
     public void worldpreview_getF3ESCKey(long window, int key, int scancode, int i, int j, CallbackInfo ci){
-        if( client.currentScreen instanceof LevelLoadingScreen &&window == this.client.getWindow().getHandle()){
+        if( client.currentScreen instanceof LevelLoadingScreen &&window == this.client.getWindow().getHandle()&&WorldPreview.inPreview){
             if(i!=0) {
                 InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
                 if (key == 256&& InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), 292)&&WorldPreview.showMenu) {
