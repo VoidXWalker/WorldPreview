@@ -1,7 +1,6 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.ChunkSetter;
-import me.voidxwalker.worldpreview.mixin.access.ClientChunkManagerMixin;
 import net.minecraft.client.world.ClientChunkManager;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;

@@ -10,6 +10,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface ChunkInfoMixin {
     @Accessor BuiltChunk getField_10830();
     @Accessor Direction getField_10831();
-    //@Accessor byte getField_4126();
     @Accessor int getField_10833();
 }

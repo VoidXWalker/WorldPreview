@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95075fa7-6fcb-4028-8c9a-4a753b70469f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/WorldPreview.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/WorldPreview.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/WorldPreview.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/WorldPreview.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/WorldPreview.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/WorldPreview.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/BuiltChunkStorageMixin.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/ChunkInfoMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/ChunkInfoMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/ClientChunkManagerMixin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/ClientChunkMapMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/ClientChunkMapMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerChunkManagerMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerChunkManagerMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/worldpreview.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/worldpreview.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

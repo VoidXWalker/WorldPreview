@@ -4,7 +4,6 @@
   "package": "me.voidxwalker.worldpreview.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "access.ClientChunkManagerMixin",
     "access.ClientChunkMapMixin",
     "access.ThreadedAnvilChunkStorageMixin",
     "access.ChunkInfoMixin",
