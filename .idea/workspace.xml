@@ -6,12 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="95075fa7-6fcb-4028-8c9a-4a753b70469f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/ChunkSetter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/ChunkSetter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/KeyBindingHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/KeyBindingHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/ClientChunkMapMixin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/KeyBindingMixin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/ThreadedAnvilChunkStorageMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/ThreadedAnvilChunkStorageMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/ClientChunkMapMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/ClientChunkMapMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/KeyboardMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/KeyboardMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/MinecraftClientMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/MinecraftClientMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/BackgroundRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/BackgroundRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/ChunkRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/ChunkRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/LevelLoadingScreenMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/LevelLoadingScreenMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/WorldRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/WorldRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/MinecraftServerMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/MinecraftServerMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerChunkManagerMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerChunkManagerMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerPlayerEntityMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerPlayerEntityMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/worldpreview.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/worldpreview.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

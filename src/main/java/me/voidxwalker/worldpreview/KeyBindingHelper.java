@@ -10,34 +10,34 @@ import java.util.Optional;
 public final class KeyBindingHelper {
     private static final List<KeyBinding> moddedKeyBindings = Lists.newArrayList();
 
-    private static Map<String, Integer> getCategoryMap() {
-        return KeyBindingMixin.invokeGetCategoryMap();
-    }
+//    private static Map<String, Integer> getCategoryMap() {
+//        return KeyBindingMixin.invokeGetCategoryMap();
+//    }
+//
+//    private static boolean hasCategory(String categoryTranslationKey) {
+//        return getCategoryMap().containsKey(categoryTranslationKey);
+//    }
+//
+//    public static void addCategory(String categoryTranslationKey) {
+//        Map<String, Integer> map = getCategoryMap();
+//
+//        if (map.containsKey(categoryTranslationKey)) {
+//            return;
+//        }
+//
+//        Optional<Integer> largest = map.values().stream().max(Integer::compareTo);
+//        int largestInt = largest.orElse(0);
+//        map.put(categoryTranslationKey, largestInt + 1);
+//    }
 
-    private static boolean hasCategory(String categoryTranslationKey) {
-        return getCategoryMap().containsKey(categoryTranslationKey);
-    }
-
-    public static void addCategory(String categoryTranslationKey) {
-        Map<String, Integer> map = getCategoryMap();
-
-        if (map.containsKey(categoryTranslationKey)) {
-            return;
-        }
-
-        Optional<Integer> largest = map.values().stream().max(Integer::compareTo);
-        int largestInt = largest.orElse(0);
-        map.put(categoryTranslationKey, largestInt + 1);
-    }
-
-    public static KeyBinding registerKeyBinding(KeyBinding binding) {
-        if (!hasCategory(binding.getCategory())) {
-            addCategory(binding.getCategory());
-        }
-
-        moddedKeyBindings.add(binding);
-        return binding;
-    }
+//    public static KeyBinding registerKeyBinding(KeyBinding binding) {
+//        if (!hasCategory(binding.getCategory())) {
+//            addCategory(binding.getCategory());
+//        }
+//
+//        moddedKeyBindings.add(binding);
+//        return binding;
+//    }
 
     /**
      * Processes the keybindings array for our modded ones by first removing existing modded keybindings and readding them,
