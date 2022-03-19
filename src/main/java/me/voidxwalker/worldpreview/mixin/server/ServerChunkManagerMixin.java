@@ -2,8 +2,6 @@ package me.voidxwalker.worldpreview.mixin.server;
 
 import me.voidxwalker.worldpreview.ChunkSetter;
 import me.voidxwalker.worldpreview.WorldPreview;
-import me.voidxwalker.worldpreview.mixin.access.ClientChunkMapMixin;
-import me.voidxwalker.worldpreview.mixin.access.ThreadedAnvilChunkStorageMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.world.ClientChunkManager;

@@ -1,7 +1,6 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.WorldPreview;
-import me.voidxwalker.worldpreview.mixin.access.KeyBindingMixin;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
