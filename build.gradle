@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.9-SNAPSHOT'
+	id 'fabric-loom' version "0.7-SNAPSHOT" // To use chocoloom, change the version to a commit hash
 	id 'maven-publish'
 }
 
@@ -7,24 +7,59 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = "${project.mod_version}+${project.minecraft_version}"
+version = project.mod_version
 group = project.maven_group
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.grad........................le.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	maven {
+		name = "legacy-fabric"
+		url = "https://maven.legacyfabric.net"
+	}
+}
+
+// Comment out this block if you're using Chocoloom
+// Comment when using loom 0.10
+minecraft {
+	intermediaryUrl = {
+		return "https://maven.legacyfabric.net/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar";
+	}
 }
 loom {
+// Uncomment when using loom 0.10
+//	setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
 	accessWidener = file("src/main/resources/worldpreview.accesswidener")
 }
-dependencies {
-	minecraft "com.mojang:minecraft:1.14.4"
-	mappings "net.fabricmc:yarn:1.14.4+build.18:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.12.12"
 
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API provides hooks for events, item registration, and more. As most mods will need this, it's included by default. 
+	// If you know for a fact you don't, it's not required and can be safely removed.
+//	modImplementation ("net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${fabric_version}") {
+//		exclude module: "fabric-loader-1.8.9"
+//	}
+
+	// Hacks that make mac os work
+	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+		implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
+		implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
+		implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
+	}
+}
+
+// More hacks that make mac os work
+if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+	configurations.all {
+		resolutionStrategy {
+			dependencySubstitution {
+				substitute module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
+				substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
+			}
+			force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
+		}
+	}
 }
 
 processResources {
@@ -35,15 +70,12 @@ processResources {
 	}
 }
 
+// ensure that the encoding is set to UTF-8, no matter what the system default is
+// this fixes some edge cases with special characters not displaying correctly
+// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile).configureEach {
-	// ensure that the encoding is set to UTF-8, no matter what the system default is
-	// this fixes some edge cases with special characters not displaying correctly
-	// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
-
-	// Minecraft 1.17 (21w19a) upwards uses Java 16.
-	it.options.release = 8
+	if (JavaVersion.current().isJava9Compatible()) it.options.release = 8
 }
 
 java {
@@ -52,6 +84,7 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 }
+
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
@@ -62,21 +95,13 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			from components.java
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	// select the repositories you want to publish to
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+		// uncomment to publish to the local maven
+		// mavenLocal()
 	}
 }
