@@ -8,6 +8,7 @@
     "access.WorldRendererMixin",
 
     "client.render.WorldRendererMixin",
+    "client.render.LoadingScreenRendererMixin",
 
     "client.MinecraftClientMixin",
     "client.GameOptionsMixin",

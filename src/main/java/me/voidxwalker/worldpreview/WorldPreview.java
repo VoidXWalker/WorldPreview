@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 public class WorldPreview  implements ClientModInitializer {
    public static World world;
    public static ClientPlayerEntity player;
-   public static ClientWorld clientWord;
+   public static ClientWorld clientWorld;
    public static boolean inPreview;
    public static BlockPos spawnPos;
    public static int kill=0;
