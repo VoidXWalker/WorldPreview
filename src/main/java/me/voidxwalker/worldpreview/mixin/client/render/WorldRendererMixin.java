@@ -55,6 +55,10 @@ import java.util.*;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
+    public boolean previewRenderer;
+    public void setPreviewRenderer(){
+        this.previewRenderer=true;
+    }
 
     @Shadow private ClientWorld world;
 
@@ -157,14 +161,14 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "renderWeather", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
     public ClientWorld worldpreview_getCorrectWorld(MinecraftClient instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
+        if(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return this.world;
         }
         return  instance.world;
     }
     @Redirect(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     public Entity worldpreview_getCameraEntity(MinecraftClient instance){
-        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return  instance.getCameraEntity();
@@ -172,13 +176,13 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Inject(method = "reload",at = @At(value = "TAIL"))
     public void worldpreview_reload(CallbackInfo ci){
-        if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, (WorldRenderer) (Object)this);
         }
     }
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;setupTerrain(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/Frustum;ZIZ)V"))
     private void worldpreview_setupTerrain(WorldRenderer instance, Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator)  {
-        if(!(client.currentScreen instanceof LevelLoadingScreen)){
+        if(!(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer)){
             this.setupTerrain(camera,frustum,hasForcedFrustum,frame,spectator);
             return;
         }
@@ -587,7 +591,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderLayer(Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/util/math/MatrixStack;DDD)V"))
     private void worldpreview_renderLayer(WorldRenderer instance, RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f) {
-        if (!(client.currentScreen instanceof LevelLoadingScreen)) {
+        if (!(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer)) {
             this.renderLayer(renderLayer, matrixStack, d, e, f);
             return;
         }
@@ -658,7 +662,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getViewDistance()F"))
     public float worldpreview_getViewDistance(GameRenderer instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
+        if(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return client.options.viewDistance*16;
         }
 
@@ -667,7 +671,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;targetedEntity:Lnet/minecraft/entity/Entity;", opcode = Opcodes.GETFIELD))
     public Entity worldpreview_getCorrectTargetedPlayerEntity(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return instance.targetedEntity ;
@@ -690,7 +694,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/Dimension;isFogThick(II)Z"))
     public boolean worldpreview_shouldThickenFog(Dimension instance, int i, int j){
-        if(client.gameRenderer==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(client.gameRenderer==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return false;
         }
 
@@ -699,7 +703,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", ordinal =1, opcode = Opcodes.GETFIELD))
     public ClientPlayerEntity worldpreview_getCorrectPlayer2(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return instance.player ;
@@ -707,7 +711,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSpectator()Z"))
     public boolean worldpreview_spectator(ClientPlayerEntity instance){
-        if(client.currentScreen instanceof LevelLoadingScreen&&instance==null){
+        if(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer&&instance==null){
             return false;
         }
 
@@ -716,7 +720,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/debug/DebugRenderer;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;DDD)V"))
     public void worldpreview_stopDebugRenderer(DebugRenderer instance, MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ){
-        if(client.currentScreen instanceof LevelLoadingScreen){
+        if(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return;
         }
 
@@ -725,7 +729,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
     public ClientWorld worldpreview_getCorrectWorld4(MinecraftClient instance){
-        if(instance.world==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.world==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return this.world;
         }
         return instance.world;
@@ -734,7 +738,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getCamera()Lnet/minecraft/client/render/Camera;"))
     public Camera worldpreview_getCamera(GameRenderer instance){
-        if(instance.getCamera()==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.getCamera()==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.camera;
         }
         return  instance.getCamera();
@@ -742,7 +746,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
     public ClientPlayerEntity worldpreview_getCorrectPlayer3(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return instance.player ;
