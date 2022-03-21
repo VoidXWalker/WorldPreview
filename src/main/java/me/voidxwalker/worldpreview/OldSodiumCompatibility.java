@@ -13,6 +13,6 @@ import java.util.Random;
 public interface OldSodiumCompatibility {
     boolean worldpreview_renderSafe(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay) ;
     void worldpreview_setWorldSafe(ClientWorld clientWorld);
-
+    void setPreviewRenderer();
 }
 

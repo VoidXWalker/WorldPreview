@@ -15,6 +15,8 @@ import net.minecraft.client.util.Window;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.resource.ReloadableResourceManager;
+import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.profiler.Profiler;
@@ -104,10 +106,13 @@ public abstract class MinecraftClientMixin {
 
     }
     //sodium
-    @Inject(method="<init>",at=@At(value = "TAIL"))
-    public void worldpreview_createWorldRenderer(RunArgs args, CallbackInfo ci){
+    @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManager;registerListener(Lnet/minecraft/resource/ResourceReloadListener;)V",ordinal = 11))
+    public void worldpreview_createWorldRenderer(ReloadableResourceManager instance, ResourceReloadListener resourceReloadListener){
         WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
+        ((OldSodiumCompatibility)WorldPreview.worldRenderer).setPreviewRenderer();
         this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
+        instance.registerListener(worldRenderer);
+
     }
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
     public void reset(Screen screen, CallbackInfo ci){
