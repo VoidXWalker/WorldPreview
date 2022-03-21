@@ -29,4 +29,9 @@ public class ClientChunkMapMixin implements ChunkSetter {
             ++this.field_19143;
         }
     }
+
+    @Override
+    public void setPreviewRenderer() {
+
+    }
 }

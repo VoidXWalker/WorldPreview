@@ -5,4 +5,5 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ChunkSetter {
      void set(int index,  @Nullable WorldChunk worldChunk);
+     void setPreviewRenderer();
 }

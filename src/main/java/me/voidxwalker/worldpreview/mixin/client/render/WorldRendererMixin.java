@@ -1,5 +1,6 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
+import me.voidxwalker.worldpreview.ChunkSetter;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
@@ -21,22 +22,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(WorldRenderer.class)
-public abstract class WorldRendererMixin<E> {
+public abstract class WorldRendererMixin<E> implements ChunkSetter {
     @Shadow private ClientWorld world;
 
     @Shadow @Final private MinecraftClient client;
-
+    public boolean previewRenderer;
+    public void setPreviewRenderer(){
+        this.previewRenderer=true;
+    }
 
     @Redirect(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     public Entity worldpreview_getCameraEntity(MinecraftClient instance){
-        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return  instance.getCameraEntity();
     }
     @Redirect(method = "setUpTerrain",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/render/chunk/ChunkRenderer;unscheduleRebuild()V"))
     public void stopCancel(ChunkRenderer instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
+        if(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return;
         }
         instance.unscheduleRebuild();
@@ -55,7 +59,7 @@ public abstract class WorldRendererMixin<E> {
 
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
     public ClientWorld worldpreview_getCorrectWorld4(MinecraftClient instance){
-        if(instance.world==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.world==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return this.world;
         }
         return instance.world;
@@ -64,28 +68,28 @@ public abstract class WorldRendererMixin<E> {
 
     @Redirect(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getCamera()Lnet/minecraft/client/render/Camera;"))
     public Camera worldpreview_getCamera(GameRenderer instance){
-        if(instance.getCamera()==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.getCamera()==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.camera;
         }
         return  instance.getCamera();
     }
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
     public ClientPlayerEntity worldpreview_getCorrectPlayer3(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return instance.player ;
     }
     @Redirect(method = "renderEntities", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
     public ClientPlayerEntity worldpreview_getCorrectPlayer(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return instance.player ;
     }
     @Redirect(method = "setUpTerrain", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
     public ClientPlayerEntity worldpreview_getCorrectPlayer2(MinecraftClient instance){
-        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return instance.player ;

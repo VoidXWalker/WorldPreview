@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import me.voidxwalker.worldpreview.ChunkSetter;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
@@ -67,10 +68,11 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         }
         return worldpreview_getChunkMapPos().y;
     }
-    @Inject(method = "render",at=@At("HEAD"),cancellable = true)
+    @Inject(method = "render",at=@At("HEAD"))
     public void render(int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if(WorldPreview.worldRenderer==null){
             WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
+            ((ChunkSetter)WorldPreview.worldRenderer).setPreviewRenderer();
         }
         if(this.backgroundRenderer==null){
             backgroundRenderer= new BackgroundRenderer(MinecraftClient.getInstance().gameRenderer);
