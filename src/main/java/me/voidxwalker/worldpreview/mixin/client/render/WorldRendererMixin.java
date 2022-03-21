@@ -58,7 +58,10 @@ import java.util.SortedSet;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
-
+    public void setPreviewRenderer(){
+        this.previewRenderer=true;
+    }
+    public boolean previewRenderer;
     @Shadow private ClientWorld world;
 
     @Shadow @Final private MinecraftClient client;
@@ -448,21 +451,21 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
     }
     @Redirect(method = "renderWeather", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
     public ClientWorld worldpreview_getCorrectWorld(MinecraftClient instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
+        if(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return this.world;
         }
         return  instance.world;
     }
     @Redirect(method = "tickRainSplashing", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
     public ClientWorld worldpreview_getCorrectWorld2(MinecraftClient instance){
-        if(client.currentScreen instanceof LevelLoadingScreen){
+        if(client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return this.world;
         }
         return  instance.world;
     }
     @Redirect(method = "reload()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     public Entity worldpreview_getCameraEntity(MinecraftClient instance){
-        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
         }
         return  instance.getCameraEntity();
@@ -470,7 +473,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Inject(method = "reload()V",at = @At(value = "TAIL"))
     public void worldpreview_reload(CallbackInfo ci){
-        if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen){
+        if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, ((WorldRenderer) (Object)this));
             this.chunkInfos = new WorldRenderer.ChunkInfoList(this.chunks.chunks.length);
             if (this.world != null) {
@@ -822,18 +825,5 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
             vertexFormat.endDrawing();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
