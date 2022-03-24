@@ -9,6 +9,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.ServerNetworkIo;
 //import net.minecraft.server.ServerTask;
 //import net.minecraft.server.WorldGenerationProgressListener;
@@ -44,25 +45,20 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
 
     @Shadow public abstract int getSpawnProtectionRadius();
 
-    //
-//
-//
-//    @Shadow public abstract Iterable<ServerWorld> getWorlds();
-//
-//    @Shadow @Final private Snooper snooper;
-//
-//    @Shadow @Final private static Logger LOGGER;
-//
-//    @Shadow public abstract @Nullable ServerNetworkIo getNetworkIo();
-//
-//    @Shadow public abstract Thread getThread();
-//
-//    @Shadow public abstract int getSpawnRadius(@Nullable ServerWorld world);
-//
-//    @Shadow public abstract ServerWorld getWorld(DimensionType dimensionType);
-//
-//    @Shadow public abstract void setServerIp(String serverIp);
-//
+    @Shadow public abstract boolean isLoading();
+
+    @Shadow private boolean shouldResetWorld;
+
+    @Shadow @Final private static Logger LOGGER;
+
+    @Shadow public abstract ServerNetworkIo getNetworkIo();
+
+    @Shadow private PlayerManager playerManager;
+
+    @Shadow public ServerWorld[] worlds;
+
+    @Shadow @Final private Snooper snooper;
+
     @Inject(method = "prepareWorlds", at = @At(value = "HEAD"))
     public void worldpreview_getWorld(CallbackInfo ci){
         synchronized (WorldPreview.lock){
@@ -99,56 +95,46 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
             WorldPreview.player.updatePosition(WorldPreview.player.x, WorldPreview.player.y + 1.0D, WorldPreview.player.z);
         }
     }
-//
-//    @Inject(method = "shutdown",at=@At(value = "HEAD"),cancellable = true)
-//    public void kill(CallbackInfo ci){
-//        if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen&&Thread.currentThread().getId()!=this.getThread().getId()) {
-//           shutdownWithoutSave();
-//           ci.cancel();
-//        }
-//    }
-//
-//    @Inject(method="run",at=@At(value="INVOKE",target="Lnet/minecraft/server/MinecraftServer;setupServer()Z",shift = At.Shift.AFTER), cancellable = true)
-//    public void kill2(CallbackInfo ci){
-//        WorldPreview.inPreview=false;
-//        if(WorldPreview.kill==1){
-//            ci.cancel();
-//        }
-//    }
-//
-//    public void shutdownWithoutSave(){
-//        LOGGER.info("Stopping server");
-//        if (this.getNetworkIo() != null) {
-//            this.getNetworkIo().stop();
-//        }
-//        Iterator var1 = this.getWorlds().iterator();
-//        ServerWorld serverWorld2;
-//        while(var1.hasNext()) {
-//            serverWorld2 = (ServerWorld)var1.next();
-//            if (serverWorld2 != null) {
-//                serverWorld2.savingDisabled = false;
-//            }
-//        }
-//        Iterator<ServerWorld> var2 = this.getWorlds().iterator();
-//        while(var2.hasNext()) {
-//            serverWorld2 = var2.next();
-//            if (serverWorld2 != null) {
-//                try {
-//                    serverWorld2.getChunkManager().threadedAnvilChunkStorage.close();
-//                } catch (IOException var5) {
-//                }
-//            }
-//        }
-//        if (this.snooper.isActive()) {
-//            this.snooper.cancel();
-//        }
-//
-//    }
-//
-//    @Inject(method = "prepareStartRegion",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/world/ServerChunkManager;getTotalChunksLoadedCount()I",shift = At.Shift.AFTER),cancellable = true)
-//    public void kill(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-//        if(WorldPreview.kill==1){
-//           ci.cancel();
-//        }
-//    }
+
+    @Inject(method = "stopServer", at=@At(value = "HEAD"), cancellable = true)
+    public void kill(CallbackInfo ci) {
+        if (!this.isLoading()) { //Thread.getId() does not exist in the client jar, therefore this is already handled for us - Pix
+            worldpreview_shutdownWithoutSave();
+            ci.cancel();
+        }
+    }
+
+    @Inject(method="run",at=@At(value="INVOKE",target="Lnet/minecraft/server/MinecraftServer;setupServer()Z",shift = At.Shift.AFTER), cancellable = true)
+    public void kill2(CallbackInfo ci){
+        WorldPreview.inPreview=false;
+        if(WorldPreview.kill==1){
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "prepareWorlds",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", shift = At.Shift.AFTER), cancellable = true)
+    public void kill3(CallbackInfo ci){
+        if(WorldPreview.kill==1){
+            ci.cancel();
+        }
+    }
+
+    public void worldpreview_shutdownWithoutSave() {
+        if (!this.shouldResetWorld) {
+            LOGGER.info("Stopping server");
+            if (this.getNetworkIo() != null) {
+                this.getNetworkIo().stop();
+            }
+
+            if (this.worlds != null) {
+                for(int i = 0; i < this.worlds.length; ++i) {
+                    ServerWorld serverWorld = this.worlds[i];
+                    serverWorld.close();
+                }
+            }
+            if (this.snooper.isActive()) {
+                this.snooper.concel();
+            }
+        }
+    }
 }

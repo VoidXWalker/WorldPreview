@@ -17,7 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 //import org.lwjgl.glfw.GLFW;
 
-public class WorldPreview  implements ClientModInitializer {
+public class WorldPreview implements ClientModInitializer {
    public static World world;
    public static ClientPlayerEntity player;
    public static ClientWorld clientWorld;
