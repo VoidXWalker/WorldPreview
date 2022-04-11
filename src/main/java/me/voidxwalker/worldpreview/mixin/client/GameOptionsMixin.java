@@ -5,31 +5,31 @@ import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.TranslatableText;
-import org.apache.commons.lang3.ArrayUtils;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
-
-    @Mutable @Final
     @Shadow public KeyBinding[] keysAll;
+    private KeyBinding freezePreviewKey;
+    private KeyBinding leavePreviewKey;
 
-    @Inject(at = @At("HEAD"), method = "load()V")
-    public void loadHook(CallbackInfo info) {
-        keysAll = KeyBindingHelper.process(keysAll);
+    @Inject(method = "<init>*", at = @At("TAIL"))
+    private void initInject(CallbackInfo ci) {
+        this.freezePreviewKey = new KeyBinding("Freeze Preview", 36, "World Preview");
+        this.leavePreviewKey = new KeyBinding("Leave Preview", 37, "World Preview");
+        ArrayList<KeyBinding> a = new ArrayList<>(Arrays.asList(this.keysAll));
+        a.add(this.freezePreviewKey);
+        a.add(this.leavePreviewKey);
+        this.keysAll = a.toArray(this.keysAll); // if only java had an array append method
+        WorldPreview.freezeKey = this.freezePreviewKey;
+        WorldPreview.resetKey = this.leavePreviewKey;
     }
 }

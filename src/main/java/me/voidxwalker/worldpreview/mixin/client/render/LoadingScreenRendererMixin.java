@@ -2,6 +2,7 @@ package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import me.voidxwalker.worldpreview.WorldPreview;
+import me.voidxwalker.worldpreview.mixin.access.ScreenMixin;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
 //import net.minecraft.client.gui.WorldGenerationProgressTracker;
@@ -13,7 +14,9 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.render.*;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Matrix4f;
 import net.minecraft.entity.Entity;
@@ -21,9 +24,12 @@ import net.minecraft.entity.LivingEntity;
 //import net.minecraft.fluid.FluidState;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.Level;
+import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -35,6 +41,13 @@ import java.util.Iterator;
 
 @Mixin(LoadingScreenRenderer.class)
 public abstract class LoadingScreenRendererMixin {
+    @Shadow private MinecraftClient field_1029;
+
+    @Shadow private long field_1031;
+
+    @Redirect(method = "progressStagePercentage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/TextureManager;bindTexture(Lnet/minecraft/util/Identifier;)V"))
+    private void foo(TextureManager instance, Identifier id) {
+    }
 //    private boolean worldpreview_showMenu;
 //    private BackgroundRenderer backgroundRenderer;
 //    protected LevelLoadingScreenMixin(Text title) {

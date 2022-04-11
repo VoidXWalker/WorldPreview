@@ -42,33 +42,6 @@ public class WorldPreview implements ClientModInitializer {
    }
    @Override
    public void onInitializeClient() {
-//      resetKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-//              this.translate("key.world_preview.reset","Leave Preview").getString(),
-//              InputUtil.Type.KEYSYM,
-//              GLFW.GLFW_KEY_H,
-//              this.translate("key.categories.world_preview","World Preview").getString()
-//      ));
-//
-//      freezeKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-//              this.translate("key.world_preview.freeze","Freeze Preview").getString(),
-//              InputUtil.Type.KEYSYM,
-//              GLFW.GLFW_KEY_J,
-//              this.translate("key.categories.world_preview","World Preview").getString()
-//      ));
-//      cycleChunkMapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-//              this.translate("key.world_preview.cycle_chunkmap","Cycle ChunkMap Positions").getString(),
-//              InputUtil.Type.KEYSYM,
-//              GLFW.GLFW_KEY_K,
-//              this.translate("key.categories.world_preview","World Preview").getString()
-//
-//      ));
-   }
-   public Text translate(String key, String replacement ){
-      Text t = new TranslatableText(key);
-      if(t.getString().equals(key)){
-         return new LiteralText(replacement);
-      }
-      return t;
-   }
 
+   }
 }

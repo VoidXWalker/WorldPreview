@@ -1,23 +1,23 @@
-[20:00:45] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-[20:00:45] [main/INFO] (FabricLoader) Loading 4 mods:
+[01:00:13] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[01:00:13] [main/INFO] (FabricLoader) Loading 4 mods:
 	- fabricloader 0.12.12
 	- java 17
 	- minecraft 1.8.9
 	- worldpreview 1.0.0
-[20:00:45] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-[20:00:45] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
-[20:00:46] [main/INFO] (Minecraft) Setting user: Player534
-[20:00:46] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player534)
-[20:00:46] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
-[20:00:47] [main/INFO] (Minecraft) Reloading ResourceManager: Default
-[20:00:47] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
-[20:00:47] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
-[20:00:47] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
-[20:00:47] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[20:00:47] [Thread-4/INFO] (Minecraft) OpenAL initialized.
-[20:00:48] [Sound Library Loader/INFO] (Minecraft) Sound engine started
-[20:00:48] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
-[20:00:48] [main/ERROR] (Minecraft) Realms module missing
+[01:00:13] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[01:00:13] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[01:00:14] [main/INFO] (Minecraft) Setting user: Player10
+[01:00:14] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player10)
+[01:00:14] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
+[01:00:15] [main/INFO] (Minecraft) Reloading ResourceManager: Default
+[01:00:15] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
+[01:00:15] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
+[01:00:15] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
+[01:00:15] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[01:00:15] [Thread-4/INFO] (Minecraft) OpenAL initialized.
+[01:00:16] [Sound Library Loader/INFO] (Minecraft) Sound engine started
+[01:00:16] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
+[01:00:16] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -36,6 +36,6 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[20:00:50] [main/INFO] (Minecraft) Stopping!
-[20:00:50] [main/INFO] (Minecraft) SoundSystem shutting down...
-[20:00:50] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com
+[01:00:37] [main/INFO] (Minecraft) Stopping!
+[01:00:37] [main/INFO] (Minecraft) SoundSystem shutting down...
+[01:00:37] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com

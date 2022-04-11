@@ -59,6 +59,8 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
 
     @Shadow @Final private Snooper snooper;
 
+    @Shadow private Thread serverThread;
+
     @Inject(method = "prepareWorlds", at = @At(value = "HEAD"))
     public void worldpreview_getWorld(CallbackInfo ci){
         synchronized (WorldPreview.lock){
@@ -98,7 +100,7 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
 
     @Inject(method = "stopServer", at=@At(value = "HEAD"), cancellable = true)
     public void kill(CallbackInfo ci) {
-        if (!this.isLoading()) { //Thread.getId() does not exist in the client jar, therefore this is already handled for us - Pix
+        if (!this.isLoading() && Thread.currentThread().equals(this.serverThread)) {
             worldpreview_shutdownWithoutSave();
             ci.cancel();
         }

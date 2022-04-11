@@ -6,6 +6,7 @@
   "client": [
     "access.ChunkInfoMixin",
     "access.WorldRendererMixin",
+    "access.ScreenMixin",
 
     "client.render.WorldRendererMixin",
     "client.render.LoadingScreenRendererMixin",

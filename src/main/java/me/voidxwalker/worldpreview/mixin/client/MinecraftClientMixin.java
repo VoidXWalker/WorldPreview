@@ -32,6 +32,8 @@ public abstract class MinecraftClientMixin {
     @Shadow private @Nullable IntegratedServer server;
 
     @Shadow @Nullable public Entity cameraEntity;
+
+    //@Redirect(method = "")
 //    @Shadow private @Nullable ClientConnection connection;
 //    @Shadow @Final private SoundManager soundManager;
 //
