@@ -46,7 +46,11 @@ public abstract class LoadingScreenRendererMixin {
     @Shadow private MinecraftClient field_1029;
 
     @Shadow private long field_1031;
-    
+
+    @Redirect(method = "progressStagePercentage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/TextureManager;bindTexture(Lnet/minecraft/util/Identifier;)V"))
+    private void foo(TextureManager instance, Identifier id) {
+    }
+//    private boolean worldpreview_showMenu;
 //    private BackgroundRenderer backgroundRenderer;
 //    protected LevelLoadingScreenMixin(Text title) {
 //        super(title);

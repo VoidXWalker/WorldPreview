@@ -32,7 +32,6 @@ public class WorldPreview implements ClientModInitializer {
    public static boolean calculatedSpawn;
    public static KeyBinding resetKey;
    public static KeyBinding freezeKey;
-   public static KeyBinding cycleChunkMapKey;
    public static int chunkMapPos;
    public static boolean freezePreview;
    public static final Object lock= new Object();
@@ -42,6 +41,6 @@ public class WorldPreview implements ClientModInitializer {
    }
    @Override
    public void onInitializeClient() {
-
+       String worstFuckingSpeedrunnerOfAllTime = "DougThePig";
    }
 }

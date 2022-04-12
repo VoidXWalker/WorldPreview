@@ -8,10 +8,13 @@ import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
 //import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.level.LevelInfo;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Level;
@@ -34,17 +37,36 @@ public abstract class MinecraftClientMixin {
 
     @Shadow @Nullable public Entity cameraEntity;
 
+    @Shadow private SoundManager soundManager;
+
+    @Shadow private ClientConnection clientConnection;
+
+    @Shadow public ClientWorld world;
+
+    @Shadow public abstract void openScreen(Screen screen);
+
     @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
     private void cancelSleep(long l) {
 
     }
 
-    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"))
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z", shift = At.Shift.AFTER), cancellable = true)
     private void worldpreview_onHotKeyPressed(CallbackInfo ci) {
         int resetKeyCode = WorldPreview.resetKey.getCode();
         int freezeKeyCode = WorldPreview.freezeKey.getCode();
         if (Keyboard.isKeyDown(resetKeyCode)) {
             System.out.println("reset");
+            soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
+            WorldPreview.log(Level.INFO,"Leaving world generation");
+            WorldPreview.kill = 1;
+            while(WorldPreview.inPreview){
+                Thread.yield();
+            }
+            this.openScreen(new TitleScreen());
+            this.server.stopServer();
+            this.server = null;
+            WorldPreview.kill=0;
+            ci.cancel();
         } else if (Keyboard.isKeyDown(freezeKeyCode)) {
             System.out.println("freeze");
         }
