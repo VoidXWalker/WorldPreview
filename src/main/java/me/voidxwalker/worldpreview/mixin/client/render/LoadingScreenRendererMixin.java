@@ -27,6 +27,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.Level;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,6 +38,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
+import java.security.Key;
 import java.util.Iterator;
 
 @Mixin(LoadingScreenRenderer.class)
@@ -44,11 +46,7 @@ public abstract class LoadingScreenRendererMixin {
     @Shadow private MinecraftClient field_1029;
 
     @Shadow private long field_1031;
-
-    @Redirect(method = "progressStagePercentage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/TextureManager;bindTexture(Lnet/minecraft/util/Identifier;)V"))
-    private void foo(TextureManager instance, Identifier id) {
-    }
-//    private boolean worldpreview_showMenu;
+    
 //    private BackgroundRenderer backgroundRenderer;
 //    protected LevelLoadingScreenMixin(Text title) {
 //        super(title);

@@ -16,6 +16,7 @@ import net.minecraft.world.level.LevelInfo;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,6 +33,22 @@ public abstract class MinecraftClientMixin {
     @Shadow private @Nullable IntegratedServer server;
 
     @Shadow @Nullable public Entity cameraEntity;
+
+    @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
+    private void cancelSleep(long l) {
+
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"))
+    private void worldpreview_onHotKeyPressed(CallbackInfo ci) {
+        int resetKeyCode = WorldPreview.resetKey.getCode();
+        int freezeKeyCode = WorldPreview.freezeKey.getCode();
+        if (Keyboard.isKeyDown(resetKeyCode)) {
+            System.out.println("reset");
+        } else if (Keyboard.isKeyDown(freezeKeyCode)) {
+            System.out.println("freeze");
+        }
+    }
 
     //@Redirect(method = "")
 //    @Shadow private @Nullable ClientConnection connection;
