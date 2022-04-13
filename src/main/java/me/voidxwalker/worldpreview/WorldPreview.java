@@ -28,11 +28,9 @@ public class WorldPreview implements ClientModInitializer {
   // public static Camera camera;
    public static WorldRenderer worldRenderer;
    public static boolean existingWorld;
-   public static boolean showMenu;
    public static boolean calculatedSpawn;
    public static KeyBinding resetKey;
    public static KeyBinding freezeKey;
-   public static int chunkMapPos;
    public static boolean freezePreview;
    public static final Object lock= new Object();
    public static Logger LOGGER = LogManager.getLogger();

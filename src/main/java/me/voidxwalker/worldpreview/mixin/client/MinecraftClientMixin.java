@@ -59,7 +59,6 @@ public abstract class MinecraftClientMixin {
         int resetKeyCode = WorldPreview.resetKey.getCode();
         int freezeKeyCode = WorldPreview.freezeKey.getCode();
         if (Keyboard.isKeyDown(resetKeyCode)) {
-            System.out.println("reset");
             soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
             WorldPreview.log(Level.INFO,"Leaving world generation");
             WorldPreview.kill = 1;

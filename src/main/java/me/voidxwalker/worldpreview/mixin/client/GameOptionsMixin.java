@@ -18,7 +18,7 @@ public class GameOptionsMixin {
     private KeyBinding freezePreviewKey;
     private KeyBinding leavePreviewKey;
 
-    @Inject(method = "<init>*", at = @At("TAIL"))
+    @Inject(method = "<init>(Lnet/minecraft/client/MinecraftClient;Ljava/io/File;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/options/GameOptions;load()V"))
     private void initInject(CallbackInfo ci) {
         this.freezePreviewKey = new KeyBinding("Freeze Preview", 36, "World Preview");
         this.leavePreviewKey = new KeyBinding("Leave Preview", 37, "World Preview");
