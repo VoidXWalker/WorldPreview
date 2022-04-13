@@ -1,11 +1,8 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
-import me.voidxwalker.worldpreview.KeyBindingHelper;
 import me.voidxwalker.worldpreview.WorldPreview;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

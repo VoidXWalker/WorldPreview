@@ -49,6 +49,7 @@ public abstract class LoadingScreenRendererMixin {
 
     @Redirect(method = "progressStagePercentage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/TextureManager;bindTexture(Lnet/minecraft/util/Identifier;)V"))
     private void foo(TextureManager instance, Identifier id) {
+        WorldPreview.inPreview = true;
     }
 //    private boolean worldpreview_showMenu;
 //    private BackgroundRenderer backgroundRenderer;

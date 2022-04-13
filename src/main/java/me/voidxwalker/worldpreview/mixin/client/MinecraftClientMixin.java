@@ -45,6 +45,10 @@ public abstract class MinecraftClientMixin {
 
     @Shadow public abstract void openScreen(Screen screen);
 
+    @Shadow private boolean connectedToRealms;
+
+    @Shadow public abstract void connect(ClientWorld world);
+
     @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
     private void cancelSleep(long l) {
 
@@ -62,9 +66,9 @@ public abstract class MinecraftClientMixin {
             while(WorldPreview.inPreview){
                 Thread.yield();
             }
-            this.openScreen(new TitleScreen());
             this.server.stopServer();
             this.server = null;
+            this.connect((ClientWorld) null);
             WorldPreview.kill=0;
             ci.cancel();
         } else if (Keyboard.isKeyDown(freezeKeyCode)) {
