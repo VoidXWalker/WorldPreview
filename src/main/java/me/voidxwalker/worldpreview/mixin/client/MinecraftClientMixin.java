@@ -98,7 +98,7 @@ public abstract class MinecraftClientMixin {
                 WorldPreview.world = null;
                 WorldPreview.player = null;
                 WorldPreview.clientWorld = null;
-                //WorldPreview.camera = null;
+                //WorldPreview.camera = null; // don't think this is necessary, we'll see when we get to loading screen code
                 if (WorldPreview.worldRenderer != null) {
                     WorldPreview.worldRenderer.method_1371((ClientWorld) null);
                 }

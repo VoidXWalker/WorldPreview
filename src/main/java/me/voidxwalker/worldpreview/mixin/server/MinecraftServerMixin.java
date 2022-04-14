@@ -96,6 +96,7 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
         while(!WorldPreview.world.doesBoxCollide(WorldPreview.player, WorldPreview.player.getBoundingBox()).isEmpty() && WorldPreview.player.y < 255.0D) {
             WorldPreview.player.updatePosition(WorldPreview.player.x, WorldPreview.player.y + 1.0D, WorldPreview.player.z);
         }
+        WorldPreview.spawnPos = new BlockPos(WorldPreview.player.x, WorldPreview.player.y, WorldPreview.player.z);
     }
 
     @Inject(method = "stopServer", at=@At(value = "HEAD"), cancellable = true)

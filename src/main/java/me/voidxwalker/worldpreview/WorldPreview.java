@@ -24,7 +24,6 @@ public class WorldPreview implements ClientModInitializer {
    public static boolean inPreview;
    public static BlockPos spawnPos;
    public static int kill=0;
-   public static int playerSpawn;
   // public static Camera camera;
    public static WorldRenderer worldRenderer;
    public static boolean existingWorld;

@@ -51,17 +51,14 @@ public abstract class LoadingScreenRendererMixin {
     private void foo(TextureManager instance, Identifier id) {
         WorldPreview.inPreview = true;
     }
-//    private boolean worldpreview_showMenu;
-//    private BackgroundRenderer backgroundRenderer;
-//    protected LevelLoadingScreenMixin(Text title) {
-//        super(title);
-//    }
+
 //    @Inject(method = "<init>",at = @At(value = "TAIL"))
 //    public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
 //        WorldPreview.freezePreview=false;
 //        WorldPreview.calculatedSpawn=false;
 //        KeyBinding.unpressAll();
 //    }
+
 //    private int field_4021;
 //    @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground()V"))
 //    public void stopBackgroundRender(LevelLoadingScreen instance){
@@ -69,20 +66,7 @@ public abstract class LoadingScreenRendererMixin {
 //            instance.renderBackground();
 //        }
 //    }
-//    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
-//    public int moveLoadingScreen(int i){
-//        if(WorldPreview.camera==null){
-//            return i;
-//        }
-//        return worldpreview_getChunkMapPos().x;
-//    }
-//    @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
-//    public int moveLoadingScreen2(int i){
-//        if(WorldPreview.camera==null){
-//            return i;
-//        }
-//        return worldpreview_getChunkMapPos().y;
-//    }
+
 //    @Inject(method = "render",at=@At("HEAD"),cancellable = true)
 //    public void render(int mouseX, int mouseY, float delta, CallbackInfo ci) {
 //        if(WorldPreview.worldRenderer==null){
