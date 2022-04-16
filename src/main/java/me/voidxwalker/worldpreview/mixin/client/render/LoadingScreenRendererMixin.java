@@ -37,10 +37,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.*;
-import java.security.Key;
-import java.util.Iterator;
-
 @Mixin(LoadingScreenRenderer.class)
 public abstract class LoadingScreenRendererMixin {
     @Shadow private MinecraftClient field_1029;
@@ -48,16 +44,21 @@ public abstract class LoadingScreenRendererMixin {
     @Shadow private long field_1031;
 
     @Redirect(method = "progressStagePercentage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/TextureManager;bindTexture(Lnet/minecraft/util/Identifier;)V"))
-    private void foo(TextureManager instance, Identifier id) {
-        WorldPreview.inPreview = true;
+    private void removeBackgroundTexture(TextureManager instance, Identifier id) {
+
     }
 
-//    @Inject(method = "<init>",at = @At(value = "TAIL"))
-//    public void worldpreview_init(WorldGenerationProgressTracker progressProvider, CallbackInfo ci){
-//        WorldPreview.freezePreview=false;
-//        WorldPreview.calculatedSpawn=false;
-//        KeyBinding.unpressAll();
-//    }
+    @Inject(method = "progressStagePercentage", at = @At("HEAD"))
+    private void function1(int percentage, CallbackInfo ci) {
+
+    }
+
+    @Inject(method = "<init>",at = @At(value = "TAIL"))
+    public void worldpreview_init(MinecraftClient client, CallbackInfo ci){
+        WorldPreview.freezePreview=false;
+        WorldPreview.calculatedSpawn=false;
+        KeyBinding.unpressAll();
+    }
 
 //    private int field_4021;
 //    @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground()V"))
@@ -271,9 +272,6 @@ public abstract class LoadingScreenRendererMixin {
 //            this.drawCenteredString( minecraft.textRenderer, new TranslatableText("menu.paused").getString(), this.width / 2, 10, 16777215);
 //        }
 //    }
-//
-//
-//
 //
 //    private Point worldpreview_getChunkMapPos(){
 //        switch (WorldPreview.chunkMapPos){

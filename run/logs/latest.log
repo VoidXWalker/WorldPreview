@@ -1,23 +1,23 @@
-[22:35:47] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-[22:35:47] [main/INFO] (FabricLoader) Loading 4 mods:
+[01:06:00] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[01:06:00] [main/INFO] (FabricLoader) Loading 4 mods:
 	- fabricloader 0.12.12
 	- java 17
 	- minecraft 1.8.9
 	- worldpreview 1.0.0
-[22:35:47] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-[22:35:47] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
-[22:35:48] [main/INFO] (Minecraft) Setting user: Player992
-[22:35:48] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player992)
-[22:35:49] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
-[22:35:49] [main/INFO] (Minecraft) Reloading ResourceManager: Default
-[22:35:49] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
-[22:35:49] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
-[22:35:49] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
-[22:35:49] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[22:35:49] [Thread-4/INFO] (Minecraft) OpenAL initialized.
-[22:35:50] [Sound Library Loader/INFO] (Minecraft) Sound engine started
-[22:35:50] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
-[22:35:51] [main/ERROR] (Minecraft) Realms module missing
+[01:06:00] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[01:06:00] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[01:06:01] [main/INFO] (Minecraft) Setting user: Player300
+[01:06:01] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player300)
+[01:06:02] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
+[01:06:02] [main/INFO] (Minecraft) Reloading ResourceManager: Default
+[01:06:02] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
+[01:06:02] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
+[01:06:03] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
+[01:06:03] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[01:06:03] [Thread-4/INFO] (Minecraft) OpenAL initialized.
+[01:06:03] [Sound Library Loader/INFO] (Minecraft) Sound engine started
+[01:06:04] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
+[01:06:04] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -36,7 +36,7 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:35:52] [main/ERROR] (Minecraft) Realms module missing
+[01:06:06] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -61,16 +61,16 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:35:52] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:35:52] [Server thread/INFO] (Minecraft) Generating keypair
-[22:35:52] [Server thread/INFO] (Minecraft) Converting map!
-[22:35:52] [Server thread/INFO] (Minecraft) Scanning folders...
-[22:35:52] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[22:35:53] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:35:54] [Server thread/INFO] (Minecraft) Preparing spawn area: 19%
-[22:35:55] [Server thread/INFO] (Minecraft) Preparing spawn area: 57%
-[22:35:56] [Server thread/INFO] (Minecraft) Preparing spawn area: 98%
-[22:35:56] [main/ERROR] (Minecraft) Realms module missing
+[01:06:07] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[01:06:07] [Server thread/INFO] (Minecraft) Generating keypair
+[01:06:07] [Server thread/INFO] (Minecraft) Converting map!
+[01:06:07] [Server thread/INFO] (Minecraft) Scanning folders...
+[01:06:07] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[01:06:07] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[01:06:08] [Server thread/INFO] (Minecraft) Preparing spawn area: 20%
+[01:06:09] [Server thread/INFO] (Minecraft) Preparing spawn area: 48%
+[01:06:10] [Server thread/INFO] (Minecraft) Preparing spawn area: 84%
+[01:06:10] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -96,57 +96,18 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:35:56] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:35:56] [Server thread/INFO] (Minecraft) Player992[local:E:529f7e7a] logged in with entity id 196 at (-173.0, 68.0, 251.0)
-[22:35:56] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:35:57] [main/FATAL] (Minecraft) Error executing task
-java.util.concurrent.ExecutionException: java.util.ConcurrentModificationException
-	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:?]
-	at java.util.concurrent.FutureTask.get(FutureTask.java:191) ~[?:?]
-	at net.minecraft.util.Util.executeTask(Util.java:31) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:865) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Caused by: java.util.ConcurrentModificationException
-	at java.util.HashMap$HashIterator.nextNode(HashMap.java:1597) ~[?:?]
-	at java.util.HashMap$KeyIterator.next(HashMap.java:1620) ~[?:?]
-	at net.minecraft.util.TypeFilterableList.<init>(TypeFilterableList.java:24) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.world.chunk.Chunk.<init>(Chunk.java:79) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.world.chunk.ClientChunkProvider.getOrGenerateChunk(ClientChunkProvider.java:46) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.world.ClientWorld.method_1252(ClientWorld.java:126) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.network.ClientPlayNetworkHandler.onChunkMap(ClientPlayNetworkHandler.java:960) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.network.packet.s2c.play.ChunkMapS2CPacket.apply(ChunkMapS2CPacket.java:78) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.network.packet.s2c.play.ChunkMapS2CPacket.apply(ChunkMapS2CPacket.java:19) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.network.NetworkThreadUtils$1.run(NetworkThreadUtils.java:11) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539) ~[?:?]
-	at java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[?:?]
-	at net.minecraft.util.Util.executeTask(Util.java:30) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	... 11 more
-[22:35:59] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:35:59] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:01] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:01] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:06] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:36:06] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:07] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:07] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:08] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:36:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:08] [Server thread/INFO] (Minecraft) Stopping server
-[22:36:08] [Server thread/INFO] (Minecraft) Saving players
-[22:36:08] [Server thread/INFO] (Minecraft) Saving worlds
-[22:36:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:08] [main/ERROR] (Minecraft) Realms module missing
+[01:06:10] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
+[01:06:11] [Server thread/INFO] (Minecraft) Player300[local:E:977deb5c] logged in with entity id 208 at (-193.5, 67.0, 257.5)
+[01:06:11] [Server thread/INFO] (Minecraft) Player300 joined the game
+[01:06:14] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[01:06:14] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Overworld
+[01:06:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Nether
+[01:06:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/The End
+[01:06:15] [Server thread/INFO] (Minecraft) Stopping server
+[01:06:15] [Server thread/INFO] (Minecraft) Saving players
+[01:06:15] [Server thread/INFO] (Minecraft) Saving worlds
+[01:06:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Overworld
+[01:06:15] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -170,9 +131,9 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:10] [main/ERROR] (Minecraft) Realms module missing
+[01:06:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Nether
+[01:06:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/The End
+[01:06:16] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -197,15 +158,15 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:10] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:36:10] [Server thread/INFO] (Minecraft) Generating keypair
-[22:36:10] [Server thread/INFO] (Minecraft) Converting map!
-[22:36:10] [Server thread/INFO] (Minecraft) Scanning folders...
-[22:36:10] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[22:36:10] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:36:11] [Server thread/INFO] (Minecraft) Preparing spawn area: 36%
-[22:36:12] [Server thread/INFO] (Minecraft) Preparing spawn area: 76%
-[22:36:13] [main/ERROR] (Minecraft) Realms module missing
+[01:06:16] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[01:06:16] [Server thread/INFO] (Minecraft) Generating keypair
+[01:06:16] [Server thread/INFO] (Minecraft) Converting map!
+[01:06:16] [Server thread/INFO] (Minecraft) Scanning folders...
+[01:06:16] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[01:06:16] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[01:06:17] [Server thread/INFO] (Minecraft) Preparing spawn area: 36%
+[01:06:18] [Server thread/INFO] (Minecraft) Preparing spawn area: 73%
+[01:06:19] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -231,18 +192,22 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:13] [Server thread/INFO] (Minecraft) Player992[local:E:bb601809] logged in with entity id 3643 at (168.0, 64.0, 233.0)
-[22:36:13] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:36:13] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:36:19] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:36:19] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:19] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:19] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:19] [Server thread/INFO] (Minecraft) Stopping server
-[22:36:19] [Server thread/INFO] (Minecraft) Saving players
-[22:36:19] [Server thread/INFO] (Minecraft) Saving worlds
-[22:36:19] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:19] [main/ERROR] (Minecraft) Realms module missing
+[01:06:19] [Server thread/INFO] (Minecraft) Player300[local:E:1d854d7e] logged in with entity id 3119 at (-187.5, 68.0, 263.5)
+[01:06:19] [Server thread/INFO] (Minecraft) Player300 joined the game
+[01:06:19] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
+[01:06:22] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[01:06:22] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Overworld
+[01:06:23] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Nether
+[01:06:23] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/The End
+[01:06:23] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[01:06:23] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Overworld
+[01:06:24] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Nether
+[01:06:24] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/The End
+[01:06:24] [Server thread/INFO] (Minecraft) Stopping server
+[01:06:24] [Server thread/INFO] (Minecraft) Saving players
+[01:06:24] [Server thread/INFO] (Minecraft) Saving worlds
+[01:06:24] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Overworld
+[01:06:24] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -266,758 +231,8 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:19] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:19] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:21] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:21] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:36:21] [Server thread/INFO] (Minecraft) Generating keypair
-[22:36:21] [Server thread/INFO] (Minecraft) Converting map!
-[22:36:21] [Server thread/INFO] (Minecraft) Scanning folders...
-[22:36:21] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[22:36:21] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:36:22] [Server thread/INFO] (Minecraft) Preparing spawn area: 42%
-[22:36:23] [Server thread/INFO] (Minecraft) Preparing spawn area: 87%
-[22:36:23] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:205) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:23] [Server thread/INFO] (Minecraft) Player992[local:E:da8c159c] logged in with entity id 6578 at (168.0, 64.0, 225.0)
-[22:36:23] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:36:23] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:36:30] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:36:30] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Overworld
-[22:36:30] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Nether
-[22:36:30] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/The End
-[22:36:31] [Server thread/INFO] (Minecraft) Stopping server
-[22:36:31] [Server thread/INFO] (Minecraft) Saving players
-[22:36:31] [Server thread/INFO] (Minecraft) Saving worlds
-[22:36:31] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Overworld
-[22:36:31] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:31] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Nether
-[22:36:31] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/The End
-[22:36:33] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:33] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:36:33] [Server thread/INFO] (Minecraft) Generating keypair
-[22:36:33] [Server thread/INFO] (Minecraft) Converting map!
-[22:36:33] [Server thread/INFO] (Minecraft) Scanning folders...
-[22:36:33] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[22:36:33] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:36:34] [Server thread/INFO] (Minecraft) Preparing spawn area: 43%
-[22:36:35] [Server thread/INFO] (Minecraft) Preparing spawn area: 88%
-[22:36:35] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:205) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:35] [Server thread/INFO] (Minecraft) Player992[local:E:03cca610] logged in with entity id 9551 at (162.0, 64.0, 231.0)
-[22:36:35] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:36:35] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:36:38] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:36:38] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:36:39] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:36:39] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:36:39] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:39] [Server thread/INFO] (Minecraft) Stopping server
-[22:36:39] [Server thread/INFO] (Minecraft) Saving players
-[22:36:39] [Server thread/INFO] (Minecraft) Saving worlds
-[22:36:39] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:36:39] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:36:39] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:36:43] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:144) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:44] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:36:44] [Server thread/INFO] (Minecraft) Generating keypair
-[22:36:44] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:36:44] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:158) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:44] [Server thread/INFO] (Minecraft) Player992[local:E:5810bbde] logged in with entity id 11426 at (168.0, 64.0, 233.0)
-[22:36:44] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:36:44] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:36:45] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:36:45] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:45] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:45] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:46] [Server thread/INFO] (Minecraft) Stopping server
-[22:36:46] [Server thread/INFO] (Minecraft) Saving players
-[22:36:46] [Server thread/INFO] (Minecraft) Saving worlds
-[22:36:46] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:36:46] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:46] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:36:46] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:36:53] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:144) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:53] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:36:53] [Server thread/INFO] (Minecraft) Generating keypair
-[22:36:53] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:36:53] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:158) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:36:53] [Server thread/INFO] (Minecraft) Player992[local:E:bc22d029] logged in with entity id 12760 at (-173.0, 68.0, 251.0)
-[22:36:53] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:36:53] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:37:04] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:37:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:37:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:37:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:37:04] [Server thread/INFO] (Minecraft) Stopping server
-[22:37:04] [Server thread/INFO] (Minecraft) Saving players
-[22:37:04] [Server thread/INFO] (Minecraft) Saving worlds
-[22:37:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[22:37:04] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[22:37:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[22:37:06] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:06] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:37:06] [Server thread/INFO] (Minecraft) Generating keypair
-[22:37:06] [Server thread/INFO] (Minecraft) Converting map!
-[22:37:06] [Server thread/INFO] (Minecraft) Scanning folders...
-[22:37:06] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[22:37:06] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:37:07] [Server thread/INFO] (Minecraft) Preparing spawn area: 44%
-[22:37:08] [Server thread/INFO] (Minecraft) Preparing spawn area: 91%
-[22:37:08] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:205) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:08] [Server thread/INFO] (Minecraft) Player992[local:E:8b7f5b5d] logged in with entity id 16457 at (-173.0, 68.0, 250.0)
-[22:37:08] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:37:08] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:37:11] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:37:11] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Overworld
-[22:37:12] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Nether
-[22:37:12] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/The End
-[22:37:12] [Server thread/INFO] (Minecraft) Stopping server
-[22:37:12] [Server thread/INFO] (Minecraft) Saving players
-[22:37:12] [Server thread/INFO] (Minecraft) Saving worlds
-[22:37:12] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Overworld
-[22:37:12] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:12] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/Nether
-[22:37:12] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of New World'/The End
-[22:37:14] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:14] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:37:14] [Server thread/INFO] (Minecraft) Generating keypair
-[22:37:14] [Server thread/INFO] (Minecraft) Converting map!
-[22:37:14] [Server thread/INFO] (Minecraft) Scanning folders...
-[22:37:14] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[22:37:14] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:37:15] [Server thread/INFO] (Minecraft) Preparing spawn area: 46%
-[22:37:16] [Server thread/INFO] (Minecraft) Preparing spawn area: 89%
-[22:37:16] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:205) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:16] [Server thread/INFO] (Minecraft) Player992[local:E:a7473bd7] logged in with entity id 18834 at (-179.0, 71.0, 265.0)
-[22:37:16] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:37:16] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:37:21] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:37:21] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:37:22] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:37:22] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:37:22] [Server thread/INFO] (Minecraft) Stopping server
-[22:37:22] [Server thread/INFO] (Minecraft) Saving players
-[22:37:22] [Server thread/INFO] (Minecraft) Saving worlds
-[22:37:22] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:37:22] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:22] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:37:22] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:37:24] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:144) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:24] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:37:24] [Server thread/INFO] (Minecraft) Generating keypair
-[22:37:24] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:37:24] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:158) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:24] [Server thread/INFO] (Minecraft) Player992[local:E:5a113270] logged in with entity id 21968 at (162.0, 64.0, 231.0)
-[22:37:24] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:37:24] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:37:26] [main/INFO] (Minecraft) [CHAT] Seed: -4736539834519169694
-[22:37:27] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:37:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:37:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:37:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:37:27] [Server thread/INFO] (Minecraft) Stopping server
-[22:37:27] [Server thread/INFO] (Minecraft) Saving players
-[22:37:27] [Server thread/INFO] (Minecraft) Saving worlds
-[22:37:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:37:27] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:37:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:37:28] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:144) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:28] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[22:37:28] [Server thread/INFO] (Minecraft) Generating keypair
-[22:37:28] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[22:37:28] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.joinWorld(SelectWorldScreen.java:158) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen$WorldListWidget.selectEntry(SelectWorldScreen.java:217) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.widget.ListWidget.handleMouse(ListWidget.java:264) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.SelectWorldScreen.handleMouse(SelectWorldScreen.java:76) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:28] [Server thread/INFO] (Minecraft) Player992[local:E:c296f312] logged in with entity id 23167 at (-179.0, 71.0, 265.0)
-[22:37:28] [Server thread/INFO] (Minecraft) Player992 joined the game
-[22:37:28] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[22:37:29] [main/INFO] (Minecraft) [CHAT] Seed: -640583561258544835
-[22:37:35] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[22:37:35] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:37:35] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:37:35] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:37:35] [Server thread/INFO] (Minecraft) Stopping server
-[22:37:35] [Server thread/INFO] (Minecraft) Saving players
-[22:37:35] [Server thread/INFO] (Minecraft) Saving worlds
-[22:37:35] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Overworld
-[22:37:35] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[22:37:35] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/Nether
-[22:37:35] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of New World'/The End
-[22:37:36] [main/INFO] (Minecraft) Stopping!
-[22:37:36] [main/INFO] (Minecraft) SoundSystem shutting down...
-[22:37:36] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com
+[01:06:24] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/Nether
+[01:06:24] [Server thread/INFO] (Minecraft) Saving chunks for level 'Copy of Copy of Copy of Copy of'/The End
+[01:06:27] [main/INFO] (Minecraft) Stopping!
+[01:06:27] [main/INFO] (Minecraft) SoundSystem shutting down...
+[01:06:27] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com

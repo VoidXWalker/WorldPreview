@@ -82,21 +82,23 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
 
     private void worldpreview_calculateSpawn(ServerWorld serverWorld) {
         BlockPos blockPos = WorldPreview.spawnPos;
-        int i = Math.max(5, this.getSpawnProtectionRadius() - 6);
-        int j = MathHelper.floor(WorldPreview.world.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
-        if (j < i) {
-            i = j;
+        if (!serverWorld.dimension.isNether() && serverWorld.getLevelProperties().getGameMode() != LevelInfo.GameMode.ADVENTURE) {
+            int i = Math.max(5, this.getSpawnProtectionRadius() - 6);
+            int j = MathHelper.floor(WorldPreview.world.getWorldBorder().getDistanceInsideBorder((double) blockPos.getX(), (double) blockPos.getZ()));
+            if (j < i) {
+                i = j;
+            }
+            if (j <= 1) {
+                i = 1;
+            }
+            Random random = new Random();
+            blockPos = WorldPreview.world.getTopPosition(blockPos.add(random.nextInt(i * 2) - i, 0, random.nextInt(i * 2) - i));
+            WorldPreview.player.refreshPositionAndAngles(blockPos, 0.0F, 0.0F);
+            while (!WorldPreview.world.doesBoxCollide(WorldPreview.player, WorldPreview.player.getBoundingBox()).isEmpty() && WorldPreview.player.y < 255.0D) {
+                WorldPreview.player.updatePosition(WorldPreview.player.x, WorldPreview.player.y + 1.0D, WorldPreview.player.z);
+            }
+            WorldPreview.spawnPos = new BlockPos(WorldPreview.player.x, WorldPreview.player.y, WorldPreview.player.z);
         }
-        if (j <= 1) {
-            i = 1;
-        }
-        Random random = new Random();
-        blockPos = WorldPreview.world.getTopPosition(blockPos.add(random.nextInt(i * 2) - i, 0, random.nextInt(i * 2) - i));
-        WorldPreview.player.refreshPositionAndAngles(blockPos, 0.0F, 0.0F);
-        while(!WorldPreview.world.doesBoxCollide(WorldPreview.player, WorldPreview.player.getBoundingBox()).isEmpty() && WorldPreview.player.y < 255.0D) {
-            WorldPreview.player.updatePosition(WorldPreview.player.x, WorldPreview.player.y + 1.0D, WorldPreview.player.z);
-        }
-        WorldPreview.spawnPos = new BlockPos(WorldPreview.player.x, WorldPreview.player.y, WorldPreview.player.z);
     }
 
     @Inject(method = "stopServer", at=@At(value = "HEAD"), cancellable = true)

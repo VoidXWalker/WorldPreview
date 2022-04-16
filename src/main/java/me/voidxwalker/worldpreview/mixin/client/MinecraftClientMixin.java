@@ -83,9 +83,8 @@ public abstract class MinecraftClientMixin {
         WorldPreview.existingWorld = levelInfo == null;
     }
 
-    @Inject(method="connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value="INVOKE",target="Lnet/minecraft/client/sound/SoundManager;stopAll()V",
-    shift = At.Shift.AFTER))
-    public void smoothTransition(ClientWorld world, String loadingMessage, CallbackInfo ci){
+    @Redirect(method="connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value="INVOKE",target="Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
+    public void smoothTransition(SoundManager instance){
         this.cameraEntity = null;
         //this.skipGameRender = true; // this doesn't work exactly the same as its equivalent in 1.14+, needs further testing
     }
