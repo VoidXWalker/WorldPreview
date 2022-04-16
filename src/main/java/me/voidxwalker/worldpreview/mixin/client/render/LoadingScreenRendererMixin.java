@@ -4,9 +4,11 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.ScreenMixin;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
+import net.minecraft.block.Material;
 import net.minecraft.client.MinecraftClient;
 //import net.minecraft.client.gui.WorldGenerationProgressTracker;
 //import net.minecraft.client.gui.screen.LevelLoadingScreen;
+import net.minecraft.client.class_321;
 import net.minecraft.client.gui.screen.Screen;
 //import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -14,14 +16,18 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.debug.CameraView;
+import net.minecraft.client.render.debug.StructureDebugRenderer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.texture.TextureManager;
+import net.minecraft.client.util.Clipper;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Matrix4f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 //import net.minecraft.fluid.FluidState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -29,6 +35,7 @@ import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.glu.Project;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -48,9 +55,41 @@ public abstract class LoadingScreenRendererMixin {
 
     }
 
-    @Inject(method = "progressStagePercentage", at = @At("HEAD"))
-    private void function1(int percentage, CallbackInfo ci) {
-
+    @Inject(method = "progressStagePercentage", at = @At("HEAD"), cancellable = true)
+    private void render(int percentage, CallbackInfo ci) {
+        if(WorldPreview.worldRenderer==null){
+            WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
+        }
+        if(WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && !WorldPreview.freezePreview) {
+            if(((me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin)WorldPreview.worldRenderer).getWorld() == null && WorldPreview.calculatedSpawn){
+                WorldPreview.worldRenderer.method_1371(WorldPreview.clientWorld);
+            }
+            if (((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null) {
+                KeyBinding.unpressAll();
+                WorldPreview.kill=0;
+//                if (WorldPreview.camera == null) {
+//                    WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y+ 1+(WorldPreview.player.getBoundingBox().y2-WorldPreview.player.getBoundingBox().y1), WorldPreview.player.z, 0.0F, 0.0F);
+//                    WorldPreview.camera = new Camera();
+//                    WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, 0.2F);
+//                    WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y - 1.5, WorldPreview.player.z, 0.0F, 0.0F);
+//                    WorldPreview.inPreview=true;
+//                    WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.x + ", "+(double)Math.floor(WorldPreview.player.y)+ ", "+ WorldPreview.player.z+")");
+//                }
+                renderWorld(0, (long)(1000000000 / 60 / 4) );
+                Window window = new Window(MinecraftClient.getInstance());
+                GlStateManager.clear(256);
+                GlStateManager.matrixMode(5889);
+                GlStateManager.loadIdentity();
+                GlStateManager.ortho(0.0D, (double) window.getScaledWidth() / window.getScaleFactor(), (double) window.getScaledWidth() / window.getScaleFactor(), 0.0D, 1000.0D, 3000.0D);
+                GlStateManager.matrixMode(5888);
+                GlStateManager.loadIdentity();
+                GlStateManager.translatef(0.0F, 0.0F, -2000.0F);
+                //this.renderPauseMenu(mouseX,mouseY,delta);
+                this.field_1029.textRenderer.drawWithShadow(this.field_1030, (float)((j - this.field_1029.textRenderer.getStringWidth(this.field_1030)) / 2), (float)(k / 2 - 4 - 16), 16777215);
+                this.field_1029.textRenderer.drawWithShadow(this.field_1028, (float)((j - this.field_1029.textRenderer.getStringWidth(this.field_1028)) / 2), (float)(k / 2 - 4 + 8), 16777215);
+                ci.cancel();
+            }
+        }
     }
 
     @Inject(method = "<init>",at = @At(value = "TAIL"))
@@ -59,14 +98,6 @@ public abstract class LoadingScreenRendererMixin {
         WorldPreview.calculatedSpawn=false;
         KeyBinding.unpressAll();
     }
-
-//    private int field_4021;
-//    @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground()V"))
-//    public void stopBackgroundRender(LevelLoadingScreen instance){
-//        if(WorldPreview.camera==null){
-//            instance.renderBackground();
-//        }
-//    }
 
 //    @Inject(method = "render",at=@At("HEAD"),cancellable = true)
 //    public void render(int mouseX, int mouseY, float delta, CallbackInfo ci) {
@@ -118,13 +149,162 @@ public abstract class LoadingScreenRendererMixin {
 //            }
 //        }
 //    }
-//    public void renderWorld(float tickDelta, long endTime) {
-//        GlStateManager.enableDepthTest();
-//        GlStateManager.enableAlphaTest();
-//        GlStateManager.alphaFunc(516, 0.5F);
-//        this.renderCenter(tickDelta, endTime);
-//    }
-//
+
+    public void renderWorld(float tickDelta, long endTime) {
+        GlStateManager.enableDepthTest();
+        GlStateManager.enableAlphaTest();
+        GlStateManager.alphaFunc(516, 0.5F);
+        this.renderWorld(tickDelta, endTime);
+    }
+
+    private void renderWorld(int anaglyphFilter, float tickDelta, long limitTime) {
+        WorldRenderer worldRenderer = this.field_1029.worldRenderer;
+        ParticleManager particleManager = this.field_1029.particleManager;
+        boolean bl = this.shouldRenderBlockOutline();
+        GlStateManager.enableCull();
+        this.field_1029.profiler.swap("clear");
+        GlStateManager.viewPort(0, 0, this.field_1029.width, this.field_1029.height);
+        this.updateFog(tickDelta);
+        GlStateManager.clear(16640);
+        this.field_1029.profiler.swap("camera");
+        this.setupCamera(tickDelta, anaglyphFilter);
+        class_321.method_804(this.field_1029.player, this.field_1029.options.perspective == 2);
+        this.field_1029.profiler.swap("frustum");
+        Clipper.getInstance();
+        this.field_1029.profiler.swap("culling");
+        CameraView cameraView = new StructureDebugRenderer();
+        Entity entity = this.field_1029.getCameraEntity();
+        double d = entity.prevTickX + (entity.x - entity.prevTickX) * (double)tickDelta;
+        double e = entity.prevTickY + (entity.y - entity.prevTickY) * (double)tickDelta;
+        double f = entity.prevTickZ + (entity.z - entity.prevTickZ) * (double)tickDelta;
+        cameraView.setPos(d, e, f);
+        if (this.field_1029.options.viewDistance >= 4) {
+            this.renderFog(-1, tickDelta);
+            this.field_1029.profiler.swap("sky");
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            Project.gluPerspective(this.getFov(tickDelta, true), (float)this.field_1029.width / (float)this.field_1029.height, 0.05F, this.viewDistance * 2.0F);
+            GlStateManager.matrixMode(5888);
+            worldRenderer.method_9891(tickDelta, anaglyphFilter);
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            Project.gluPerspective(this.getFov(tickDelta, true), (float)this.field_1029.width / (float)this.field_1029.height, 0.05F, this.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
+            GlStateManager.matrixMode(5888);
+        }
+
+        this.renderFog(0, tickDelta);
+        GlStateManager.shadeModel(7425);
+        if (entity.y + (double)entity.getEyeHeight() < 128.0D) {
+            this.renderClouds(worldRenderer, tickDelta, anaglyphFilter);
+        }
+
+        this.field_1029.profiler.swap("prepareterrain");
+        this.renderFog(0, tickDelta);
+        this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+        GuiLighting.disable();
+        this.field_1029.profiler.swap("terrain_setup");
+        worldRenderer.method_9906(entity, (double)tickDelta, cameraView, this.frameCount++, this.field_1029.player.isSpectator());
+        if (anaglyphFilter == 0 || anaglyphFilter == 2) {
+            this.field_1029.profiler.swap("updatechunks");
+            this.field_1029.worldRenderer.method_9892(limitTime);
+        }
+
+        this.field_1029.profiler.swap("terrain");
+        GlStateManager.matrixMode(5888);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableAlphaTest();
+        worldRenderer.method_9894(RenderLayer.SOLID, (double)tickDelta, anaglyphFilter, entity);
+        GlStateManager.enableAlphaTest();
+        worldRenderer.method_9894(RenderLayer.CUTOUT_MIPPED, (double)tickDelta, anaglyphFilter, entity);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
+        worldRenderer.method_9894(RenderLayer.CUTOUT, (double)tickDelta, anaglyphFilter, entity);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pop();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.alphaFunc(516, 0.1F);
+        PlayerEntity playerEntity2;
+        if (!this.renderingPanorama) {
+            GlStateManager.matrixMode(5888);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GuiLighting.enableNormally();
+            this.field_1029.profiler.swap("entities");
+            worldRenderer.method_9908(entity, cameraView, tickDelta);
+            GuiLighting.disable();
+            this.disableLightmap();
+            GlStateManager.matrixMode(5888);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            if (this.field_1029.result != null && entity.isSubmergedIn(Material.WATER) && bl) {
+                playerEntity2 = (PlayerEntity)entity;
+                GlStateManager.disableAlphaTest();
+                this.field_1029.profiler.swap("outline");
+                worldRenderer.method_1380(playerEntity2, this.field_1029.result, 0, tickDelta);
+                GlStateManager.enableAlphaTest();
+            }
+        }
+
+        GlStateManager.matrixMode(5888);
+        GlStateManager.popMatrix();
+        if (bl && this.field_1029.result != null && !entity.isSubmergedIn(Material.WATER)) {
+            playerEntity2 = (PlayerEntity)entity;
+            GlStateManager.disableAlphaTest();
+            this.field_1029.profiler.swap("outline");
+            worldRenderer.method_1380(playerEntity2, this.field_1029.result, 0, tickDelta);
+            GlStateManager.enableAlphaTest();
+        }
+
+        this.field_1029.profiler.swap("destroyProgress");
+        GlStateManager.enableBlend();
+        GlStateManager.blendFuncSeparate(770, 1, 1, 0);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
+        worldRenderer.method_9899(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), entity, tickDelta);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pop();
+        GlStateManager.disableBlend();
+        if (!this.renderingPanorama) {
+            this.enableLightmap();
+            this.field_1029.profiler.swap("litParticles");
+            particleManager.method_1299(entity, tickDelta);
+            GuiLighting.disable();
+            this.renderFog(0, tickDelta);
+            this.field_1029.profiler.swap("particles");
+            particleManager.method_1296(entity, tickDelta);
+            this.disableLightmap();
+        }
+
+        GlStateManager.depthMask(false);
+        GlStateManager.enableCull();
+        this.field_1029.profiler.swap("weather");
+        this.renderWeather(tickDelta);
+        GlStateManager.depthMask(true);
+        worldRenderer.method_9907(entity, tickDelta);
+        GlStateManager.disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.alphaFunc(516, 0.1F);
+        this.renderFog(0, tickDelta);
+        GlStateManager.enableBlend();
+        GlStateManager.depthMask(false);
+        this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+        GlStateManager.shadeModel(7425);
+        this.field_1029.profiler.swap("translucent");
+        worldRenderer.method_9894(RenderLayer.TRANSLUCENT, (double)tickDelta, anaglyphFilter, entity);
+        GlStateManager.shadeModel(7424);
+        GlStateManager.depthMask(true);
+        GlStateManager.enableCull();
+        GlStateManager.disableBlend();
+        GlStateManager.disableFog();
+        if (entity.y + (double)entity.getEyeHeight() >= 128.0D) {
+            this.field_1029.profiler.swap("aboveClouds");
+            this.renderClouds(worldRenderer, tickDelta, anaglyphFilter);
+        }
+
+        this.field_1029.profiler.swap("hand");
+        if (this.renderHand) {
+            GlStateManager.clear(256);
+            this.renderHand(tickDelta, anaglyphFilter);
+            this.renderDebugCrosshair(tickDelta);
+        }
+    }
 //    private void renderCenter(float tickDelta, long endTime) {
 //        WorldRenderer worldRenderer = WorldPreview.worldRenderer;
 //        GlStateManager.enableCull();
@@ -200,11 +380,8 @@ public abstract class LoadingScreenRendererMixin {
 //            this.minecraft.getProfiler().swap("aboveClouds");
 //            this.renderAboveClouds(camera, worldRenderer, tickDelta, d, e, f);
 //        }
-//
-//
-//
-//
 //    }
+
 //    private void renderAboveClouds(Camera camera,  float tickDelta, double cameraX, double cameraY, double cameraZ) {
 //        if (this.minecraft.options.getCloudRenderMode() != CloudRenderMode.OFF) {
 //            this.minecraft.getProfiler().swap("clouds");
@@ -273,18 +450,6 @@ public abstract class LoadingScreenRendererMixin {
 //        }
 //    }
 //
-//    private Point worldpreview_getChunkMapPos(){
-//        switch (WorldPreview.chunkMapPos){
-//            case 1:
-//                return new Point(this.width -45,this.height -75);
-//            case 2:
-//                return new Point(this.width -45,105);
-//            case 3:
-//                return new Point(45,105);
-//            default:
-//                return new Point(45,this.height -75);
-//        }
-//    }
 //
 //    private void worldpreview_initWidgets(){
 //        this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame").getString(), (ignored) -> {}));
