@@ -32,7 +32,7 @@ public abstract class ServerChunkManagerMixin {
 //                                BlockView chunk = this.getChunk(holder.getPos().x,holder.getPos().z);
 //                                if(chunk instanceof WorldChunk){
 //                                    WorldChunk chunk2 = (WorldChunk) chunk;
-//                                    if(chunk!=null){
+//                                    if(chunk!=null){q1
 //                                        ((ChunkSetter)(Object)(map)).set(index,chunk2);
 //                                    }
 //                                }

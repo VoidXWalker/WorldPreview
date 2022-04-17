@@ -2,10 +2,9 @@ package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
@@ -13,14 +12,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
 //import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.LevelInfo;
-import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.input.Keyboard;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,6 +46,16 @@ public abstract class MinecraftClientMixin {
     @Shadow public abstract void connect(ClientWorld world);
 
     @Shadow public boolean skipGameRender;
+
+    @Shadow public ClientPlayerInteractionManager interactionManager;
+
+    @Shadow protected abstract void handleBlockBreaking(boolean bl);
+
+    @Shadow public Screen currentScreen;
+
+    @Shadow public GameOptions options;
+
+    @Shadow public boolean focused;
 
     @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
     private void cancelSleep(long l) {
@@ -103,6 +109,5 @@ public abstract class MinecraftClientMixin {
                 }
             }
         }
-
     }
 }

@@ -1,23 +1,23 @@
-[04:24:40] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-[04:24:40] [main/INFO] (FabricLoader) Loading 4 mods:
+[22:44:55] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[22:44:55] [main/INFO] (FabricLoader) Loading 4 mods:
 	- fabricloader 0.12.12
 	- java 17
 	- minecraft 1.8.9
 	- worldpreview 1.0.0
-[04:24:40] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-[04:24:40] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
-[04:24:41] [main/INFO] (Minecraft) Setting user: Player80
-[04:24:41] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player80)
-[04:24:42] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
-[04:24:42] [main/INFO] (Minecraft) Reloading ResourceManager: Default
-[04:24:42] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
-[04:24:42] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
-[04:24:42] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
-[04:24:42] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[04:24:42] [Thread-4/INFO] (Minecraft) OpenAL initialized.
-[04:24:43] [Sound Library Loader/INFO] (Minecraft) Sound engine started
-[04:24:43] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
-[04:24:43] [main/ERROR] (Minecraft) Realms module missing
+[22:44:55] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[22:44:55] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[22:44:55] [main/INFO] (Minecraft) Setting user: Player705
+[22:44:55] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player705)
+[22:44:56] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
+[22:44:57] [main/INFO] (Minecraft) Reloading ResourceManager: Default
+[22:44:57] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
+[22:44:57] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
+[22:44:57] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
+[22:44:57] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[22:44:57] [Thread-4/INFO] (Minecraft) OpenAL initialized.
+[22:44:57] [Sound Library Loader/INFO] (Minecraft) Sound engine started
+[22:44:58] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
+[22:44:58] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -36,7 +36,7 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[04:24:45] [main/ERROR] (Minecraft) Realms module missing
+[22:45:00] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -61,36 +61,24 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[04:24:45] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[04:24:45] [Server thread/INFO] (Minecraft) Generating keypair
-[04:24:45] [Server thread/INFO] (Minecraft) Converting map!
-[04:24:45] [Server thread/INFO] (Minecraft) Scanning folders...
-[04:24:45] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[04:24:45] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[04:24:46] [Server thread/INFO] (Minecraft) Preparing spawn area: 24%
-[04:24:47] [Server thread/INFO] (Minecraft) Preparing spawn area: 66%
-[04:24:48] [main/INFO] (WorldPreview) Leaving world generation
-[04:24:48] [main/INFO] (Minecraft) Stopping server
-[04:24:48] [main/INFO] (Minecraft) Saving players
-[04:24:48] [main/INFO] (Minecraft) Saving worlds
-[04:24:48] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[04:24:48] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[04:24:48] [main/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[04:24:50] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
+[22:45:01] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[22:45:01] [Server thread/INFO] (Minecraft) Generating keypair
+[22:45:01] [Server thread/INFO] (Minecraft) Converting map!
+[22:45:01] [Server thread/INFO] (Minecraft) Scanning folders...
+[22:45:01] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[22:45:01] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[22:45:02] [Server thread/INFO] (Minecraft) Preparing spawn area: 17%
+[22:45:03] [Server thread/INFO] (Minecraft) Preparing spawn area: 42%
+[22:45:04] [Server thread/INFO] (Minecraft) Preparing spawn area: 69%
+[22:45:05] [Server thread/INFO] (Minecraft) Preparing spawn area: 94%
+[22:45:05] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
+[22:45:05] [Server thread/INFO] (Minecraft) Player705[local:E:2940464b] logged in with entity id 278 at (0.5, 70.0, 244.5)
+[22:45:05] [Server thread/INFO] (Minecraft) Player705 joined the game
+[22:45:05] [main/FATAL] (Minecraft) Unreported exception thrown!
+java.lang.NullPointerException: Cannot invoke "net.minecraft.client.network.ClientPlayerInteractionManager.getCurrentGameMode()" because "this.client.interactionManager" is null
+	at net.minecraft.client.world.ClientWorld.method_1248(ClientWorld.java:228) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
+	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1712) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
+	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) ~[minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
@@ -101,95 +89,3 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[04:24:51] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[04:24:51] [Server thread/INFO] (Minecraft) Generating keypair
-[04:24:51] [Server thread/INFO] (Minecraft) Converting map!
-[04:24:51] [Server thread/INFO] (Minecraft) Scanning folders...
-[04:24:51] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[04:24:51] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[04:24:51] [main/INFO] (WorldPreview) Leaving world generation
-[04:24:51] [main/INFO] (Minecraft) Stopping server
-[04:24:51] [main/INFO] (Minecraft) Saving players
-[04:24:51] [main/INFO] (Minecraft) Saving worlds
-[04:24:51] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[04:24:52] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[04:24:52] [main/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[04:24:53] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[04:24:53] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[04:24:53] [Server thread/INFO] (Minecraft) Generating keypair
-[04:24:53] [Server thread/INFO] (Minecraft) Converting map!
-[04:24:53] [Server thread/INFO] (Minecraft) Scanning folders...
-[04:24:53] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[04:24:53] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[04:24:53] [main/INFO] (WorldPreview) Leaving world generation
-[04:24:53] [main/INFO] (Minecraft) Stopping server
-[04:24:53] [main/INFO] (Minecraft) Saving players
-[04:24:53] [main/INFO] (Minecraft) Saving worlds
-[04:24:53] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[04:24:54] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[04:24:54] [main/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[04:24:55] [main/ERROR] (Minecraft) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[04:24:55] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[04:24:55] [Server thread/INFO] (Minecraft) Generating keypair
-[04:24:55] [Server thread/INFO] (Minecraft) Converting map!
-[04:24:55] [Server thread/INFO] (Minecraft) Scanning folders...
-[04:24:55] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[04:24:55] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[04:24:56] [main/INFO] (WorldPreview) Leaving world generation
-[04:24:56] [main/INFO] (Minecraft) Stopping server
-[04:24:56] [main/INFO] (Minecraft) Saving players
-[04:24:56] [main/INFO] (Minecraft) Saving worlds
-[04:24:56] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[04:24:56] [main/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[04:24:56] [main/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[04:24:57] [main/INFO] (Minecraft) Stopping!
-[04:24:57] [main/INFO] (Minecraft) SoundSystem shutting down...
-[04:24:57] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com

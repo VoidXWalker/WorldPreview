@@ -3,30 +3,41 @@ package me.voidxwalker.worldpreview.mixin.client.render;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 //import net.minecraft.client.gui.screen.LevelLoadingScreen;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.BuiltChunkStorage;
 //import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.chunk.ChunkBuilder;
 //import net.minecraft.client.render.chunk.ChunkRenderer;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin<E> {
 //    @Shadow private ClientWorld world;
 //
 //    @Shadow @Final private MinecraftClient client;
-//
-//
+
+    @Shadow @Final private MinecraftClient client;
+
+    @Inject(method = "method_9891", at = @At(value = "HEAD"))
+    private void getDimensionType(float f, int i, CallbackInfo ci) {
+        if (WorldPreview.inPreview) {
+            this.client.world = WorldPreview.clientWorld;
+            this.client.player = WorldPreview.player;
+        }
+    }
+
+    @Redirect(method = "method_9891", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
+    private Entity getCameraEntity(MinecraftClient instance) {
+        if (WorldPreview.inPreview) {
+            return WorldPreview.player;
+        }
+        return this.client.getCameraEntity();
+    }
 //    @Redirect(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
 //    public Entity worldpreview_getCameraEntity(MinecraftClient instance){
 //        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
