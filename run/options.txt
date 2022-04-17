@@ -90,8 +90,8 @@ key_key.hotbar.6:16
 key_key.hotbar.7:17
 key_key.hotbar.8:18
 key_key.hotbar.9:19
-key_Freeze Preview:38
-key_Leave Preview:25
+key_Freeze Preview:36
+key_Leave Preview:37
 soundCategory_master:0.35430464
 soundCategory_music:0.0
 soundCategory_record:1.0

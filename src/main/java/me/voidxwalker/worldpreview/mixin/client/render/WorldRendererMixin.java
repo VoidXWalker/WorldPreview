@@ -4,8 +4,10 @@ import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 //import net.minecraft.client.gui.screen.LevelLoadingScreen;
 //import net.minecraft.client.render.Camera;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.WorldRenderer;
 //import net.minecraft.client.render.chunk.ChunkRenderer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,14 +25,6 @@ public abstract class WorldRendererMixin<E> {
 
     @Shadow @Final private MinecraftClient client;
 
-    @Inject(method = "method_9891", at = @At(value = "HEAD"))
-    private void getDimensionType(float f, int i, CallbackInfo ci) {
-        if (WorldPreview.inPreview) {
-            this.client.world = WorldPreview.clientWorld;
-            this.client.player = WorldPreview.player;
-        }
-    }
-
     @Redirect(method = "method_9891", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     private Entity getCameraEntity(MinecraftClient instance) {
         if (WorldPreview.inPreview) {
@@ -43,7 +37,7 @@ public abstract class WorldRendererMixin<E> {
 //        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
 //            return WorldPreview.player;
 //        }
-//        return  instance.getCameraEntity();
+//        return instance.getCameraEntity();
 //    }
 //    @Redirect(method = "setUpTerrain",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/render/chunk/ChunkRenderer;unscheduleRebuild()V"))
 //    public void stopCancel(ChunkRenderer instance){

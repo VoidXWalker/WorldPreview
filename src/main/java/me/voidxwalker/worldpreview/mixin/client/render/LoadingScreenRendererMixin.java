@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screen.Screen;
 //import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 //import net.minecraft.client.options.CloudRenderMode;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.render.*;
@@ -29,10 +30,12 @@ import net.minecraft.client.util.Clipper;
 import net.minecraft.client.util.GlAllocationUtils;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Matrix4f;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 //import net.minecraft.fluid.FluidState;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -43,6 +46,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -73,6 +77,15 @@ public abstract class LoadingScreenRendererMixin {
     @Shadow private boolean field_1032;
 
     @Shadow private Framebuffer field_7696;
+
+    private float fogRed;
+    private float fogGreen;
+    private float fogBlue;
+    private FloatBuffer fogColorBuffer = GlAllocationUtils.allocateFloatBuffer(16);
+    private float field_1843 = 0;
+    private float field_1842 = 0;
+    private float lastSkyDarkness;
+    private float skyDarkness;
 
     /**
      * @author Pixfumy
@@ -110,6 +123,22 @@ public abstract class LoadingScreenRendererMixin {
 //                      WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.x + ", "+(double)Math.floor(WorldPreview.player.y)+ ", "+ WorldPreview.player.z+")");
 //                  }
                         WorldPreview.inPreview=true;
+                        this.field_1842 = this.field_1843;
+                        float h = WorldPreview.world.getBrightness(new BlockPos(WorldPreview.player));
+                        float x = (float)this.field_1029.options.viewDistance / 32.0F;
+                        float y = h * (1.0F - x) + x;
+                        this.field_1843 += (y - this.field_1843) * 0.1F;
+                        this.lastSkyDarkness = this.skyDarkness;
+                        if (BossBar.darkenSky) {
+                            this.skyDarkness += 0.05F;
+                            if (this.skyDarkness > 1.0F) {
+                                this.skyDarkness = 1.0F;
+                            }
+
+                            BossBar.darkenSky = false;
+                        } else if (this.skyDarkness > 0.0F) {
+                            this.skyDarkness -= 0.0125F;
+                        }
                         renderWorld(0, (long) (1000000000 / 60 / 4));
                         GlStateManager.clear(256);
                         GlStateManager.matrixMode(5889);
@@ -163,6 +192,7 @@ public abstract class LoadingScreenRendererMixin {
         GlStateManager.enableCull();
         this.field_1029.profiler.swap("clear");
         GlStateManager.viewPort(0, 0, this.field_1029.width, this.field_1029.height);
+        this.updateFog(tickDelta);
         GlStateManager.clear(16640);
         this.field_1029.profiler.swap("camera");
         this.setupCamera(tickDelta, anaglyphFilter);
@@ -183,7 +213,13 @@ public abstract class LoadingScreenRendererMixin {
             GlStateManager.loadIdentity();
             Project.gluPerspective(this.field_1029.options.fov, (float)this.field_1029.width / (float)this.field_1029.height, 0.05F, this.field_1029.options.viewDistance * 2.0F);
             GlStateManager.matrixMode(5888);
+            ClientWorld world = this.field_1029.world;
+            ClientPlayerEntity player = this.field_1029.player;
+            this.field_1029.world = WorldPreview.clientWorld;
+            this.field_1029.player = WorldPreview.player;
             worldRenderer.method_9891(tickDelta, anaglyphFilter);
+            this.field_1029.world = world;
+            this.field_1029.player = player;
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
             Project.gluPerspective(this.field_1029.options.fov, (float)this.field_1029.width / (float)this.field_1029.height, 0.05F, this.field_1029.options.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
@@ -343,11 +379,7 @@ public abstract class LoadingScreenRendererMixin {
         if (entity instanceof PlayerEntity) {
             bl = ((PlayerEntity)entity).abilities.creativeMode;
         }
-        FloatBuffer fogColorBuffer = GlAllocationUtils.allocateFloatBuffer(16);
-        fogColorBuffer.clear();
-        fogColorBuffer.put(255.0F).put(255.0F).put(255.0F).put(1.0F);
-        fogColorBuffer.flip();
-        GL11.glFog(2918, fogColorBuffer);
+        GL11.glFog(2918, (FloatBuffer)this.updateFogColorBuffer(this.fogRed, this.fogGreen, this.fogBlue, 1.0F));
         GL11.glNormal3f(0.0F, -1.0F, 0.0F);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Block block = class_321.method_9371(WorldPreview.clientWorld, entity, tickDelta);
@@ -405,6 +437,120 @@ public abstract class LoadingScreenRendererMixin {
         GlStateManager.enableColorMaterial();
         GlStateManager.enableFog();
         GlStateManager.colorMaterial(1028, 4608);
+    }
+
+    private void updateFog(float tickDelta) {
+        World world = WorldPreview.world;
+        Entity entity = WorldPreview.player;
+        float f = 0.25F + 0.75F * (float)this.field_1029.options.viewDistance / 32.0F;
+        f = 1.0F - (float)Math.pow((double)f, 0.25D);
+        Vec3d vec3d = world.method_3631(WorldPreview.player, tickDelta);
+        float g = (float)vec3d.x;
+        float h = (float)vec3d.y;
+        float i = (float)vec3d.z;
+        Vec3d vec3d2 = world.getFogColor(tickDelta);
+        this.fogRed = (float)vec3d2.x;
+        this.fogGreen = (float)vec3d2.y;
+        this.fogBlue = (float)vec3d2.z;
+        float p;
+        if (this.field_1029.options.viewDistance >= 4) {
+            double d = -1.0D;
+            Vec3d vec3d3 = MathHelper.sin(world.getSkyAngleRadians(tickDelta)) > 0.0F ? new Vec3d(d, 0.0D, 0.0D) : new Vec3d(1.0D, 0.0D, 0.0D);
+            p = (float)entity.getRotationVector(tickDelta).dotProduct(vec3d3);
+            if (p < 0.0F) {
+                p = 0.0F;
+            }
+
+            if (p > 0.0F) {
+                float[] fs = world.dimension.getBackgroundColor(world.getSkyAngle(tickDelta), tickDelta);
+                if (fs != null) {
+                    p *= fs[3];
+                    this.fogRed = this.fogRed * (1.0F - p) + fs[0] * p;
+                    this.fogGreen = this.fogGreen * (1.0F - p) + fs[1] * p;
+                    this.fogBlue = this.fogBlue * (1.0F - p) + fs[2] * p;
+                }
+            }
+        }
+
+        this.fogRed += (g - this.fogRed) * f;
+        this.fogGreen += (h - this.fogGreen) * f;
+        this.fogBlue += (i - this.fogBlue) * f;
+        float k = world.getRainGradient(tickDelta);
+        float n;
+        float o;
+        if (k > 0.0F) {
+            n = 1.0F - k * 0.5F;
+            o = 1.0F - k * 0.4F;
+            this.fogRed *= n;
+            this.fogGreen *= n;
+            this.fogBlue *= o;
+        }
+
+        n = world.getThunderGradient(tickDelta);
+        if (n > 0.0F) {
+            o = 1.0F - n * 0.5F;
+            this.fogRed *= o;
+            this.fogGreen *= o;
+            this.fogBlue *= o;
+        }
+
+        Block block = class_321.method_9371(WorldPreview.world, entity, tickDelta);
+        if (block.getMaterial() == Material.WATER) {
+            p = (float)EnchantmentHelper.method_8449(entity) * 0.2F;
+            if (entity instanceof LivingEntity && ((LivingEntity)entity).hasStatusEffect(StatusEffect.WATER_BREATHING)) {
+                p = p * 0.3F + 0.6F;
+            }
+
+            this.fogRed = 0.02F + p;
+            this.fogGreen = 0.02F + p;
+            this.fogBlue = 0.2F + p;
+        } else if (block.getMaterial() == Material.LAVA) {
+            this.fogRed = 0.6F;
+            this.fogGreen = 0.1F;
+            this.fogBlue = 0.0F;
+        }
+
+        p = this.field_1842 + (this.field_1843 - this.field_1842) * tickDelta;
+        this.fogRed *= p;
+        this.fogGreen *= p;
+        this.fogBlue *= p;
+        double e = (entity.prevTickY + (entity.y - entity.prevTickY) * (double)tickDelta) * world.dimension.method_3994();
+        if (entity instanceof LivingEntity && ((LivingEntity)entity).hasStatusEffect(StatusEffect.BLINDNESS)) {
+            int r = ((LivingEntity)entity).getEffectInstance(StatusEffect.BLINDNESS).getDuration();
+            if (r < 20) {
+                e *= (double)(1.0F - (float)r / 20.0F);
+            } else {
+                e = 0.0D;
+            }
+        }
+
+        if (e < 1.0D) {
+            if (e < 0.0D) {
+                e = 0.0D;
+            }
+
+            e *= e;
+            this.fogRed = (float)((double)this.fogRed * e);
+            this.fogGreen = (float)((double)this.fogGreen * e);
+            this.fogBlue = (float)((double)this.fogBlue * e);
+        }
+
+        float t;
+        if (this.skyDarkness > 0.0F) {
+            t = this.lastSkyDarkness + (this.skyDarkness - this.lastSkyDarkness) * tickDelta;
+            this.fogRed = this.fogRed * (1.0F - t) + this.fogRed * 0.7F * t;
+            this.fogGreen = this.fogGreen * (1.0F - t) + this.fogGreen * 0.6F * t;
+            this.fogBlue = this.fogBlue * (1.0F - t) + this.fogBlue * 0.6F * t;
+        }
+
+        GlStateManager.clearColor(this.fogRed, this.fogGreen, this.fogBlue, 0.0F);
+    }
+
+    private FloatBuffer updateFogColorBuffer(float red, float green, float blue, float alpha) {
+        this.fogColorBuffer.clear();
+        this.fogColorBuffer.put(red).put(green).put(blue).put(alpha);
+        this.fogColorBuffer.flip();
+        return this.fogColorBuffer;
     }
 
 //    private void renderAboveClouds(Camera camera,  float tickDelta, double cameraX, double cameraY, double cameraZ) {
