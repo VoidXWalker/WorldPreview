@@ -33,7 +33,24 @@ public class ChunkBuilderMixin {
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     public void worldpreview_sodiumCompatibility(World world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen) {
-            ArrayList list = this.worldpreview_getList(0);
+            int i = Math.max(1, (int) ((double) Runtime.getRuntime().maxMemory() * 0.3D) / (RenderLayer.getBlockLayers().stream().mapToInt(RenderLayer::getExpectedBufferSize).sum() * 4) - 1);
+            int j = Runtime.getRuntime().availableProcessors();
+            int k = is64Bits ? j : Math.min(j, 4);
+            int l = Math.max(1, Math.min(k, i));
+            ArrayList list = this.worldpreview_getList(l);
+            try {
+                for (int m = 0; m < l; ++m) {
+                    list.add(new BlockBufferBuilderStorage());
+                }
+            } catch (OutOfMemoryError var14) {
+                LOGGER.warn("Allocated only {}/{} buffers", list.size(), l);
+                int n = Math.min(list.size() * 2 / 3, list.size() - 1);
+
+                for (int o = 0; o < n; ++o) {
+                    list.remove(list.size() - 1);
+                }
+                System.gc();
+            }
 
             this.threadBuffers = Queues.newArrayDeque(list);
             this.bufferCount = this.threadBuffers.size();
