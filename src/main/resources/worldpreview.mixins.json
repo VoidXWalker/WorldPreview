@@ -19,7 +19,6 @@
     "client.render.block.BlockRenderManagerMixin",
     "client.render.ParticleManagerMixin",
 
-    "client.render.chunk.ChunkBuilderMixin",
     "client.render.chunk.BuiltChunkMixin",
 
     "client.render.WorldRendererMixin",
