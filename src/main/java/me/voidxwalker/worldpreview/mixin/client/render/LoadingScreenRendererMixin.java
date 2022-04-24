@@ -47,6 +47,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -86,6 +87,7 @@ public abstract class LoadingScreenRendererMixin {
     private float field_1842 = 0;
     private float lastSkyDarkness;
     private float skyDarkness;
+    private int frameCount = 0;
 
     /**
      * @author Pixfumy
@@ -187,6 +189,9 @@ public abstract class LoadingScreenRendererMixin {
     }
 
     private void renderWorld(int anaglyphFilter, float tickDelta, long limitTime) {
+        if (this.field_1029.getCameraEntity() == null) {
+            this.field_1029.setCameraEntity(WorldPreview.player);
+        }
         WorldRenderer worldRenderer = WorldPreview.worldRenderer;
         ParticleManager particleManager = this.field_1029.particleManager;
         GlStateManager.enableCull();
@@ -228,77 +233,95 @@ public abstract class LoadingScreenRendererMixin {
 
         this.renderFog(0, tickDelta);
         GlStateManager.shadeModel(7425);
-//        if (entity.y + (double)entity.getEyeHeight() < 128.0D) {
-//            this.renderClouds(worldRenderer, tickDelta, anaglyphFilter);
-//        }
-//
-//        this.field_1029.profiler.swap("prepareterrain");
-//        this.renderFog(0, tickDelta);
-//        this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
-//        GuiLighting.disable();
-//        this.field_1029.profiler.swap("terrain_setup");
-//        worldRenderer.method_9906(entity, (double)tickDelta, cameraView, this.frameCount++, this.field_1029.player.isSpectator());
-//        if (anaglyphFilter == 0 || anaglyphFilter == 2) {
-//            this.field_1029.profiler.swap("updatechunks");
-//            this.field_1029.worldRenderer.method_9892(limitTime);
-//        }
-//
-//        this.field_1029.profiler.swap("terrain");
-//        GlStateManager.matrixMode(5888);
-//        GlStateManager.pushMatrix();
-//        GlStateManager.disableAlphaTest();
-//        worldRenderer.method_9894(RenderLayer.SOLID, (double)tickDelta, anaglyphFilter, entity);
-//        GlStateManager.enableAlphaTest();
-//        worldRenderer.method_9894(RenderLayer.CUTOUT_MIPPED, (double)tickDelta, anaglyphFilter, entity);
-//        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
-//        worldRenderer.method_9894(RenderLayer.CUTOUT, (double)tickDelta, anaglyphFilter, entity);
-//        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pop();
-//        GlStateManager.shadeModel(7424);
-//        GlStateManager.alphaFunc(516, 0.1F);
-//        PlayerEntity playerEntity2;
-//        GlStateManager.matrixMode(5888);
-//        GlStateManager.popMatrix();
-//        if (bl && this.field_1029.result != null && !entity.isSubmergedIn(Material.WATER)) {
-//            playerEntity2 = (PlayerEntity)entity;
-//            GlStateManager.disableAlphaTest();
-//            this.field_1029.profiler.swap("outline");
-//            worldRenderer.method_1380(playerEntity2, this.field_1029.result, 0, tickDelta);
-//            GlStateManager.enableAlphaTest();
-//        }
-//
-//        this.field_1029.profiler.swap("destroyProgress");
-//        GlStateManager.enableBlend();
-//        GlStateManager.blendFuncSeparate(770, 1, 1, 0);
-//        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
-//        worldRenderer.method_9899(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), entity, tickDelta);
-//        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pop();
-//        GlStateManager.disableBlend();
-//        GlStateManager.depthMask(false);
-//        GlStateManager.enableCull();
-//        this.field_1029.profiler.swap("weather");
-//        this.renderWeather(tickDelta);
-//        GlStateManager.depthMask(true);
-//        worldRenderer.method_9907(entity, tickDelta);
-//        GlStateManager.disableBlend();
-//        GlStateManager.enableCull();
-//        GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-//        GlStateManager.alphaFunc(516, 0.1F);
-//        this.renderFog(0, tickDelta);
-//        GlStateManager.enableBlend();
-//        GlStateManager.depthMask(false);
-//        this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
-//        GlStateManager.shadeModel(7425);
-//        this.field_1029.profiler.swap("translucent");
-//        worldRenderer.method_9894(RenderLayer.TRANSLUCENT, (double)tickDelta, anaglyphFilter, entity);
-//        GlStateManager.shadeModel(7424);
-//        GlStateManager.depthMask(true);
-//        GlStateManager.enableCull();
-//        GlStateManager.disableBlend();
-//        GlStateManager.disableFog();
-//        if (entity.y + (double)entity.getEyeHeight() >= 128.0D) {
-//            this.field_1029.profiler.swap("aboveClouds");
-//            this.renderClouds(worldRenderer, tickDelta, anaglyphFilter);
-//        }
+        if (entity.y + (double)entity.getEyeHeight() < 128.0D) {
+            ClientWorld world = this.field_1029.world;
+            this.field_1029.world = WorldPreview.clientWorld;
+            this.renderClouds(worldRenderer, tickDelta, anaglyphFilter);
+            this.field_1029.world = world;
+        }
+        this.field_1029.profiler.swap("prepareterrain");
+        this.renderFog(0, tickDelta);
+        this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+        GuiLighting.disable();
+        this.field_1029.profiler.swap("terrain_setup");
+        worldRenderer.method_9906(entity, (double)tickDelta, cameraView, this.frameCount++, false);
+        if (anaglyphFilter == 0 || anaglyphFilter == 2) {
+            this.field_1029.profiler.swap("updatechunks");
+            ClientPlayerEntity player = this.field_1029.player;
+            this.field_1029.player = WorldPreview.player;
+            this.field_1029.worldRenderer.method_9892(limitTime);
+            this.field_1029.player = player;
+        }
+        this.field_1029.profiler.swap("terrain");
+        GlStateManager.matrixMode(5888);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableAlphaTest();
+        worldRenderer.method_9894(RenderLayer.SOLID, (double)tickDelta, anaglyphFilter, entity);
+        GlStateManager.enableAlphaTest();
+        worldRenderer.method_9894(RenderLayer.CUTOUT_MIPPED, (double)tickDelta, anaglyphFilter, entity);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
+        worldRenderer.method_9894(RenderLayer.CUTOUT, (double)tickDelta, anaglyphFilter, entity);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pop();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.alphaFunc(516, 0.1F);
+        PlayerEntity playerEntity2;
+        GlStateManager.matrixMode(5888);
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GuiLighting.enableNormally();
+        this.field_1029.profiler.swap("entities");
+        worldRenderer.method_9908(entity, cameraView, tickDelta);
+        GuiLighting.disable();
+        this.disableLightmap();
+        GlStateManager.matrixMode(5888);
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        if (this.field_1029.result != null && entity.isSubmergedIn(Material.WATER)) {
+            playerEntity2 = (PlayerEntity)entity;
+            GlStateManager.disableAlphaTest();
+            this.field_1029.profiler.swap("outline");
+            worldRenderer.method_1380(playerEntity2, this.field_1029.result, 0, tickDelta);
+            GlStateManager.enableAlphaTest();
+        }
+        GlStateManager.matrixMode(5888);
+        GlStateManager.popMatrix();
+        if (this.field_1029.result != null && !entity.isSubmergedIn(Material.WATER)) {
+            playerEntity2 = (PlayerEntity)entity;
+            GlStateManager.disableAlphaTest();
+            this.field_1029.profiler.swap("outline");
+            worldRenderer.method_1380(playerEntity2, this.field_1029.result, 0, tickDelta);
+            GlStateManager.enableAlphaTest();
+        }
+        this.field_1029.profiler.swap("destroyProgress");
+        GlStateManager.enableBlend();
+        GlStateManager.blendFuncSeparate(770, 1, 1, 0);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
+        worldRenderer.method_9899(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), entity, tickDelta);
+        this.field_1029.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pop();
+        GlStateManager.disableBlend();
+        GlStateManager.depthMask(false);
+        GlStateManager.enableCull();
+        this.field_1029.profiler.swap("weather");
+        GlStateManager.depthMask(true);
+        worldRenderer.method_9907(entity, tickDelta);
+        GlStateManager.disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.alphaFunc(516, 0.1F);
+        this.renderFog(0, tickDelta);
+        GlStateManager.enableBlend();
+        GlStateManager.depthMask(false);
+        this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+        GlStateManager.shadeModel(7425);
+        this.field_1029.profiler.swap("translucent");
+        worldRenderer.method_9894(RenderLayer.TRANSLUCENT, (double)tickDelta, anaglyphFilter, entity);
+        GlStateManager.shadeModel(7424);
+        GlStateManager.depthMask(true);
+        GlStateManager.enableCull();
+        if (entity.y + (double)entity.getEyeHeight() >= 128.0D) {
+            this.field_1029.profiler.swap("aboveClouds");
+            this.renderClouds(worldRenderer, tickDelta, anaglyphFilter);
+        }
     }
 
     private void setupCamera(float tickDelta, int anaglyphFilter) {
@@ -553,24 +576,30 @@ public abstract class LoadingScreenRendererMixin {
         return this.fogColorBuffer;
     }
 
-//    private void renderAboveClouds(Camera camera,  float tickDelta, double cameraX, double cameraY, double cameraZ) {
-//        if (this.minecraft.options.getCloudRenderMode() != CloudRenderMode.OFF) {
-//            this.minecraft.getProfiler().swap("clouds");
-//            GlStateManager.matrixMode(5889);
-//            GlStateManager.loadIdentity();
-//            GlStateManager.multMatrix(Matrix4f.method_4929(minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance *16 * 4.0F));
-//            GlStateManager.matrixMode(5888);
-//            GlStateManager.pushMatrix();
-//           // this.backgroundRenderer.applyFog(camera, 0);
-//            WorldPreview.worldRenderer.renderClouds(tickDelta, cameraX, cameraY, cameraZ);
-//            GlStateManager.disableFog();
-//            GlStateManager.popMatrix();
-//            GlStateManager.matrixMode(5889);
-//            GlStateManager.loadIdentity();
-//            GlStateManager.multMatrix(Matrix4f.method_4929(minecraft.options.fov, (float)this.minecraft.window.getFramebufferWidth() / (float)this.minecraft.window.getFramebufferHeight(), 0.05F, minecraft.options.viewDistance *16* MathHelper.SQUARE_ROOT_OF_TWO));
-//            GlStateManager.matrixMode(5888);
-//        }
-//    }
+    private void renderClouds(WorldRenderer worldRenderer, float tickDelta, int anaglyphFilter) {
+        if (this.field_1029.options.getCloudMode() != 0) {
+            this.field_1029.profiler.swap("clouds");
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            Project.gluPerspective(this.field_1029.options.fov, (float)this.field_1029.width / (float)this.field_1029.height, 0.05F, this.field_1029.options.viewDistance * 4.0F);
+            GlStateManager.matrixMode(5888);
+            GlStateManager.pushMatrix();
+            this.renderFog(0, tickDelta);
+            worldRenderer.method_9910(tickDelta, anaglyphFilter);
+            GlStateManager.disableFog();
+            GlStateManager.popMatrix();
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            Project.gluPerspective(this.field_1029.options.fov, (float)this.field_1029.width / (float)this.field_1029.height, 0.05F, this.field_1029.options.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
+            GlStateManager.matrixMode(5888);
+        }
+    }
+
+    public void disableLightmap() {
+        GlStateManager.activeTexture(GLX.lightmapTextureUnit);
+        GlStateManager.disableTexture();
+        GlStateManager.activeTexture(GLX.textureUnit);
+    }
 
 //    private void applyCameraTransformations(float tickDelta) {
 //        GlStateManager.matrixMode(5889);

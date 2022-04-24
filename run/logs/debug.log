@@ -1,86 +1,86 @@
-[00:37:48] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-[00:37:48] [main/DEBUG] (FabricLoader/GameRemap) Requesting deobfuscation of {client=C:\Users\asadd\Desktop\WorldPreview\.gradle\loom-cache\1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2\minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar}
-[00:37:48] [main/DEBUG] (FabricLoader/GamePatch) Found game constructor: net.minecraft.client.main.Main -> net.minecraft.client.MinecraftClient
-[00:37:48] [main/DEBUG] (FabricLoader/GamePatch) Patching game constructor initializeGame()V
-[00:37:48] [main/DEBUG] (FabricLoader/GamePatch) Run directory field is thought to be net/minecraft/client/MinecraftClient/runDirectory
-[00:37:48] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/client/ClientBrandRetriever::getClientModName
-[00:37:48] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/server/MinecraftServer::getServerModName
-[00:37:48] [main/DEBUG] (FabricLoader/GamePatch) Patched 3 classs
-[00:37:48] [main/DEBUG] (FabricLoader/Discovery) Mod discovery time: 13.4 ms
-[00:37:48] [main/DEBUG] (FabricLoader/Resolution) Mod resolution time: 30.1 ms
-[00:37:48] [main/INFO] (FabricLoader) Loading 4 mods:
+[11:31:08] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[11:31:08] [main/DEBUG] (FabricLoader/GameRemap) Requesting deobfuscation of {client=C:\Users\asadd\Desktop\WorldPreview\.gradle\loom-cache\1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2\minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar}
+[11:31:08] [main/DEBUG] (FabricLoader/GamePatch) Found game constructor: net.minecraft.client.main.Main -> net.minecraft.client.MinecraftClient
+[11:31:08] [main/DEBUG] (FabricLoader/GamePatch) Patching game constructor initializeGame()V
+[11:31:08] [main/DEBUG] (FabricLoader/GamePatch) Run directory field is thought to be net/minecraft/client/MinecraftClient/runDirectory
+[11:31:08] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/client/ClientBrandRetriever::getClientModName
+[11:31:08] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/server/MinecraftServer::getServerModName
+[11:31:08] [main/DEBUG] (FabricLoader/GamePatch) Patched 3 classs
+[11:31:08] [main/DEBUG] (FabricLoader/Discovery) Mod discovery time: 12.4 ms
+[11:31:08] [main/DEBUG] (FabricLoader/Resolution) Mod resolution time: 29.4 ms
+[11:31:08] [main/INFO] (FabricLoader) Loading 4 mods:
 	- fabricloader 0.12.12
 	- java 17
 	- minecraft 1.8.9
 	- worldpreview 1.0.0
-[00:37:48] [main/DEBUG] (FabricLoader/Knot) Adding C:\Users\asadd\Desktop\WorldPreview\build\resources\main to classpath.
-[00:37:48] [main/DEBUG] (FabricLoader/Knot) Adding C:\Users\asadd\Desktop\WorldPreview\build\classes\java\main to classpath.
-[00:37:48] [main/DEBUG] (FabricLoader/Entrypoint) Registering new-style initializer me.voidxwalker.worldpreview.WorldPreview for mod worldpreview (key client)
-[00:37:48] [main/DEBUG] (FabricLoader/Mappings) Loading mappings took 65 ms
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Mixin bootstrap service org.spongepowered.asm.service.mojang.MixinServiceLaunchWrapperBootstrap is not available: LaunchWrapper is not available
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Mixin bootstrap service org.spongepowered.asm.service.modlauncher.MixinServiceModLauncherBootstrap is not available: ModLauncher is not available
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) MixinService [Knot/Fabric] was successfully booted in jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa
-[00:37:48] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Error cleaning class output directory: .mixin.out
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Initialising Mixin Platform Manager
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Adding mixin platform agents for container ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Instancing new MixinPlatformAgentDefault for ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) MixinPlatformAgentDefault accepted container ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Instancing new MixinPlatformAgentDefault for ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) MixinPlatformAgentDefault accepted container ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)]
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)]
-[00:37:48] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
-[00:37:48] [main/DEBUG] (FabricLoader/Knot) Adding C:\Users\asadd\Desktop\WorldPreview\.gradle\loom-cache\1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2\minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar to classpath.
-[00:37:48] [main/DEBUG] (FabricLoader/Entrypoint) No subscribers for entrypoint 'preLaunch'
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Preparing mixins for MixinEnvironment[DEFAULT]
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Selecting config worldpreview.mixins.json
-[00:37:48] [main/DEBUG] (FabricLoader/Mixin) Preparing worldpreview.mixins.json (10)
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @Inject with org.spongepowered.asm.mixin.injection.struct.CallbackInjectionInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyArg with org.spongepowered.asm.mixin.injection.struct.ModifyArgInjectionInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyArgs with org.spongepowered.asm.mixin.injection.struct.ModifyArgsInjectionInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @Redirect with org.spongepowered.asm.mixin.injection.struct.RedirectInjectionInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyVariable with org.spongepowered.asm.mixin.injection.struct.ModifyVariableInjectionInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyConstant with org.spongepowered.asm.mixin.injection.struct.ModifyConstantInjectionInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Mixing access.MinecraftClientMixin from worldpreview.mixins.json into net.minecraft.client.MinecraftClient
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Mixing client.MinecraftClientMixin from worldpreview.mixins.json into net.minecraft.client.MinecraftClient
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::worldpreview_onHotKeyPressed(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Mixing access.ScreenMixin from worldpreview.mixins.json into net.minecraft.client.gui.screen.Screen
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) Mixing server.MinecraftServerMixin from worldpreview.mixins.json into net.minecraft.server.MinecraftServer
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill2(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill3(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-[00:37:49] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill3(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-[00:37:49] [main/INFO] (net.minecraft.client.MinecraftClient) Setting user: Player264
-[00:37:49] [main/INFO] (net.minecraft.client.MinecraftClient) (Session ID is token:FabricMC:Player264)
-[00:37:50] [main/DEBUG] (FabricLoader/Mixin) Mixing client.GameOptionsMixin from worldpreview.mixins.json into net.minecraft.client.options.GameOptions
-[00:37:50] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-[00:37:50] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-[00:37:50] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-[00:37:50] [main/DEBUG] (FabricLoader/Entrypoint) No subscribers for entrypoint 'main'
-[00:37:50] [main/DEBUG] (FabricLoader/Entrypoint) Iterating over entrypoint 'client'
-[00:37:50] [main/INFO] (net.minecraft.client.MinecraftClient) LWJGL Version: 2.9.4
-[00:37:50] [main/INFO] (net.minecraft.resource.ReloadableResourceManagerImpl) Reloading ResourceManager: Default
-[00:37:50] [main/ERROR] (net.minecraft.client.MinecraftClient) Couldn't initialize twitch stream
-[00:37:50] [Sound Library Loader/INFO] (net.minecraft.client.sound.SoundSystem) Starting up SoundSystem...
-[00:37:51] [Thread-4/INFO] (net.minecraft.client.sound.SoundSystem) Initializing LWJGL OpenAL
-[00:37:51] [Thread-4/INFO] (net.minecraft.client.sound.SoundSystem) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[00:37:51] [Thread-4/INFO] (net.minecraft.client.sound.SoundSystem) OpenAL initialized.
-[00:37:51] [Sound Library Loader/INFO] (net.minecraft.client.sound.SoundSystem) Sound engine started
-[00:37:52] [main/INFO] (net.minecraft.client.texture.SpriteAtlasTexture) Created: 512x512 textures-atlas
-[00:37:52] [main/DEBUG] (FabricLoader/Mixin) Mixing access.WorldRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.WorldRenderer
-[00:37:52] [main/DEBUG] (FabricLoader/Mixin) Mixing client.render.WorldRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.WorldRenderer
-[00:37:52] [main/DEBUG] (FabricLoader/Mixin) Mixing server.ServerPlayerEntityMixin from worldpreview.mixins.json into net.minecraft.server.network.ServerPlayerEntity
-[00:37:52] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
+[11:31:08] [main/DEBUG] (FabricLoader/Knot) Adding C:\Users\asadd\Desktop\WorldPreview\build\resources\main to classpath.
+[11:31:08] [main/DEBUG] (FabricLoader/Knot) Adding C:\Users\asadd\Desktop\WorldPreview\build\classes\java\main to classpath.
+[11:31:08] [main/DEBUG] (FabricLoader/Entrypoint) Registering new-style initializer me.voidxwalker.worldpreview.WorldPreview for mod worldpreview (key client)
+[11:31:08] [main/DEBUG] (FabricLoader/Mappings) Loading mappings took 56 ms
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Mixin bootstrap service org.spongepowered.asm.service.mojang.MixinServiceLaunchWrapperBootstrap is not available: LaunchWrapper is not available
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Mixin bootstrap service org.spongepowered.asm.service.modlauncher.MixinServiceModLauncherBootstrap is not available: ModLauncher is not available
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) MixinService [Knot/Fabric] was successfully booted in jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa
+[11:31:08] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Error cleaning class output directory: .mixin.out
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Initialising Mixin Platform Manager
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Adding mixin platform agents for container ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Instancing new MixinPlatformAgentDefault for ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) MixinPlatformAgentDefault accepted container ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Instancing new MixinPlatformAgentDefault for ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) MixinPlatformAgentDefault accepted container ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)]
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:ContainerHandleURI(file:/C:/Users/asadd/Desktop/WorldPreview/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_8_9_1_8_9_build_202201302314_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)]
+[11:31:08] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[11:31:08] [main/DEBUG] (FabricLoader/Knot) Adding C:\Users\asadd\Desktop\WorldPreview\.gradle\loom-cache\1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2\minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar to classpath.
+[11:31:08] [main/DEBUG] (FabricLoader/Entrypoint) No subscribers for entrypoint 'preLaunch'
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Preparing mixins for MixinEnvironment[DEFAULT]
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Selecting config worldpreview.mixins.json
+[11:31:08] [main/DEBUG] (FabricLoader/Mixin) Preparing worldpreview.mixins.json (10)
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @Inject with org.spongepowered.asm.mixin.injection.struct.CallbackInjectionInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyArg with org.spongepowered.asm.mixin.injection.struct.ModifyArgInjectionInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyArgs with org.spongepowered.asm.mixin.injection.struct.ModifyArgsInjectionInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @Redirect with org.spongepowered.asm.mixin.injection.struct.RedirectInjectionInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyVariable with org.spongepowered.asm.mixin.injection.struct.ModifyVariableInjectionInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Registering new injector for @ModifyConstant with org.spongepowered.asm.mixin.injection.struct.ModifyConstantInjectionInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Mixing access.MinecraftClientMixin from worldpreview.mixins.json into net.minecraft.client.MinecraftClient
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Mixing client.MinecraftClientMixin from worldpreview.mixins.json into net.minecraft.client.MinecraftClient
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::worldpreview_onHotKeyPressed(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Mixing access.ScreenMixin from worldpreview.mixins.json into net.minecraft.client.gui.screen.Screen
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) Mixing server.MinecraftServerMixin from worldpreview.mixins.json into net.minecraft.server.MinecraftServer
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill2(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill3(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
+[11:31:09] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill3(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
+[11:31:09] [main/INFO] (net.minecraft.client.MinecraftClient) Setting user: Player36
+[11:31:09] [main/INFO] (net.minecraft.client.MinecraftClient) (Session ID is token:FabricMC:Player36)
+[11:31:10] [main/DEBUG] (FabricLoader/Mixin) Mixing client.GameOptionsMixin from worldpreview.mixins.json into net.minecraft.client.options.GameOptions
+[11:31:10] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
+[11:31:10] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
+[11:31:10] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
+[11:31:10] [main/DEBUG] (FabricLoader/Entrypoint) No subscribers for entrypoint 'main'
+[11:31:10] [main/DEBUG] (FabricLoader/Entrypoint) Iterating over entrypoint 'client'
+[11:31:10] [main/INFO] (net.minecraft.client.MinecraftClient) LWJGL Version: 2.9.4
+[11:31:10] [main/INFO] (net.minecraft.resource.ReloadableResourceManagerImpl) Reloading ResourceManager: Default
+[11:31:10] [main/ERROR] (net.minecraft.client.MinecraftClient) Couldn't initialize twitch stream
+[11:31:11] [Sound Library Loader/INFO] (net.minecraft.client.sound.SoundSystem) Starting up SoundSystem...
+[11:31:11] [Thread-4/INFO] (net.minecraft.client.sound.SoundSystem) Initializing LWJGL OpenAL
+[11:31:11] [Thread-4/INFO] (net.minecraft.client.sound.SoundSystem) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[11:31:11] [Thread-4/INFO] (net.minecraft.client.sound.SoundSystem) OpenAL initialized.
+[11:31:11] [Sound Library Loader/INFO] (net.minecraft.client.sound.SoundSystem) Sound engine started
+[11:31:12] [main/INFO] (net.minecraft.client.texture.SpriteAtlasTexture) Created: 512x512 textures-atlas
+[11:31:12] [main/DEBUG] (FabricLoader/Mixin) Mixing access.WorldRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.WorldRenderer
+[11:31:12] [main/DEBUG] (FabricLoader/Mixin) Mixing client.render.WorldRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.WorldRenderer
+[11:31:12] [main/DEBUG] (FabricLoader/Mixin) Mixing server.ServerPlayerEntityMixin from worldpreview.mixins.json into net.minecraft.server.network.ServerPlayerEntity
+[11:31:12] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -99,11 +99,11 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[00:37:52] [main/DEBUG] (FabricLoader/Mixin) Mixing client.render.LoadingScreenRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.LoadingScreenRenderer
-[00:37:52] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.render.LoadingScreenRendererMixin->@Inject::worldpreview_init(Lnet/minecraft/client/MinecraftClient;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-[00:37:52] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.render.LoadingScreenRendererMixin->@Inject::worldpreview_init(Lnet/minecraft/client/MinecraftClient;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-[00:37:52] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.render.LoadingScreenRendererMixin->@Inject::worldpreview_init(Lnet/minecraft/client/MinecraftClient;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-[00:37:54] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
+[11:31:12] [main/DEBUG] (FabricLoader/Mixin) Mixing client.render.LoadingScreenRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.LoadingScreenRenderer
+[11:31:12] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.render.LoadingScreenRendererMixin->@Inject::worldpreview_init(Lnet/minecraft/client/MinecraftClient;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
+[11:31:12] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.render.LoadingScreenRendererMixin->@Inject::worldpreview_init(Lnet/minecraft/client/MinecraftClient;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
+[11:31:12] [main/DEBUG] (FabricLoader/Mixin) worldpreview.mixins.json:client.render.LoadingScreenRendererMixin->@Inject::worldpreview_init(Lnet/minecraft/client/MinecraftClient;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
+[11:31:13] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -128,44 +128,18 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[00:37:54] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Starting integrated minecraft server version 1.8.9
-[00:37:54] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Generating keypair
-[00:37:54] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Converting map!
-[00:37:54] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Scanning folders...
-[00:37:54] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Total conversion count is 0
-[00:37:54] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing start region for level 0
-[00:37:55] [main/INFO] (me.voidxwalker.worldpreview.WorldPreview) Leaving world generation
-[00:37:55] [main/INFO] (net.minecraft.server.MinecraftServer) Stopping server
-[00:37:55] [main/INFO] (net.minecraft.server.MinecraftServer) Saving players
-[00:37:55] [main/INFO] (net.minecraft.server.MinecraftServer) Saving worlds
-[00:37:55] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Overworld
-[00:37:55] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Nether
-[00:37:55] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/The End
-[00:38:03] [main/INFO] (com.mojang.realmsclient.RealmsMainScreen) Realms library version == 1.7.59
-[00:38:03] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.RealmsMainScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.switchToRealms(RealmsBridge.java:22) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.switchToRealms(TitleScreen.java:244) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.buttonClicked(TitleScreen.java:220) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.mouseClicked(TitleScreen.java:459) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[00:38:09] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
+[11:31:13] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Starting integrated minecraft server version 1.8.9
+[11:31:13] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Generating keypair
+[11:31:13] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Converting map!
+[11:31:13] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Scanning folders...
+[11:31:13] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Total conversion count is 0
+[11:31:14] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing start region for level 0
+[11:31:14] [main/DEBUG] (FabricLoader/Mixin) Mixing access.ChunkInfoMixin from worldpreview.mixins.json into net.minecraft.client.render.WorldRenderer$ChunkInfo
+[11:31:15] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing spawn area: 14%
+[11:31:16] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing spawn area: 39%
+[11:31:17] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing spawn area: 65%
+[11:31:18] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing spawn area: 99%
+[11:31:18] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -173,7 +147,8 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
+	at net.minecraft.client.MinecraftClient.startGame(MinecraftClient.java:1770) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
+	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:205) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
@@ -190,21 +165,18 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[00:38:09] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Starting integrated minecraft server version 1.8.9
-[00:38:09] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Generating keypair
-[00:38:09] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Converting map!
-[00:38:09] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Scanning folders...
-[00:38:09] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Total conversion count is 0
-[00:38:09] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing start region for level 0
-[00:38:10] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing spawn area: 26%
-[00:38:11] [main/INFO] (me.voidxwalker.worldpreview.WorldPreview) Leaving world generation
-[00:38:11] [main/INFO] (net.minecraft.server.MinecraftServer) Stopping server
-[00:38:11] [main/INFO] (net.minecraft.server.MinecraftServer) Saving players
-[00:38:11] [main/INFO] (net.minecraft.server.MinecraftServer) Saving worlds
-[00:38:11] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Overworld
-[00:38:11] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Nether
-[00:38:11] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/The End
-[00:38:18] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
+[11:31:18] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Changing view distance to 12, from 10
+[11:31:18] [Server thread/INFO] (net.minecraft.server.PlayerManager) Player36[local:E:687fb8c8] logged in with entity id 262 at (215.5, 68.0, 210.5)
+[11:31:18] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Player36 joined the game
+[11:31:20] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Saving and pausing game...
+[11:31:20] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Overworld
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Nether
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/The End
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Stopping server
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving players
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving worlds
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Overworld
+[11:31:22] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -212,9 +184,8 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
+	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:47) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
 	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
@@ -229,96 +200,8 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[00:38:18] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Starting integrated minecraft server version 1.8.9
-[00:38:18] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Generating keypair
-[00:38:18] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Converting map!
-[00:38:18] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Scanning folders...
-[00:38:18] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Total conversion count is 0
-[00:38:18] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing start region for level 0
-[00:38:19] [main/INFO] (me.voidxwalker.worldpreview.WorldPreview) Leaving world generation
-[00:38:19] [main/INFO] (net.minecraft.server.MinecraftServer) Stopping server
-[00:38:19] [main/INFO] (net.minecraft.server.MinecraftServer) Saving players
-[00:38:19] [main/INFO] (net.minecraft.server.MinecraftServer) Saving worlds
-[00:38:19] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Overworld
-[00:38:19] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Nether
-[00:38:19] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/The End
-[00:38:23] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[00:38:23] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Starting integrated minecraft server version 1.8.9
-[00:38:23] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Generating keypair
-[00:38:23] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Converting map!
-[00:38:23] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Scanning folders...
-[00:38:23] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Total conversion count is 0
-[00:38:23] [Server thread/WARN] (net.minecraft.server.world.ServerWorld) Unable to find spawn biome
-[00:38:23] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing start region for level 0
-[00:38:24] [main/INFO] (me.voidxwalker.worldpreview.WorldPreview) Leaving world generation
-[00:38:24] [main/INFO] (net.minecraft.server.MinecraftServer) Stopping server
-[00:38:24] [main/INFO] (net.minecraft.server.MinecraftServer) Saving players
-[00:38:24] [main/INFO] (net.minecraft.server.MinecraftServer) Saving worlds
-[00:38:24] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Overworld
-[00:38:24] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Nether
-[00:38:24] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/The End
-[00:38:25] [main/ERROR] (net.minecraft.realms.RealmsBridge) Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:36) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:174) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:380) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:803) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:175) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:352) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:351) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:417) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:394) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1376) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:874) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:336) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:101) [minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2.jar:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[00:38:25] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Starting integrated minecraft server version 1.8.9
-[00:38:25] [Server thread/INFO] (net.minecraft.server.integrated.IntegratedServer) Generating keypair
-[00:38:25] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Converting map!
-[00:38:25] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Scanning folders...
-[00:38:25] [Server thread/INFO] (net.minecraft.world.level.storage.AnvilLevelStorage) Total conversion count is 0
-[00:38:25] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Preparing start region for level 0
-[00:38:26] [main/INFO] (me.voidxwalker.worldpreview.WorldPreview) Leaving world generation
-[00:38:26] [main/INFO] (net.minecraft.server.MinecraftServer) Stopping server
-[00:38:26] [main/INFO] (net.minecraft.server.MinecraftServer) Saving players
-[00:38:26] [main/INFO] (net.minecraft.server.MinecraftServer) Saving worlds
-[00:38:26] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Overworld
-[00:38:26] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Nether
-[00:38:26] [main/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/The End
-[00:38:30] [main/INFO] (net.minecraft.client.MinecraftClient) Stopping!
-[00:38:30] [main/INFO] (net.minecraft.client.sound.SoundSystem) SoundSystem shutting down...
-[00:38:30] [main/WARN] (net.minecraft.client.sound.SoundSystem) Author: Paul Lamb, www.paulscode.com
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/Nether
+[11:31:22] [Server thread/INFO] (net.minecraft.server.MinecraftServer) Saving chunks for level 'New World'/The End
+[11:31:23] [main/INFO] (net.minecraft.client.MinecraftClient) Stopping!
+[11:31:23] [main/INFO] (net.minecraft.client.sound.SoundSystem) SoundSystem shutting down...
+[11:31:23] [main/WARN] (net.minecraft.client.sound.SoundSystem) Author: Paul Lamb, www.paulscode.com
