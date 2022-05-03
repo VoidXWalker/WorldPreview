@@ -1,62 +1,66 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
+
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 //import net.minecraft.client.gui.screen.LevelLoadingScreen;
 //import net.minecraft.client.render.Camera;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.WorldRenderer;
 //import net.minecraft.client.render.chunk.ChunkRenderer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.world.BuiltChunk;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.dimension.Dimension;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldRenderer.class)
-public abstract class WorldRendererMixin<E> {
-//    @Shadow private ClientWorld world;
-//
-//    @Shadow @Final private MinecraftClient client;
-
+public abstract class WorldRendererMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Redirect(method = "method_9891", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
-    private Entity getCameraEntity(MinecraftClient instance) {
-        if (WorldPreview.inPreview) {
-            return WorldPreview.player;
+    @Redirect(method = "method_9906",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/world/BuiltChunk;method_10162(Z)V"))
+    public void stopCancel(BuiltChunk instance, boolean bl){
+        if (client.currentScreen instanceof TitleScreen){
+            return;
         }
-        return this.client.getCameraEntity();
+        instance.method_10162(false);
     }
-//    @Redirect(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
-//    public Entity worldpreview_getCameraEntity(MinecraftClient instance){
-//        if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen){
-//            return WorldPreview.player;
-//        }
-//        return instance.getCameraEntity();
-//    }
-//    @Redirect(method = "setUpTerrain",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/render/chunk/ChunkRenderer;unscheduleRebuild()V"))
-//    public void stopCancel(ChunkRenderer instance){
-//        if(client.currentScreen instanceof LevelLoadingScreen){
-//            return;
-//        }
-//        instance.unscheduleRebuild();
-//
-//    }
-//
-//    @Redirect(method = "renderClouds(FDDD)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
+
+    @Redirect(method = "method_9891", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getCameraPosVec(F)Lnet/minecraft/util/math/Vec3d;"))
+    private Vec3d getWorldPreviewPlayerCameraPosVec(ClientPlayerEntity instance, float tickDelta) {
+        if (client.currentScreen instanceof TitleScreen) {
+            return WorldPreview.player.getCameraPosVec(tickDelta);
+        }
+        return instance.getCameraPosVec(tickDelta);
+    }
+
+    @Redirect(method = "method_9891", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/Dimension;canPlayersSleep()Z"))
+    private boolean returnTrueIfInPreview(Dimension instance) {
+        if (client.currentScreen instanceof TitleScreen) {
+            return true;
+        }
+        return instance.canPlayersSleep();
+    }
+
+    @Redirect(method = "method_9910", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/Dimension;canPlayersSleep()Z"))
+    private boolean returnTrueIfInPreview2(Dimension instance) {
+        if (client.currentScreen instanceof TitleScreen) {
+            return true;
+        }
+        return instance.canPlayersSleep();
+    }
+
+//    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
 //    public ClientWorld worldpreview_getCorrectWorld5(MinecraftClient instance){
-//        if(instance.currentScreen instanceof LevelLoadingScreen){
+//        if(instance.currentScreen instanceof TitleScreen){
 //            return this.world;
 //        }
-//        return  instance.world;
+//        return instance.world;
 //    }
-//
-//
 //
 //    @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
 //    public ClientWorld worldpreview_getCorrectWorld4(MinecraftClient instance){
@@ -67,13 +71,6 @@ public abstract class WorldRendererMixin<E> {
 //
 //    }
 //
-//    @Redirect(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getCamera()Lnet/minecraft/client/render/Camera;"))
-//    public Camera worldpreview_getCamera(GameRenderer instance){
-//        if(instance.getCamera()==null&&client.currentScreen instanceof LevelLoadingScreen){
-//            return WorldPreview.camera;
-//        }
-//        return  instance.getCamera();
-//    }
 //    @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
 //    public ClientPlayerEntity worldpreview_getCorrectPlayer3(MinecraftClient instance){
 //        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){

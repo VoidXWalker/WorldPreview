@@ -116,14 +116,6 @@ public abstract class LoadingScreenRendererMixin {
                     if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
                         KeyBinding.unpressAll();
                         WorldPreview.kill = 0;
-//                  if (WorldPreview.camera == null) {
-//                      WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y+ 1+(WorldPreview.player.getBoundingBox().y2-WorldPreview.player.getBoundingBox().y1), WorldPreview.player.z, 0.0F, 0.0F);
-//                      WorldPreview.camera = new Camera();
-//                      WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, 0.2F);
-//                      WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.x, WorldPreview.player.y - 1.5, WorldPreview.player.z, 0.0F, 0.0F);
-//                      WorldPreview.inPreview=true;
-//                      WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.x + ", "+(double)Math.floor(WorldPreview.player.y)+ ", "+ WorldPreview.player.z+")");
-//                  }
                         WorldPreview.inPreview=true;
                         this.field_1842 = this.field_1843;
                         float h = WorldPreview.world.getBrightness(new BlockPos(WorldPreview.player));

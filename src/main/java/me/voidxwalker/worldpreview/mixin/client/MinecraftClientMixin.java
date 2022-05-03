@@ -3,6 +3,7 @@ package me.voidxwalker.worldpreview.mixin.client;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
@@ -108,6 +110,13 @@ public abstract class MinecraftClientMixin {
                     WorldPreview.worldRenderer.method_1371((ClientWorld) null);
                 }
             }
+        }
+    }
+
+    @Inject(method = "getCameraEntity", at = @At("HEAD"), cancellable = true)
+    private void getWorldPreviewPlayer(CallbackInfoReturnable<Entity> cir) {
+        if (this.currentScreen instanceof TitleScreen) {
+            cir.setReturnValue(WorldPreview.player);
         }
     }
 }
