@@ -241,7 +241,7 @@ public abstract class LoadingScreenRendererMixin {
             this.field_1029.profiler.swap("updatechunks");
             ClientPlayerEntity player = this.field_1029.player;
             this.field_1029.player = WorldPreview.player;
-            this.field_1029.worldRenderer.method_9892(limitTime);
+            worldRenderer.method_9892(limitTime);
             this.field_1029.player = player;
         }
         this.field_1029.profiler.swap("terrain");

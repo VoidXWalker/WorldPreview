@@ -53,43 +53,4 @@ public abstract class WorldRendererMixin {
         }
         return instance.canPlayersSleep();
     }
-
-//    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-//    public ClientWorld worldpreview_getCorrectWorld5(MinecraftClient instance){
-//        if(instance.currentScreen instanceof TitleScreen){
-//            return this.world;
-//        }
-//        return instance.world;
-//    }
-//
-//    @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
-//    public ClientWorld worldpreview_getCorrectWorld4(MinecraftClient instance){
-//        if(instance.world==null&&client.currentScreen instanceof LevelLoadingScreen){
-//            return this.world;
-//        }
-//        return instance.world;
-//
-//    }
-//
-//    @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
-//    public ClientPlayerEntity worldpreview_getCorrectPlayer3(MinecraftClient instance){
-//        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
-//            return WorldPreview.player;
-//        }
-//        return instance.player ;
-//    }
-//    @Redirect(method = "renderEntities", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
-//    public ClientPlayerEntity worldpreview_getCorrectPlayer(MinecraftClient instance){
-//        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
-//            return WorldPreview.player;
-//        }
-//        return instance.player ;
-//    }
-//    @Redirect(method = "setUpTerrain", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;player:Lnet/minecraft/client/network/ClientPlayerEntity;", opcode = Opcodes.GETFIELD))
-//    public ClientPlayerEntity worldpreview_getCorrectPlayer2(MinecraftClient instance){
-//        if(instance.player==null&&client.currentScreen instanceof LevelLoadingScreen){
-//            return WorldPreview.player;
-//        }
-//        return instance.player ;
-//    }
 }
