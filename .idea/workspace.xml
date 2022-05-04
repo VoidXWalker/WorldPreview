@@ -13,9 +13,9 @@
       <change beforePath="$PROJECT_DIR$/run/logs/debug-5.log.gz" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/debug-5.log.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/logs/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/logs/latest.log" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/latest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/options.txt" beforeDir="false" afterPath="$PROJECT_DIR$/run/options.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/usercache.json" beforeDir="false" afterPath="$PROJECT_DIR$/run/usercache.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/LoadingScreenRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/LoadingScreenRendererMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/WorldRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/WorldRendererMixin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +80,18 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="NONE" type="java-line">
+          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2/minecraft-1.8.9-projectmapped-net.fabricmc.yarn-1.8.9+build.202201302314-v2-sources.jar!/net/minecraft/client/MinecraftClient.java</url>
+          <line>847</line>
+          <log-expression expression="&quot;here&quot;" language="JAVA" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WorldPreview$Minecraft_Client.ic" NAME="Minecraft Client Coverage Results" MODIFIED="1651614659411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

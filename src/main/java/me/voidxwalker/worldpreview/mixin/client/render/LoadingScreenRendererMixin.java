@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
-import me.voidxwalker.worldpreview.mixin.access.ScreenMixin;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
@@ -12,9 +11,7 @@ import net.minecraft.client.MinecraftClient;
 //import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.class_321;
 import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gui.screen.Screen;
 //import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
 //import net.minecraft.client.options.CloudRenderMode;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.KeyBinding;
@@ -22,14 +19,11 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.debug.CameraView;
 import net.minecraft.client.render.debug.StructureDebugRenderer;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.AnError;
 import net.minecraft.client.util.Clipper;
 import net.minecraft.client.util.GlAllocationUtils;
 import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.Matrix4f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -38,19 +32,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import org.apache.logging.log4j.Level;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
@@ -59,8 +46,6 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.nio.FloatBuffer;
@@ -88,7 +73,6 @@ public abstract class LoadingScreenRendererMixin {
     private float lastSkyDarkness;
     private float skyDarkness;
     private int frameCount = 0;
-
     /**
      * @author Pixfumy
      * @reason render the generating world instead of the default background
@@ -128,7 +112,6 @@ public abstract class LoadingScreenRendererMixin {
                             if (this.skyDarkness > 1.0F) {
                                 this.skyDarkness = 1.0F;
                             }
-
                             BossBar.darkenSky = false;
                         } else if (this.skyDarkness > 0.0F) {
                             this.skyDarkness -= 0.0125F;
@@ -586,6 +569,7 @@ public abstract class LoadingScreenRendererMixin {
             GlStateManager.matrixMode(5888);
         }
     }
+
 
     public void disableLightmap() {
         GlStateManager.activeTexture(GLX.lightmapTextureUnit);
