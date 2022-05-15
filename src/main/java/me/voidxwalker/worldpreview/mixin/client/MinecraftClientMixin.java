@@ -61,9 +61,6 @@ public abstract class MinecraftClientMixin {
                 WorldPreview.chunkMapPos= WorldPreview.chunkMapPos<5? WorldPreview.chunkMapPos+1:1;
             }
             if(WorldPreview.resetKey.wasPressed()|| WorldPreview.kill==-1){
-                if(WorldPreview.resetKey.wasPressed()){
-                    soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                }
                 WorldPreview.log(Level.INFO,"Leaving world generation");
                 WorldPreview.kill = 1;
                 while(WorldPreview.inPreview){
