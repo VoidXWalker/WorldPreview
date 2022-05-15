@@ -4,23 +4,15 @@ import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.sound.SoundManager;
-import net.minecraft.client.util.Window;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.ClientConnection;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.profiler.Profiler;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -40,22 +32,12 @@ public abstract class MinecraftClientMixin {
 
     @Shadow private @Nullable IntegratedServer server;
 
-    @Shadow @Nullable public Entity cameraEntity;
-    @Shadow private @Nullable ClientConnection connection;
-    @Shadow @Final private SoundManager soundManager;
-    @Shadow private Profiler profiler;
-
     @Shadow @Nullable public ClientWorld world;
     @Shadow @Nullable public Screen currentScreen;
-    @Shadow @Final public Mouse mouse;
-
-    @Shadow public abstract Window getWindow();
 
     @Mutable
     @Shadow @Final public WorldRenderer worldRenderer;
     @Shadow @Final private BufferBuilderStorage bufferBuilders;
-    @Shadow @Final private ReloadableResourceManager resourceManager;
-    @Shadow private static MinecraftClient instance;
     private int worldpreview_cycleCooldown;
     @Inject(method = "isFabulousGraphicsOrBetter",at = @At(value = "RETURN"),cancellable = true)
     private static void worldpreview_stopFabulous(CallbackInfoReturnable<Boolean> cir){
@@ -72,9 +54,7 @@ public abstract class MinecraftClientMixin {
                 WorldPreview.chunkMapPos= WorldPreview.chunkMapPos<5? WorldPreview.chunkMapPos+1:1;
             }
             if(WorldPreview.resetKey.wasPressed()|| WorldPreview.kill==-1){
-                if(WorldPreview.resetKey.wasPressed()){
-                    soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                }
+
                 WorldPreview.log(Level.INFO,"Leaving world generation");
                 WorldPreview.kill = 1;
                 while(WorldPreview.inPreview){
