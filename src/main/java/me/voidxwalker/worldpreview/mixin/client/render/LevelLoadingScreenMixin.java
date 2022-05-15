@@ -300,7 +300,8 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.options").getString(), (ignored) -> {}));
         this.addButton(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.shareToLan").getString(), (ignored) -> {}));
         this.addButton(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 - 16, 204, 20, new TranslatableText("menu.returnToMenu").getString(), (buttonWidgetX) -> {
-                WorldPreview.kill = -1;
+            minecraft.getSoundManager().stopAll();
+            WorldPreview.kill = -1;
                 buttonWidgetX.active = false;
         }));
     }
