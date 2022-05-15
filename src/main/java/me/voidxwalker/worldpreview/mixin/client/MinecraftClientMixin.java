@@ -2,8 +2,10 @@ package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
+import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
+import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.BufferBuilderStorage;
@@ -47,6 +49,7 @@ public abstract class MinecraftClientMixin {
     @Mutable
     @Shadow @Final public WorldRenderer worldRenderer;
     @Shadow @Final private BufferBuilderStorage bufferBuilders;
+    @Shadow @Nullable public Screen currentScreen;
     private int worldpreview_cycleCooldown;
 
     @Inject(method = "startIntegratedServer",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
@@ -88,11 +91,12 @@ public abstract class MinecraftClientMixin {
     public void isExistingWorld(String name, String displayName, LevelInfo levelInfo, CallbackInfo ci){
         WorldPreview.existingWorld=this.getLevelStorage().levelExists(name);
     }
-    @Redirect(method="joinWorld",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;reset(Lnet/minecraft/client/gui/screen/Screen;)V"))
-    public void smoothTransition(MinecraftClient instance, Screen screen){
-        this.cameraEntity = null;
-        this.connection = null;
-        this.render(false);
+    @Redirect(method="reset",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;openScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
+    public void worldpreview_smoothTransition(MinecraftClient instance, Screen screen){
+        if(this.currentScreen instanceof LevelLoadingScreen &&  ((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null&&WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null){
+            return;
+        }
+        instance.openScreen(screen);
 
     }
     //sodium
