@@ -2,6 +2,7 @@ package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
+import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
@@ -96,23 +97,15 @@ public abstract class MinecraftClientMixin {
         WorldPreview.existingWorld=true;
     }
 
-    @Redirect(method="joinWorld",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;reset(Lnet/minecraft/client/gui/screen/Screen;)V"))
+    @Redirect(method="reset",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
     public void worldpreview_smoothTransition(MinecraftClient instance, Screen screen){
-        this.profiler.push("forcedTick");
-        //this.soundManager.stopAll();
-        this.cameraEntity = null;
-        this.integratedServerConnection = null;
-        this.render(false);
-        this.profiler.pop();
-
-    }
-    @Redirect(method = "reset",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
-    public void worldpreview_stopStopSound(SoundManager instance){
-        if(this.currentScreen instanceof LevelLoadingScreen){
+        if(this.currentScreen instanceof LevelLoadingScreen&&  ((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null&&WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null){
             return;
         }
-        instance.stopAll();
+        instance.setScreen(screen);
+
     }
+
     @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManager;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V",ordinal = 15))
     public void worldpreview_createWorldRenderer(ReloadableResourceManager instance, ResourceReloader resourceReloader){
         WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
