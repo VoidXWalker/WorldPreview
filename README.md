@@ -6,8 +6,8 @@ Minecraft mod that draws a preview of the world on the loading screen during chu
 - The **full chunk map** must be shown in the recording to get a run verified
 - Switching to the F3 + Esc menu will make your run **count as f3**
 - **Compatible** with all allowed mods and lazy stronghold
-- **Compatible** with the newest releases of specnr's multi-instance makros and with FinestPigeon's spawn reset makro for ssg
-**For makro
+- **Compatible** with the newest releases of specnr's multi-instance macros and with FinestPigeon's spawn reset macro for ssg
+**For macro
 - World preview **doesn't modify world generation** in any way. It simply takes already completed chunks, converts them to client chunks (Chunks minecraft can render) and then draws these chunks on the loading screen.
 - There are **no server side modifications** besides minecraft getting the random value for the player spawn earlier (Random is Random so it doesn't change anything)
 - You will not be able to reset after ~ when the chunk map reaches 100%. This is intentional
@@ -30,7 +30,7 @@ There are 5 ways the player can interact with the preview:
 - Cycle Chunk Map, default button "h" (English keyboard): Cycle through the 4 positions of the chunk map
 - Freeze Preview, default button "j" (English keyboard): Freezes the preview (helps with CPU performance)
 
-## For Makro Makers
+## For Macro Makers
 The mod prints 3 different log lines:
 - "Starting preview at (x, y, z)" at the start of the preview (Reset buttons unlocked)
 - "Leaving world generation" when leaving world generation (Reset buttons locked)
