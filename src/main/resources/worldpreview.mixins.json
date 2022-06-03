@@ -4,27 +4,18 @@
   "package": "me.voidxwalker.worldpreview.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "access.BuiltChunkStorageMixin",
-    "access.ClientChunkManagerMixin",
-    "access.ClientChunkMapMixin",
-    "access.ThreadedAnvilChunkStorageMixin",
-    "access.ChunkInfoMixin",
-    "access.KeyBindingMixin",
     "access.WorldRendererMixin",
-
-    "client.render.LevelLoadingScreenMixin",
     "client.render.WorldRendererMixin",
-    "client.render.ChunkRendererMixin",
-    "client.render.BackgroundRendererMixin",
+    "client.render.LoadingScreenRendererMixin",
 
     "client.MinecraftClientMixin",
-    "client.KeyboardMixin",
     "client.GameOptionsMixin",
-    "client.ClientChunkMapMixin",
 
     "server.MinecraftServerMixin",
-    "server.ServerChunkManagerMixin",
-    "server.ServerPlayerEntityMixin"
+    "server.ServerPlayerEntityMixin",
+    "access.GameRendererMixin",
+    "access.ClientChunkProviderMixin",
+    "access.ServerChunkProviderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

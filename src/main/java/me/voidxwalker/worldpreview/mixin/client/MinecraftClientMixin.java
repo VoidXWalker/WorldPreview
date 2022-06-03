@@ -1,107 +1,121 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.WorldPreview;
-import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.RunArgs;
-import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.level.LevelInfo;
-import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
+import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 
-    @Shadow protected abstract void render(boolean tick);
+   // @Shadow protected abstract void render(boolean tick);
 
     @Shadow private @Nullable IntegratedServer server;
 
     @Shadow @Nullable public Entity cameraEntity;
-    @Shadow private @Nullable ClientConnection connection;
-    @Shadow @Final private SoundManager soundManager;
 
-    @Shadow protected abstract void reset(Screen screen);
+    @Shadow private SoundManager soundManager;
 
-    @Shadow public abstract LevelStorage getLevelStorage();
+    @Shadow private ClientConnection clientConnection;
 
-    @Shadow public WorldRenderer worldRenderer;
-    @Shadow @Nullable public Screen currentScreen;
-    private int worldpreview_cycleCooldown;
+    @Shadow public ClientWorld world;
 
-    @Inject(method = "startIntegratedServer",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
-    public void worldpreview_onHotKeyPressed( CallbackInfo ci){
-        if(WorldPreview.inPreview){
-            worldpreview_cycleCooldown++;
-            if(WorldPreview.cycleChunkMapKey.wasPressed()&&worldpreview_cycleCooldown>10&&!WorldPreview.freezePreview){
-                worldpreview_cycleCooldown=0;
-                WorldPreview.chunkMapPos= WorldPreview.chunkMapPos<5? WorldPreview.chunkMapPos+1:1;
+    @Shadow public abstract void openScreen(Screen screen);
+
+    @Shadow private boolean connectedToRealms;
+
+    @Shadow public abstract void connect(ClientWorld world);
+
+    @Shadow public boolean skipGameRender;
+
+    @Shadow public ClientPlayerInteractionManager interactionManager;
+
+    @Shadow protected abstract void handleBlockBreaking(boolean bl);
+
+    @Shadow public Screen currentScreen;
+
+    @Shadow public GameOptions options;
+
+    @Shadow public boolean focused;
+
+    @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
+    private void cancelSleep(long l) {
+
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z", shift = At.Shift.AFTER), cancellable = true)
+    private void worldpreview_onHotKeyPressed(CallbackInfo ci) {
+        int resetKeyCode = WorldPreview.resetKey.getCode();
+        int freezeKeyCode = WorldPreview.freezeKey.getCode();
+        if (Keyboard.isKeyDown(resetKeyCode)) {
+            soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
+            WorldPreview.log(Level.INFO,"Leaving world generation");
+            WorldPreview.kill = 1;
+            while(WorldPreview.inPreview){
+                Thread.yield();
             }
-            if(WorldPreview.resetKey.wasPressed()|| WorldPreview.kill==-1){
-                WorldPreview.log(Level.INFO,"Leaving world generation");
-                WorldPreview.kill = 1;
-                while(WorldPreview.inPreview){
-                    Thread.yield();
-                }
-                this.server.shutdown();
-                MinecraftClient.getInstance().disconnect();
-                WorldPreview.kill=0;
-                MinecraftClient.getInstance().openScreen(new TitleScreen());
-                ci.cancel();
-            }
-            if(WorldPreview.freezeKey.wasPressed()){
-                WorldPreview.freezePreview=!WorldPreview.freezePreview;
-                if(WorldPreview.freezePreview){
-                    WorldPreview.log(Level.INFO,"Freezing Preview"); // insert anchiale joke
-                }
-                else {
-                    WorldPreview.log(Level.INFO,"Unfreezing Preview");
-                }
-            }
+            this.server.stopServer();
+            this.server = null;
+            this.connect((ClientWorld) null);
+            WorldPreview.kill=0;
+            ci.cancel();
+        } else if (Keyboard.isKeyDown(freezeKeyCode)) {
+            System.out.println("freeze");
         }
     }
 
-    @Inject(method="startIntegratedServer",at=@At(value = "HEAD"))
+
+    @Inject(method="startGame",at=@At(value = "HEAD"))
     public void isExistingWorld(String name, String displayName, LevelInfo levelInfo, CallbackInfo ci){
-        WorldPreview.existingWorld=this.getLevelStorage().levelExists(name);
-    }
-    @Redirect(method="reset",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;openScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
-    public void worldpreview_smoothTransition(MinecraftClient instance, Screen screen){
-        if(this.currentScreen instanceof LevelLoadingScreen &&  ((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null&&WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null){
-            return;
-        }
-        instance.openScreen(screen);
-
+        WorldPreview.existingWorld = levelInfo == null;
     }
 
-    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
-    public void reset(Screen screen, CallbackInfo ci){
+    @Redirect(method="connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value="INVOKE",target="Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
+    public void smoothTransition(SoundManager instance){
+        this.cameraEntity = null;
+        //this.skipGameRender = true; // this doesn't work exactly the same as its equivalent in 1.14+, needs further testing
+    }
+
+
+    @Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value = "HEAD"))
+    public void reset(ClientWorld world, String loadingMessage, CallbackInfo ci){
         synchronized (WorldPreview.lock){
-            WorldPreview.world=null;
-            WorldPreview.player=null;
-            WorldPreview.clientWord=null;
-            WorldPreview.camera=null;
-            if(WorldPreview.worldRenderer!=null){
-                WorldPreview.worldRenderer.setWorld(null);
+            if (world == null) {
+                WorldPreview.world = null;
+                WorldPreview.player = null;
+                WorldPreview.clientWorld = null;
+                //WorldPreview.camera = null; // don't think this is necessary, we'll see when we get to loading screen code
+                if (WorldPreview.worldRenderer != null) {
+                    WorldPreview.worldRenderer.method_1371((ClientWorld) null);
+                }
             }
-            worldpreview_cycleCooldown=0;
         }
+    }
 
+    @Inject(method = "getCameraEntity", at = @At("HEAD"), cancellable = true)
+    private void getWorldPreviewPlayer(CallbackInfoReturnable<Entity> cir) {
+        if (this.currentScreen instanceof TitleScreen) {
+            cir.setReturnValue(WorldPreview.player);
+        }
     }
 }
