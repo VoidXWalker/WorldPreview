@@ -5,7 +5,7 @@ Minecraft mod that draws a preview of the world on the loading screen during chu
 - **Legal** for the minecraft java edition leaderboards
 - The **full chunk map** must be shown in the recording to get a run verified
 - Switching to the F3 + Esc menu will make your run **count as f3**
-- **Compatible** with all allowed mods and lazy stronghold
+- **Compatible** with all allowed mods
 - **Compatible** with the newest releases of specnr's multi-instance macros and with FinestPigeon's spawn reset macro for ssg
 **For macro
 - World preview **doesn't modify world generation** in any way. It simply takes already completed chunks, converts them to client chunks (Chunks minecraft can render) and then draws these chunks on the loading screen.
