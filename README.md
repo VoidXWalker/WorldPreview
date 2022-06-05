@@ -2,7 +2,7 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/voidxwalker)
 
 Minecraft mod that draws a preview of the world on the loading screen during chunk generation.
-- **Legal** for the minecraft java esition leaderboards
+- **Legal** for the minecraft java edition leaderboards
 - The **full chunk map** must be shown in the recording to get a run verified
 - Switching to the F3 + Esc menu will make your run **count as f3**
 - **Compatible** with all allowed mods and lazy stronghold
