@@ -5,17 +5,17 @@ import me.voidxwalker.worldpreview.OldSodiumCompatibility;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.WorldGenerationProgressTracker;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
@@ -89,7 +89,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 if (WorldPreview.camera == null) {
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() +(WorldPreview.player.getBoundingBox().maxY-WorldPreview.player.getBoundingBox().minY), WorldPreview.player.getZ(), 0.0F, 0.0F);
                     WorldPreview.camera = new Camera();
-                    WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, this.client.options.perspective > 0, this.client.options.perspective == 2, 0.2F);
+                    WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, !this.client.options.getPerspective().isFirstPerson(), this.client.options.getPerspective().isFrontView(), 0.2F);
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() - 1.5, WorldPreview.player.getZ(), 0.0F, 0.0F);
                     WorldPreview.inPreview=true;
                     WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.getX() + ", "+(double)Math.floor(WorldPreview.player.getY())+ ", "+ WorldPreview.player.getZ()+")");
@@ -102,8 +102,8 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                 RenderSystem.multMatrix(matrix4f);
                 RenderSystem.matrixMode(5888);
                 MatrixStack m = new MatrixStack();
-                m.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(WorldPreview.camera.getPitch()));
-                m.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(WorldPreview.camera.getYaw() + 180.0F));
+                m.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(WorldPreview.camera.getPitch()));
+                m.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(WorldPreview.camera.getYaw() + 180.0F));
                 WorldPreview.worldRenderer.render(m, 0.2F, 1000000, false, WorldPreview.camera, MinecraftClient.getInstance().gameRenderer, MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager(), matrix4f);
                 Window window = this.client.getWindow();
                 RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
@@ -121,9 +121,12 @@ public abstract class LevelLoadingScreenMixin extends Screen {
 
     private void worldpreview_renderPauseMenu(MatrixStack matrices, int mouseX, int mouseY, float delta){
         if(WorldPreview.showMenu){
-            Iterator<AbstractButtonWidget> iterator =this.buttons.listIterator();
+            Iterator<? extends Element> iterator =this.children().listIterator();
             while(iterator.hasNext()){
-                iterator.next().render(matrices,mouseX,mouseY,delta);
+                Object next = iterator.next();
+                if(next instanceof ButtonWidget){
+                    ((ButtonWidget)(next)).render(matrices,mouseX,mouseY,delta);
+                }
             }
         }
         else {
