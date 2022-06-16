@@ -171,7 +171,8 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         }
         return  instance.world;
     }
-    @Redirect(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
+
+    @Redirect(method = "reload()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     public Entity worldpreview_getCameraEntity(MinecraftClient instance){
         if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
@@ -179,7 +180,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         return  instance.getCameraEntity();
     }
 
-    @Inject(method = "reload",at = @At(value = "TAIL"))
+    @Inject(method = "reload()V",at = @At(value = "TAIL"))
     public void worldpreview_reload(CallbackInfo ci){
         if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, (WorldRenderer) (Object)this);

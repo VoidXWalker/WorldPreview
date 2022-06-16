@@ -8,10 +8,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.dimension.DimensionType;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -23,12 +20,18 @@ import java.util.function.Supplier;
 public class ClientWorldMixin {
     @Mutable @Shadow @Final private ClientChunkManager chunkManager;
 
-    @Redirect(method = "<init>",at=@At(value="TAIL"))
-    public DynamicRegistryManager worldpreview_stopLag(ClientPlayNetworkHandler instance){
-        if(instance==null){
+    @Shadow @Final private ClientPlayNetworkHandler netHandler;
+
+    /**
+     * @author bluesmoke
+     * @reason fixes NPE because netHandler is set to null for the preview
+     */
+    @Overwrite
+    public DynamicRegistryManager getRegistryManager(){
+        if(this.netHandler==null){
             return DynamicRegistryManager.create();
         }
-        return instance.getRegistryManager();
+        return this.netHandler.getRegistryManager();
     }
 
     @Inject(method ="<init>",at=@At("TAIL"))
@@ -36,7 +39,6 @@ public class ClientWorldMixin {
         if(WorldPreview.camera==null&& WorldPreview.world!=null&& WorldPreview.spawnPos!=null){
             this.chunkManager=worldpreview_getChunkManager(loadDistance);
         }
-
     }
 
     private ClientChunkManager worldpreview_getChunkManager(int i){
