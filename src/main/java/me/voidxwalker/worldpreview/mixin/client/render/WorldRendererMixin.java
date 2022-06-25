@@ -5,7 +5,6 @@ import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
@@ -21,14 +20,13 @@ import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.options.CloudRenderMode;
-import net.minecraft.client.options.Option;
+import net.minecraft.client.option.CloudRenderMode;
+import net.minecraft.client.option.Option;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.chunk.ChunkBuilder;
 import net.minecraft.client.render.debug.DebugRenderer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3d;
@@ -36,8 +34,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Util;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
@@ -76,7 +72,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
 
     @Shadow protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f);
 
-    @Shadow private int renderDistance;
+    @Shadow private int viewDistance;
 
     @Shadow private double lastCameraChunkUpdateX;
 
@@ -175,7 +171,8 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         }
         return  instance.world;
     }
-    @Redirect(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
+
+    @Redirect(method = "reload()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     public Entity worldpreview_getCameraEntity(MinecraftClient instance){
         if(instance.getCameraEntity()==null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             return WorldPreview.player;
@@ -183,7 +180,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
         return  instance.getCameraEntity();
     }
 
-    @Inject(method = "reload",at = @At(value = "TAIL"))
+    @Inject(method = "reload()V",at = @At(value = "TAIL"))
     public void worldpreview_reload(CallbackInfo ci){
         if(this.world!=null&&client.currentScreen instanceof LevelLoadingScreen&&this.previewRenderer){
             this.chunks = new BuiltChunkStorage(this.chunkBuilder, this.world, this.client.options.viewDistance, (WorldRenderer) (Object)this);
@@ -196,7 +193,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
             return;
         }
         Vec3d vec3d = camera.getPos();
-        if (this.client.options.viewDistance != this.renderDistance) {
+        if (this.client.options.viewDistance != this.viewDistance) {
             this.reload();
         }
 
@@ -253,10 +250,10 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                 int k = MathHelper.floor(vec3d.x / 16.0D) * 16;
                 int l = MathHelper.floor(vec3d.z / 16.0D) * 16;
                 List<WorldRenderer.ChunkInfo> list = Lists.newArrayList();
-                m = -this.renderDistance;
+                m = -this.viewDistance;
 
                 while(true) {
-                    if (m > this.renderDistance) {
+                    if (m > this.viewDistance) {
                         list.sort(Comparator.comparingDouble((chunkInfox) -> {
                             return blockPos.getSquaredDistance(((ChunkInfoMixin)chunkInfox).getChunk().getOrigin().add(8, 8, 8));
                         }));
@@ -264,7 +261,7 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                         break;
                     }
 
-                    for(n = -this.renderDistance; n <= this.renderDistance; ++n) {
+                    for(n = -this.viewDistance; n <= this.viewDistance; ++n) {
                         ChunkBuilder.BuiltChunk builtChunk2 = ((BuiltChunkStorageMixin)this.chunks).callGetRenderedChunk(new BlockPos(k + (m << 4) + 8, j, l + (n << 4) + 8));
                         if (builtChunk2 != null && frustum.isVisible(builtChunk2.boundingBox)) {
                             builtChunk2.setRebuildFrame(frame);
@@ -378,10 +375,10 @@ public abstract class WorldRendererMixin<E> implements OldSodiumCompatibility {
                         do {
                             if (!var39.hasNext()) {
                                 this.checkEmpty(matrices);
-                                immediate.draw(RenderLayer.getEntitySolid(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
-                                immediate.draw(RenderLayer.getEntityCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
-                                immediate.draw(RenderLayer.getEntityCutoutNoCull(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
-                                immediate.draw(RenderLayer.getEntitySmoothCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
+                                immediate.draw(RenderLayer.getEntitySolid(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE));
+                                immediate.draw(RenderLayer.getEntityCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE));
+                                immediate.draw(RenderLayer.getEntityCutoutNoCull(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE));
+                                immediate.draw(RenderLayer.getEntitySmoothCutout(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE));
                                 profiler.swap("blockentities");
                                 ObjectListIterator var53 = this.visibleChunks.iterator();
 

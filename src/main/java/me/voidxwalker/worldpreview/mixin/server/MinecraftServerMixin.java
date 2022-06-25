@@ -39,7 +39,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 @Mixin(MinecraftServer.class)
-public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<ServerTask> {
+public abstract class   MinecraftServerMixin  extends ReentrantThreadExecutor<ServerTask> {
     public MinecraftServerMixin(String string) {
         super(string);
     }
@@ -74,13 +74,11 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 WorldPreview.spawnPos= serverWorld.getSpawnPos();
                 WorldPreview.freezePreview=false;
                 WorldPreview.world=this.getWorld(World.OVERWORLD);
-                RegistryKey<DimensionType> registryKey = DimensionType.OVERWORLD_REGISTRY_KEY;
                 RegistryKey<World> registryKey2 = World.OVERWORLD;
-                DimensionType dimensionType = DimensionType.getOverworldDimensionType();
                 ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, WorldPreview.world.getLevelProperties().isHardcore(), false);
                 Supplier<Profiler>s=MinecraftClient.getInstance()::getProfiler;
                 long seed = BiomeAccess.hashSeed(((ServerWorld)(WorldPreview.world)).getSeed());
-                WorldPreview.clientWord = new ClientWorld(null,properties, registryKey2, registryKey, dimensionType,16 , s,null,false, seed);
+                WorldPreview.clientWord = new ClientWorld(null,properties, registryKey2, serverWorld.getDimension(),16 , s,null,false, seed);
                 WorldPreview.player=new ClientPlayerEntity(MinecraftClient.getInstance(),WorldPreview.clientWord,new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,MinecraftClient.getInstance().getSession().getProfile()),null,null,false,false);
                 worldpreview_calculateSpawn(serverWorld);
                 WorldPreview.calculatedSpawn=true;
@@ -112,7 +110,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
             BlockPos blockPos2 = SpawnLocatingMixin.callFindOverworldSpawn(serverWorld, blockPos.getX() + r - i, blockPos.getZ() + s - i, false);
             if (blockPos2 != null) {
                 WorldPreview.player.refreshPositionAndAngles(blockPos2, 0.0F, 0.0F);
-                if (serverWorld.doesNotCollide(WorldPreview.player)) {
+                if (((ServerWorld) WorldPreview.world).isSpaceEmpty(WorldPreview.player)) {
                     break;
                 }
             }

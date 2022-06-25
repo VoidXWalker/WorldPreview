@@ -11,7 +11,7 @@ import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.resource.ReloadableResourceManager;
-import net.minecraft.resource.ResourceReloadListener;
+import net.minecraft.resource.ResourceReloader;
 import net.minecraft.server.integrated.IntegratedServer;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public abstract class MinecraftClientMixin {
             cir.setReturnValue(false);
         }
     }
-    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
+    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void worldpreview_onHotKeyPressed( CallbackInfo ci){
         if(WorldPreview.inPreview){
             worldpreview_cycleCooldown++;
@@ -94,13 +94,12 @@ public abstract class MinecraftClientMixin {
 
     //sodium
 
-    @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManager;registerListener(Lnet/minecraft/resource/ResourceReloadListener;)V",ordinal = 11))
-    public void worldpreview_createWorldRenderer(ReloadableResourceManager instance, ResourceReloadListener resourceReloadListener){
+    @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManager;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V",ordinal = 11))
+    public void worldpreview_createWorldRenderer(ReloadableResourceManager instance, ResourceReloader resourceReloader){
         WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
         ((OldSodiumCompatibility)WorldPreview.worldRenderer).setPreviewRenderer();
         this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
-        instance.registerListener(worldRenderer);
-
+        instance.registerReloader(worldRenderer);
     }
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
     public void worldpreview_reset(Screen screen, CallbackInfo ci){

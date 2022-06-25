@@ -2,7 +2,7 @@ package me.voidxwalker.worldpreview;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.InputUtil;
@@ -17,7 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-public class WorldPreview  implements ClientModInitializer {
+public class WorldPreview implements ClientModInitializer {
    public static World world;
    public static ClientPlayerEntity player;
    public static ClientWorld clientWord;

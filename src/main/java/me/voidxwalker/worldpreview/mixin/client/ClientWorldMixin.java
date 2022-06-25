@@ -6,12 +6,9 @@ import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientChunkManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.util.registry.RegistryTracker;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.dimension.DimensionType;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -23,20 +20,25 @@ import java.util.function.Supplier;
 public class ClientWorldMixin {
     @Mutable @Shadow @Final private ClientChunkManager chunkManager;
 
-    @Redirect(method = "<init>",at=@At(value="INVOKE",target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;getRegistryTracker()Lnet/minecraft/util/registry/RegistryTracker;"))
-    public RegistryTracker worldpreview_stopLag(ClientPlayNetworkHandler instance){
-        if(instance==null){
-            return RegistryTracker.create();
+    @Shadow @Final private ClientPlayNetworkHandler netHandler;
+
+    /**
+     * @author bluesmoke
+     * @reason fixes NPE because netHandler is set to null for the preview
+     */
+    @Overwrite
+    public DynamicRegistryManager getRegistryManager(){
+        if(this.netHandler==null){
+            return DynamicRegistryManager.create();
         }
-        return instance.getRegistryTracker();
+        return this.netHandler.getRegistryManager();
     }
 
     @Inject(method ="<init>",at=@At("TAIL"))
-    public void worldpreview_oldSodiumCompatibility(ClientPlayNetworkHandler clientPlayNetworkHandler, ClientWorld.Properties properties, RegistryKey registryKey, RegistryKey registryKey2, DimensionType dimensionType, int i, Supplier supplier, WorldRenderer worldRenderer, boolean bl, long l, CallbackInfo ci){
+    public void worldpreview_oldSodiumCompatibility(ClientPlayNetworkHandler networkHandler, ClientWorld.Properties properties, RegistryKey registryRef, DimensionType dimensionType, int loadDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci){
         if(WorldPreview.camera==null&& WorldPreview.world!=null&& WorldPreview.spawnPos!=null){
-            this.chunkManager=worldpreview_getChunkManager(i);
+            this.chunkManager=worldpreview_getChunkManager(loadDistance);
         }
-
     }
 
     private ClientChunkManager worldpreview_getChunkManager(int i){
