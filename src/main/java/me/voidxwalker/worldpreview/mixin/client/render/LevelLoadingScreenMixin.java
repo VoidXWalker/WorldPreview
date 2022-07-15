@@ -16,7 +16,6 @@ import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
 import org.apache.logging.log4j.Level;
@@ -97,13 +96,13 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.getX() + ", "+(double)Math.floor(WorldPreview.player.getY())+ ", "+ WorldPreview.player.getZ()+")");
                 }
                 MatrixStack matrixStack = new MatrixStack();
-                matrixStack.peek().getModel().multiply(this.worldpreview_getBasicProjectionMatrix(this.client.options.fov));
-                Matrix4f matrix4f = matrixStack.peek().getModel();
+                matrixStack.peek().getPositionMatrix().multiply(this.worldpreview_getBasicProjectionMatrix(this.client.options.getFov().getValue().intValue()));
+                Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
                 RenderSystem.setProjectionMatrix(matrix4f);
                 MatrixStack m = new MatrixStack();
                 m.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(WorldPreview.camera.getPitch()));
                 m.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(WorldPreview.camera.getYaw() + 180.0F));
-                WorldPreview.worldRenderer.setupFrustum(m, WorldPreview.camera.getPos(), this.worldpreview_getBasicProjectionMatrix(this.client.options.fov));
+                WorldPreview.worldRenderer.setupFrustum(m, WorldPreview.camera.getPos(), this.worldpreview_getBasicProjectionMatrix(this.client.options.getFov().getValue().intValue()));
                 ((OldSodiumCompatibility)WorldPreview.worldRenderer).worldpreview_renderSafe(m, 0.2F, 1000000, false, WorldPreview.camera, MinecraftClient.getInstance().gameRenderer, MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager(), matrix4f);
                 Window window = this.client.getWindow();
                 RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
@@ -133,7 +132,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
             }
         }
         else {
-            this.drawCenteredText(matrices, this.textRenderer, new TranslatableText("menu.paused"), this.width / 2, 10, 16777215);
+            this.drawCenteredText(matrices, this.textRenderer, Text.translatable ("menu.paused"), this.width / 2, 10, 16777215);
         }
     }
 
@@ -152,23 +151,23 @@ public abstract class LevelLoadingScreenMixin extends Screen {
 
     public Matrix4f worldpreview_getBasicProjectionMatrix(double d) {
         MatrixStack matrixStack = new MatrixStack();
-        matrixStack.peek().getModel().loadIdentity();
+        matrixStack.peek().getPositionMatrix().loadIdentity();
 
 
-        matrixStack.peek().getModel().multiply(Matrix4f.viewboxMatrix(d, (float)this.client.getWindow().getFramebufferWidth() / (float)this.client.getWindow().getFramebufferHeight(), 0.05F, this.client.options.viewDistance * 4.0F* 16));
-        return matrixStack.peek().getModel();
+        matrixStack.peek().getPositionMatrix().multiply(Matrix4f.viewboxMatrix(d, (float)this.client.getWindow().getFramebufferWidth() / (float)this.client.getWindow().getFramebufferHeight(), 0.05F, this.client.options.getViewDistance().getValue().intValue() * 4.0F* 16));
+        return matrixStack.peek().getPositionMatrix();
     }
 
     private void worldpreview_initWidgets(){
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, new TranslatableText("menu.returnToGame"), (ignored) -> {}));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.advancements"), (ignored) -> {}));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 48 - 16, 98, 20, new TranslatableText("gui.stats"), (ignored) -> {}));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 24 - 16, 204, 20, Text.translatable ("menu.returnToGame"), (ignored) -> {}));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 48 - 16, 98, 20, Text.translatable ("gui.advancements"), (ignored) -> {}));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 48 - 16, 98, 20, Text.translatable ("gui.stats"), (ignored) -> {}));
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.sendFeedback"), (ignored) -> {}));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 72 - 16, 98, 20, new TranslatableText("menu.reportBugs"), (ignored) -> {}));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.options"), (ignored) -> {}));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 96 - 16, 98, 20, new TranslatableText("menu.shareToLan"), (ignored) -> {}));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 - 16, 204, 20, new TranslatableText("menu.returnToMenu"), (buttonWidgetX) -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 72 - 16, 98, 20, Text.translatable ("menu.sendFeedback"), (ignored) -> {}));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 72 - 16, 98, 20, Text.translatable ("menu.reportBugs"), (ignored) -> {}));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 - 16, 98, 20, Text.translatable ("menu.options"), (ignored) -> {}));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 4, this.height / 4 + 96 - 16, 98, 20, Text.translatable ("menu.shareToLan"), (ignored) -> {}));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 120 - 16, 204, 20, Text.translatable ("menu.returnToMenu"), (buttonWidgetX) -> {
                 WorldPreview.kill = -1;
                 buttonWidgetX.active = false;
         }));

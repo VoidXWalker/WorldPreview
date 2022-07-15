@@ -10,11 +10,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.resource.ReloadableResourceManager;
+import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourceReloader;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.sound.SoundEvents;
@@ -48,6 +50,8 @@ public abstract class MinecraftClientMixin {
     @Shadow @Final public WorldRenderer worldRenderer;
     @Shadow @Nullable public Screen currentScreen;
 
+    @Shadow @Final private EntityRenderDispatcher entityRenderDispatcher;
+    @Shadow @Final private BlockEntityRenderDispatcher blockEntityRenderDispatcher;
     private int worldpreview_cycleCooldown;
     @Inject(method = "isFabulousGraphicsOrBetter",at = @At(value = "RETURN"),cancellable = true)
     private static void stopFabulous(CallbackInfoReturnable<Boolean> cir){
@@ -55,7 +59,7 @@ public abstract class MinecraftClientMixin {
             cir.setReturnValue(false);
         }
     }
-    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
+    @Inject(method = "startIntegratedServer",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void worldpreview_onHotKeyPressed( CallbackInfo ci){
 
         if(WorldPreview.inPreview){
@@ -92,10 +96,7 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method="startIntegratedServer(Ljava/lang/String;)V",at=@At(value = "HEAD"))
-    public void worldpreview_isExistingWorld(String worldName, CallbackInfo ci){
-        WorldPreview.existingWorld=true;
-    }
+
 
     @Redirect(method="reset",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
     public void worldpreview_smoothTransition(MinecraftClient instance, Screen screen){
@@ -106,11 +107,11 @@ public abstract class MinecraftClientMixin {
 
     }
 
-    @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManager;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V",ordinal = 15))
-    public void worldpreview_createWorldRenderer(ReloadableResourceManager instance, ResourceReloader resourceReloader){
-        WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
+    @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManagerImpl;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V",ordinal = 15))
+    public void worldpreview_createWorldRenderer(ReloadableResourceManagerImpl instance, ResourceReloader reloader){
+        WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(),this.entityRenderDispatcher ,this.blockEntityRenderDispatcher, new BufferBuilderStorage());
         ((OldSodiumCompatibility)WorldPreview.worldRenderer).setPreviewRenderer();
-        this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
+        this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this,this.entityRenderDispatcher ,this.blockEntityRenderDispatcher, this.bufferBuilders);
         instance.registerReloader(worldRenderer);
 
     }

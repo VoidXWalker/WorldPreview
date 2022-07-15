@@ -7,6 +7,7 @@ import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientChunkManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Final;
@@ -28,7 +29,7 @@ public class ClientWorldMixin {
     @Shadow @Final private MinecraftClient client;
 
     @Inject(method ="<init>",at=@At("TAIL"))
-    public void oldSodiumCompatibility(ClientPlayNetworkHandler networkHandler, ClientWorld.Properties properties, RegistryKey registryRef, DimensionType dimensionType, int loadDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci){
+    public void oldSodiumCompatibility(ClientPlayNetworkHandler networkHandler, ClientWorld.Properties properties, RegistryKey registryRef, RegistryEntry dimensionTypeEntry, int loadDistance, int simulationDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci){
         if(WorldPreview.camera==null&& WorldPreview.world!=null&& WorldPreview.spawnPos!=null){
             this.chunkManager=worldpreview_getChunkManager(loadDistance);
         }

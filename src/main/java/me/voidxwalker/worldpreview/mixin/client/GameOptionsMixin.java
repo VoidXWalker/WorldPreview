@@ -16,10 +16,10 @@ public class GameOptionsMixin {
     @Mutable
     @Final
     @Shadow
-    public KeyBinding[] keysAll;
+    public KeyBinding[] allKeys;
 
     @Inject(at = @At("HEAD"), method = "load()V")
     public void loadHook(CallbackInfo info) {
-        keysAll = KeyBindingHelper.process(keysAll);
+        allKeys = KeyBindingHelper.process(allKeys);
     }
 }

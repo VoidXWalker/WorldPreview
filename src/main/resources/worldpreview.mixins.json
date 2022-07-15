@@ -27,6 +27,7 @@
     "client.MinecraftClientMixin",
     "client.KeyboardMixin",
     "client.ClientWorldMixin",
+    "client.IntegratedServerLoaderMixin",
     "client.GameOptionsMixin",
 
     "server.MinecraftServerMixin",

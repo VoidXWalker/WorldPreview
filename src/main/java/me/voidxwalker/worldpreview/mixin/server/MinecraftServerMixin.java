@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerNetworkIo;
 import net.minecraft.server.ServerTask;
@@ -17,6 +16,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.snooper.Snooper;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
@@ -25,6 +27,7 @@ import net.minecraft.world.GameMode;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -52,10 +55,6 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow public abstract Iterable<ServerWorld> getWorlds();
 
-    @Shadow @Final private Snooper snooper;
-
-    @Shadow private ServerResourceManager serverResourceManager;
-
     @Shadow @Final protected LevelStorage.Session session;
 
     @Shadow @Final private static Logger LOGGER;
@@ -64,9 +63,16 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
 
     @Shadow public abstract Thread getThread();
 
+
     @Shadow public abstract int getSpawnRadius(@Nullable ServerWorld world);
 
     @Shadow public abstract SaveProperties getSaveProperties();
+
+    @Shadow private MinecraftServer.ResourceManagerHolder resourceManagerHolder;
+
+    @Shadow @Final private DynamicRegistryManager.Immutable registryManager;
+
+    @Shadow public abstract void close();
 
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
 
@@ -82,8 +88,9 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 ClientWorld.Properties properties = new ClientWorld.Properties(Difficulty.NORMAL, WorldPreview.world.getLevelProperties().isHardcore(), false);
                 Supplier<Profiler>s=MinecraftClient.getInstance()::getProfiler;
                 long seed = BiomeAccess.hashSeed(((ServerWorld)(WorldPreview.world)).getSeed());
-                WorldPreview.clientWord = new ClientWorld(null,properties, registryKey2, serverWorld.getDimension(),16 , s,null,false, seed);
-                WorldPreview.player=new ClientPlayerEntity(MinecraftClient.getInstance(),WorldPreview.clientWord,new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,MinecraftClient.getInstance().getSession().getProfile()),null,null,false,false);
+                RegistryEntry<DimensionType> registryEntry = this.registryManager.get(Registry.DIMENSION_TYPE_KEY).entryOf(serverWorld.getDimensionKey());
+                WorldPreview.clientWord = new ClientWorld(null,properties, registryKey2, registryEntry,16 ,16, s,null,false, seed);
+                WorldPreview.player=new ClientPlayerEntity(MinecraftClient.getInstance(),WorldPreview.clientWord,new ClientPlayNetworkHandler(MinecraftClient.getInstance(),null,null,MinecraftClient.getInstance().getSession().getProfile(),null),null,null,false,false);
                 worldpreview_calculateSpawn(serverWorld);
                 WorldPreview.calculatedSpawn=true;
 
@@ -174,14 +181,12 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
                 catch (IOException ignored) {}
             }
         }
-        if (this.snooper.isActive()) {
-            this.snooper.cancel();
-        }
-        this.serverResourceManager.close();
+        this.resourceManagerHolder.close();
         try {
             this.session.close();
-        } catch (IOException var4) {
-            LOGGER.error("Failed to unlock level {}", this.session.getDirectoryName(), var4);
+        }
+        catch (IOException iOException2) {
+            LOGGER.error("Failed to unlock level {}", (Object)this.session.getDirectoryName(), (Object)iOException2);
         }
     }
 
