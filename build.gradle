@@ -58,7 +58,7 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
 
 	// Minecraft 1.17 (21w19a) upwards uses Java 16.
-	def targetVersion = 16
+	def targetVersion = 8
 	it.options.release = targetVersion
 }
 
