@@ -25,7 +25,7 @@ public class GameOptionsMixin {
         ArrayList<KeyBinding> a = new ArrayList<>(Arrays.asList(this.keysAll));
         a.add(this.freezePreviewKey);
         a.add(this.leavePreviewKey);
-        this.keysAll = a.toArray(this.keysAll); // if only java had an array append method
+        this.keysAll = a.toArray(this.keysAll);
         WorldPreview.freezeKey = this.freezePreviewKey;
         WorldPreview.resetKey = this.leavePreviewKey;
     }

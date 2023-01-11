@@ -1,41 +1,37 @@
 package me.voidxwalker.worldpreview.mixin.server;
 
 import me.voidxwalker.worldpreview.WorldPreview;
+import me.voidxwalker.worldpreview.mixin.access.ClientChunkProviderMixin;
+import me.voidxwalker.worldpreview.mixin.access.ServerChunkProviderMixin;
 import net.minecraft.client.MinecraftClient;
-//import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.ServerNetworkIo;
-//import net.minecraft.server.ServerTask;
-//import net.minecraft.server.WorldGenerationProgressListener;
-import net.minecraft.server.network.DemoServerPlayerInteractionManager;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.collection.LongObjectStorage;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.snooper.Snooper;
-//import net.minecraft.util.thread.ReentrantThreadExecutor;
-//import net.minecraft.world.GameMode;
-//import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ServerChunkProvider;
 import net.minecraft.world.level.LevelInfo;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 @Mixin(MinecraftServer.class)
@@ -61,10 +57,48 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
 
     @Shadow private Thread serverThread;
 
+    @Shadow public abstract World getWorld();
+
+    private int lastRow = 0;
+
+    @Redirect(method = "prepareWorlds",at = @At(value = "INVOKE",target = "Lnet/minecraft/world/chunk/ServerChunkProvider;getOrGenerateChunk(II)Lnet/minecraft/world/chunk/Chunk;"))
+    public Chunk getChunks(ServerChunkProvider instance, int x, int z){
+        Chunk ret = instance.getOrGenerateChunk(x,z);
+        synchronized (WorldPreview.lock){
+            if(WorldPreview.player!=null&& WorldPreview.calculatedSpawn&& !WorldPreview.freezePreview && WorldPreview.inPreview){
+                LongObjectStorage<Chunk> chunkStorage=((ClientChunkProviderMixin) WorldPreview.clientWorld.getChunkProvider()).getChunkStorage();
+                List<Chunk> chunks=((ClientChunkProviderMixin) WorldPreview.clientWorld.getChunkProvider()).getChunks();
+                Iterator<Chunk> iterator =  ((ServerChunkProviderMixin)instance).getChunks().iterator();
+                while (iterator.hasNext()){
+                    Chunk chunk = iterator.next();
+                    long id = ChunkPos.getIdFromCoords(chunk.chunkX, chunk.chunkZ);
+                    if(chunkStorage.get(id)==null && chunk.isTerrainPopulated()){
+                        chunkStorage.set(ChunkPos.getIdFromCoords(chunk.chunkX, chunk.chunkZ), chunk);
+                        chunks.add(chunk);
+                        chunk.setChunkLoaded(true);
+                        BlockPos spawnPos = WorldPreview.spawnPos;
+                        int spawnChunkX = spawnPos.getX() >> 4;
+                        int spawnChunkZ = spawnPos.getZ() >> 4;
+                        if (spawnChunkX - chunk.chunkX == 0 && spawnChunkZ - chunk.chunkZ == 0) {
+                            WorldPreview.loadedSpawn = true;
+                            worldpreview_calculateSpawn(this.worlds[0]);
+                        }
+                        if (WorldPreview.loadedSpawn && spawnChunkX - chunk.chunkX != lastRow) {
+                            lastRow = spawnChunkX - chunk.chunkX;
+                            WorldPreview.canReload = true;
+                        }
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
     @Inject(method = "prepareWorlds", at = @At(value = "HEAD"))
     public void worldpreview_getWorld(CallbackInfo ci){
         synchronized (WorldPreview.lock){
             if(!WorldPreview.existingWorld){
+
                 ServerWorld serverWorld = this.getWorld(0);
                 WorldPreview.spawnPos= serverWorld.getSpawnPos();
                 WorldPreview.freezePreview=false;
@@ -75,6 +109,7 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                 WorldPreview.player = new ClientPlayerEntity(MinecraftClient.getInstance(), WorldPreview.clientWorld, networkHandler,null);
                 worldpreview_calculateSpawn(serverWorld);
                 WorldPreview.calculatedSpawn=true;
+
             }
             WorldPreview.existingWorld=false;
         }

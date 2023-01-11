@@ -3,13 +3,8 @@ package me.voidxwalker.worldpreview;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.KeyBinding;
-//import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.WorldRenderer;
-//import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
@@ -24,10 +19,11 @@ public class WorldPreview implements ClientModInitializer {
    public static boolean inPreview;
    public static BlockPos spawnPos;
    public static int kill=0;
-  // public static Camera camera;
    public static WorldRenderer worldRenderer;
    public static boolean existingWorld;
    public static boolean calculatedSpawn;
+   public static boolean loadedSpawn;
+   public static boolean canReload;
    public static KeyBinding resetKey;
    public static KeyBinding freezeKey;
    public static boolean freezePreview;
@@ -38,6 +34,5 @@ public class WorldPreview implements ClientModInitializer {
    }
    @Override
    public void onInitializeClient() {
-       String worstFuckingSpeedrunnerOfAllTime = "DougThePig";
    }
 }

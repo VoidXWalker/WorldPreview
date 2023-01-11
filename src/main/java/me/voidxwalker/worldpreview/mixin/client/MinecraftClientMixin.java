@@ -6,13 +6,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
-//import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.LevelInfo;
 import org.apache.logging.log4j.Level;
@@ -81,7 +81,7 @@ public abstract class MinecraftClientMixin {
             WorldPreview.kill=0;
             ci.cancel();
         } else if (Keyboard.isKeyDown(freezeKeyCode)) {
-            System.out.println("freeze");
+            WorldPreview.freezePreview = true;
         }
     }
 
@@ -91,8 +91,8 @@ public abstract class MinecraftClientMixin {
         WorldPreview.existingWorld = levelInfo == null;
     }
 
-    @Redirect(method="connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value="INVOKE",target="Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
-    public void smoothTransition(SoundManager instance){
+    @Inject(method="connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value="INVOKE",target="Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
+    public void smoothTransition(ClientWorld world, String loadingMessage, CallbackInfo ci){
         this.cameraEntity = null;
         //this.skipGameRender = true; // this doesn't work exactly the same as its equivalent in 1.14+, needs further testing
     }
@@ -105,7 +105,6 @@ public abstract class MinecraftClientMixin {
                 WorldPreview.world = null;
                 WorldPreview.player = null;
                 WorldPreview.clientWorld = null;
-                //WorldPreview.camera = null; // don't think this is necessary, we'll see when we get to loading screen code
                 if (WorldPreview.worldRenderer != null) {
                     WorldPreview.worldRenderer.method_1371((ClientWorld) null);
                 }

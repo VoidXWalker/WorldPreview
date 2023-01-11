@@ -4,11 +4,7 @@
   "package": "me.voidxwalker.worldpreview.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "access.ChunkInfoMixin",
     "access.WorldRendererMixin",
-    "access.ScreenMixin",
-    "access.MinecraftClientMixin",
-
     "client.render.WorldRendererMixin",
     "client.render.LoadingScreenRendererMixin",
 
@@ -16,7 +12,11 @@
     "client.GameOptionsMixin",
 
     "server.MinecraftServerMixin",
-    "server.ServerPlayerEntityMixin"
+    "server.ServerPlayerEntityMixin",
+    "access.MinecraftClientMixin",
+    "access.GameRendererMixin",
+    "access.ClientChunkProviderMixin",
+    "access.ServerChunkProviderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
