@@ -12,10 +12,4 @@ public interface WorldRendererMixin
 {
     @Accessor
     ClientWorld getWorld();
-
-    @Accessor
-    BuiltChunkStorage getChunks();
-
-    @Accessor
-    void setField_1889(int i);
 }

@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
-import java.util.Queue;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin implements ChunkSetter {

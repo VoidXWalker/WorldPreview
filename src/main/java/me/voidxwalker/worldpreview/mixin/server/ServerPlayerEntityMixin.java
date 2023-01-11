@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin  {
+public class ServerPlayerEntityMixin  {
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;getTopPosition(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/BlockPos;"))
     private BlockPos setSpawnPos(ServerWorld instance, BlockPos blockPos) {
         return WorldPreview.spawnPos;
