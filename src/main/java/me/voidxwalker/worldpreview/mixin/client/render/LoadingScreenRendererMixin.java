@@ -8,6 +8,7 @@ import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.class_321;
 import net.minecraft.client.gl.Framebuffer;
@@ -22,6 +23,7 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.Clipper;
 import net.minecraft.client.util.GlAllocationUtils;
 import net.minecraft.client.util.Window;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar;
@@ -255,6 +257,15 @@ public abstract class LoadingScreenRendererMixin {
         }
 
         Block block = class_321.method_9371(WorldPreview.clientWorld, entity, tickDelta);
+        if (block.getMaterial() == Material.WATER) {
+            this.fogRed = 0.02F;
+            this.fogGreen = 0.02F;
+            this.fogBlue = 0.2F;
+        } else if (block.getMaterial() == Material.LAVA) {
+            this.fogRed = 0.6F;
+            this.fogGreen = 0.1F;
+            this.fogBlue = 0.0F;
+        }
 
 
         p = this.field_1842 + (this.field_1843 - this.field_1842) * tickDelta;
@@ -262,14 +273,6 @@ public abstract class LoadingScreenRendererMixin {
         this.fogGreen *= p;
         this.fogBlue *= p;
         double e = (entity.prevTickY + (entity.y - entity.prevTickY) * (double)tickDelta) * world.dimension.method_3994();
-        if (entity instanceof LivingEntity && ((LivingEntity)entity).hasStatusEffect(StatusEffect.BLINDNESS)) {
-            int r = ((LivingEntity)entity).getEffectInstance(StatusEffect.BLINDNESS).getDuration();
-            if (r < 20) {
-                e *= (double)(1.0F - (float)r / 20.0F);
-            } else {
-                e = 0.0D;
-            }
-        }
 
         if (e < 1.0D) {
             if (e < 0.0D) {
@@ -288,18 +291,6 @@ public abstract class LoadingScreenRendererMixin {
             this.fogRed = this.fogRed * (1.0F - t) + this.fogRed * 0.7F * t;
             this.fogGreen = this.fogGreen * (1.0F - t) + this.fogGreen * 0.6F * t;
             this.fogBlue = this.fogBlue * (1.0F - t) + this.fogBlue * 0.6F * t;
-        }
-
-        float u;
-
-
-        if (this.field_1029.options.anaglyph3d) {
-            t = (this.fogRed * 30.0F + this.fogGreen * 59.0F + this.fogBlue * 11.0F) / 100.0F;
-            u = (this.fogRed * 30.0F + this.fogGreen * 70.0F) / 100.0F;
-            float x = (this.fogRed * 30.0F + this.fogBlue * 70.0F) / 100.0F;
-            this.fogRed = t;
-            this.fogGreen = u;
-            this.fogBlue = x;
         }
 
         GlStateManager.clearColor(this.fogRed, this.fogGreen, this.fogBlue, 0.0F);
@@ -421,30 +412,36 @@ public abstract class LoadingScreenRendererMixin {
         }
 
     }
+
     private void renderFog(int i, float tickDelta) {
+        Entity entity = this.field_1029.getCameraEntity();
 
-
-
-        GL11.glFog(2918, this.updateFogColorBuffer(this.fogRed, this.fogGreen, this.fogBlue, 1.0F));
+        GL11.glFog(2918, (FloatBuffer)this.updateFogColorBuffer(this.fogRed, this.fogGreen, this.fogBlue, 1.0F));
         GL11.glNormal3f(0.0F, -1.0F, 0.0F);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-
+        Block block = class_321.method_9371(WorldPreview.clientWorld, entity, tickDelta);
         float g;
-
-        g = (float)(this.field_1029.options.viewDistance * 16);
-        GlStateManager.fogMode(9729);
-        if (i == -1) {
-            GlStateManager.fogStart(0.0F);
-            GlStateManager.fogEnd(g);
+        if (block.getMaterial() == Material.WATER) {
+            GlStateManager.fogMode(2048);
+            GlStateManager.fogDensity(0.1F - (float)EnchantmentHelper.method_8449(entity) * 0.03F);
+        } else if (block.getMaterial() == Material.LAVA) {
+            GlStateManager.fogMode(2048);
+            GlStateManager.fogDensity(2.0F);
         } else {
-            GlStateManager.fogStart(g * 0.75F);
-            GlStateManager.fogEnd(g);
-        }
+            g = this.field_1029.options.viewDistance * 16;
+            GlStateManager.fogMode(9729);
+            if (i == -1) {
+                GlStateManager.fogStart(0.0F);
+                GlStateManager.fogEnd(g);
+            } else {
+                GlStateManager.fogStart(g * 0.75F);
+                GlStateManager.fogEnd(g);
+            }
 
-        if (GLContext.getCapabilities().GL_NV_fog_distance) {
-            GL11.glFogi(34138, 34139);
+            if (GLContext.getCapabilities().GL_NV_fog_distance) {
+                GL11.glFogi(34138, 34139);
+            }
         }
-
 
         GlStateManager.enableColorMaterial();
         GlStateManager.enableFog();
