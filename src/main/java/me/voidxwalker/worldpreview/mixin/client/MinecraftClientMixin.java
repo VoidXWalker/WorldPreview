@@ -12,6 +12,7 @@ import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.Packet;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.LevelInfo;
@@ -91,13 +92,6 @@ public abstract class MinecraftClientMixin {
         WorldPreview.existingWorld = levelInfo == null;
     }
 
-    @Inject(method="connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value="INVOKE",target="Lnet/minecraft/client/sound/SoundManager;stopAll()V"))
-    public void smoothTransition(ClientWorld world, String loadingMessage, CallbackInfo ci){
-        this.cameraEntity = null;
-        //this.skipGameRender = true; // this doesn't work exactly the same as its equivalent in 1.14+, needs further testing
-    }
-
-
     @Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value = "HEAD"))
     public void reset(ClientWorld world, String loadingMessage, CallbackInfo ci){
         synchronized (WorldPreview.lock){
@@ -106,7 +100,7 @@ public abstract class MinecraftClientMixin {
                 WorldPreview.player = null;
                 WorldPreview.clientWorld = null;
                 if (WorldPreview.worldRenderer != null) {
-                    WorldPreview.worldRenderer.method_1371((ClientWorld) null);
+                    WorldPreview.worldRenderer.method_1371(null);
                 }
             }
         }

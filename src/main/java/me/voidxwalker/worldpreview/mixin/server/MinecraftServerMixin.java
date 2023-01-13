@@ -59,16 +59,19 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
 
     @Shadow public abstract World getWorld();
 
-    private int lastRow = 0;
+    private int lastRow = -100;
 
     @Redirect(method = "prepareWorlds",at = @At(value = "INVOKE",target = "Lnet/minecraft/world/chunk/ServerChunkProvider;getOrGenerateChunk(II)Lnet/minecraft/world/chunk/Chunk;"))
     public Chunk getChunks(ServerChunkProvider instance, int x, int z){
         Chunk ret = instance.getOrGenerateChunk(x,z);
         synchronized (WorldPreview.lock){
-            if(WorldPreview.player!=null&& WorldPreview.calculatedSpawn&& !WorldPreview.freezePreview && WorldPreview.inPreview){
+            if(WorldPreview.player!=null && !WorldPreview.freezePreview && WorldPreview.inPreview){
                 LongObjectStorage<Chunk> chunkStorage=((ClientChunkProviderMixin) WorldPreview.clientWorld.getChunkProvider()).getChunkStorage();
                 List<Chunk> chunks=((ClientChunkProviderMixin) WorldPreview.clientWorld.getChunkProvider()).getChunks();
                 Iterator<Chunk> iterator =  ((ServerChunkProviderMixin)instance).getChunks().iterator();
+                BlockPos spawnPos = WorldPreview.spawnPos;
+                int spawnChunkX = spawnPos.getX() >> 4;
+                int spawnChunkZ = spawnPos.getZ() >> 4;
                 while (iterator.hasNext()){
                     Chunk chunk = iterator.next();
                     long id = ChunkPos.getIdFromCoords(chunk.chunkX, chunk.chunkZ);
@@ -76,15 +79,12 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                         chunkStorage.set(ChunkPos.getIdFromCoords(chunk.chunkX, chunk.chunkZ), chunk);
                         chunks.add(chunk);
                         chunk.setChunkLoaded(true);
-                        BlockPos spawnPos = WorldPreview.spawnPos;
-                        int spawnChunkX = spawnPos.getX() >> 4;
-                        int spawnChunkZ = spawnPos.getZ() >> 4;
-                        if (spawnChunkX - chunk.chunkX == 0 && spawnChunkZ - chunk.chunkZ == 0) {
+                        if (spawnChunkX == chunk.chunkX && spawnChunkZ == chunk.chunkZ && !WorldPreview.loadedSpawn) {
+                            worldpreview_calculateSpawn((ServerWorld) getWorld());
                             WorldPreview.loadedSpawn = true;
-                            worldpreview_calculateSpawn(this.worlds[0]);
                         }
-                        if (WorldPreview.loadedSpawn && spawnChunkX - chunk.chunkX != lastRow) {
-                            lastRow = spawnChunkX - chunk.chunkX;
+                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && chunk.chunkX % 6 == 0) {
+                            lastRow = chunk.chunkX;
                             WorldPreview.canReload = true;
                         }
                     }
@@ -107,12 +107,15 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                 WorldPreview.clientWorld = new ClientWorld(null, properties, 0, Difficulty.NORMAL , MinecraftClient.getInstance().profiler);
                 ClientPlayNetworkHandler networkHandler = new ClientPlayNetworkHandler(MinecraftClient.getInstance(), null, null, MinecraftClient.getInstance().getSession().getProfile());
                 WorldPreview.player = new ClientPlayerEntity(MinecraftClient.getInstance(), WorldPreview.clientWorld, networkHandler,null);
-                worldpreview_calculateSpawn(serverWorld);
-                WorldPreview.calculatedSpawn=true;
 
             }
             WorldPreview.existingWorld=false;
         }
+    }
+
+    @Inject(method = "prepareWorlds", at = @At("TAIL"))
+    private void resetLastRow(CallbackInfo ci) {
+        lastRow = -100;
     }
 
     private void worldpreview_calculateSpawn(ServerWorld serverWorld) {
@@ -142,12 +145,13 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
             worldpreview_shutdownWithoutSave();
             ci.cancel();
         }
+        WorldPreview.inPreview=false;
     }
 
     @Inject(method="run",at=@At(value="INVOKE",target="Lnet/minecraft/server/MinecraftServer;setupServer()Z",shift = At.Shift.AFTER), cancellable = true)
     public void kill2(CallbackInfo ci){
-        WorldPreview.inPreview=false;
         if(WorldPreview.kill==1){
+            WorldPreview.inPreview=false;
             ci.cancel();
         }
     }
@@ -155,6 +159,7 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
     @Inject(method = "prepareWorlds",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", shift = At.Shift.AFTER), cancellable = true)
     public void kill3(CallbackInfo ci){
         if(WorldPreview.kill==1){
+            WorldPreview.inPreview=false;
             ci.cancel();
         }
     }
@@ -176,5 +181,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                 this.snooper.concel();
             }
         }
+        WorldPreview.inPreview=false;
     }
 }

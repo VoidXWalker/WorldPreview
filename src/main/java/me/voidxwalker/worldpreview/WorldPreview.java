@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.WorldRenderer;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-//import org.lwjgl.glfw.GLFW;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class WorldPreview implements ClientModInitializer {
    public static World world;
@@ -21,7 +22,6 @@ public class WorldPreview implements ClientModInitializer {
    public static int kill=0;
    public static WorldRenderer worldRenderer;
    public static boolean existingWorld;
-   public static boolean calculatedSpawn;
    public static boolean loadedSpawn;
    public static boolean canReload;
    public static KeyBinding resetKey;
@@ -34,5 +34,13 @@ public class WorldPreview implements ClientModInitializer {
    }
    @Override
    public void onInitializeClient() {
+      init();
+   }
+
+   public static void init() {
+      WorldPreview.freezePreview = false;
+      WorldPreview.loadedSpawn = false;
+      WorldPreview.canReload = false;
+      KeyBinding.unpressAll();
    }
 }

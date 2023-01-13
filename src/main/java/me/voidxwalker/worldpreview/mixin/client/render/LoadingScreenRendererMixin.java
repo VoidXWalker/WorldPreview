@@ -76,12 +76,12 @@ public abstract class LoadingScreenRendererMixin {
         }
         if (!WorldPreview.inPreview) {
             WorldPreview.inPreview = true;
+            WorldPreview.init();
         }
         long l = MinecraftClient.getTime();
         if (l - this.field_1031 >= 100L) {
-            Window window = new Window(this.field_1029);
-            if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && !WorldPreview.freezePreview) {
-                if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null && WorldPreview.calculatedSpawn) {
+            if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && !WorldPreview.freezePreview && WorldPreview.inPreview) {
+                if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                     WorldPreview.worldRenderer.method_1371(WorldPreview.clientWorld);
                 }
                 if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
@@ -113,14 +113,13 @@ public abstract class LoadingScreenRendererMixin {
         }
     }
 
-
     public void renderWorld(float tickDelta, long endTime) {
         GlStateManager.enableDepthTest();
         GlStateManager.enableAlphaTest();
         GlStateManager.alphaFunc(516, 0.5F);
         this.renderCenter(tickDelta, endTime);
-
     }
+
     private void renderCenter(float tickDelta, long endTime) {
         WorldRenderer worldRenderer =  WorldPreview.worldRenderer;
         ( (ChunkSetter)worldRenderer).setPreviewRenderer();
@@ -166,17 +165,15 @@ public abstract class LoadingScreenRendererMixin {
         this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         GuiLighting.disable();
         this.field_1029.profiler.swap("terrain_setup");
-        if (WorldPreview.loadedSpawn && WorldPreview.canReload && frameCount % 500 == 0) {
-//            worldRenderer.scheduleTerrainUpdate();
-//            ((WorldRendererMixin)worldRenderer).getChunks().updateCameraPosition(entity.x, entity.z);
-//            ((WorldRendererMixin)worldRenderer).setField_1889(2);
-            worldRenderer.reload(); //Need to figure out what parts of this method are good and which are bad
-            WorldPreview.canReload = false;
+        if (WorldPreview.loadedSpawn) {
+            if (WorldPreview.canReload) {
+                worldRenderer.reload();
+                WorldPreview.canReload = false;
+            }
         }
         worldRenderer.method_9906(entity, (double)tickDelta, cameraView, frameCount++, true);
         this.field_1029.profiler.swap("updatechunks");
         worldRenderer.method_9892(endTime);
-
         this.field_1029.profiler.swap("terrain");
         GlStateManager.matrixMode(5888);
         GlStateManager.pushMatrix();
@@ -456,15 +453,5 @@ public abstract class LoadingScreenRendererMixin {
 
     private double getFov( double tickDelta, boolean changingFov) {
         return this.field_1029.options.fov;
-    }
-
-
-    @Inject(method = "<init>",at = @At(value = "TAIL"))
-    public void worldpreview_init(MinecraftClient field_1029, CallbackInfo ci){
-        WorldPreview.freezePreview=false;
-        WorldPreview.calculatedSpawn=false;
-        WorldPreview.loadedSpawn = false;
-        WorldPreview.canReload = false;
-        KeyBinding.unpressAll();
     }
 }

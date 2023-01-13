@@ -1,10 +1,10 @@
 invertYMouse:false
-mouseSensitivity:0.2535211
+mouseSensitivity:0.40140846
 fov:0.25
 gamma:5.0
 saturation:0.0
 renderDistance:12
-guiScale:0
+guiScale:3
 particles:0
 bobView:false
 anaglyph3d:false

@@ -23,8 +23,6 @@ import java.util.List;
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin implements ChunkSetter {
     @Shadow private ClientWorld world;
-    @Shadow private List<WorldRenderer.ChunkInfo> visibleChunks;
-    @Shadow protected abstract BuiltChunk method_9901(BlockPos blockPos, BuiltChunk builtChunk, Direction direction);
 
     public boolean previewRenderer;
     public void setPreviewRenderer(){
