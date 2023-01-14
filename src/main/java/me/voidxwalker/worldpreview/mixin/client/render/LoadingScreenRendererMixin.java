@@ -14,6 +14,7 @@ import net.minecraft.client.class_321;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.debug.CameraView;
@@ -35,6 +36,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
@@ -46,6 +48,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 @Mixin(LoadingScreenRenderer.class)
 public abstract class LoadingScreenRendererMixin {
@@ -68,6 +71,7 @@ public abstract class LoadingScreenRendererMixin {
     private boolean spawnReady = false;
     /**
      * @author Pixfumy
+     * @reason This method is absolutely unrecognizable with all the changes. Any other mod targeting this method should know about this.
      */
     @Overwrite
     public void progressStagePercentage(int percentage) {
@@ -83,6 +87,9 @@ public abstract class LoadingScreenRendererMixin {
         }
         long l = MinecraftClient.getTime();
         if (l - this.field_1031 >= 100L) {
+            Window window = new Window(this.field_1029);
+            int width = window.getWidth();
+            int height = window.getHeight();
             if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && !WorldPreview.freezePreview && WorldPreview.inPreview) {
                 if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                     WorldPreview.worldRenderer.method_1371(WorldPreview.clientWorld);
@@ -108,7 +115,6 @@ public abstract class LoadingScreenRendererMixin {
                     q = Math.max(q, 60);
                     long r = System.nanoTime() - nanoTime;
                     long s = Math.max((long)(1000000000 / q / 4) - r, 0L);
-                    Window window = new Window(this.field_1029);
                     this.renderWorld(((MinecraftClientMixin)this.field_1029).getTricker().tickDelta, System.nanoTime() + s);
                     GlStateManager.matrixMode(5889);
                     GlStateManager.loadIdentity();
@@ -116,13 +122,55 @@ public abstract class LoadingScreenRendererMixin {
                     GlStateManager.matrixMode(5888);
                     GlStateManager.loadIdentity();
                     GlStateManager.translatef(0.0F, 0.0F, -200.0F);
-                    this.renderPauseButtons(window);
-                    GlStateManager.enableBlend();
-                    GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-                    this.field_1029.updateDisplay();
-                    this.nanoTime = System.nanoTime();
+                    this.renderGreyedBackground(width, height);
+                    this.renderCenteredString(this.field_1029.textRenderer, I18n.translate("menu.game"), width/ 2, 40, 16777215);
+                    final int mouseX = (int) (Mouse.getX() * width / this.field_1029.width);
+                    final int mouseY = height - Mouse.getY() * height / this.field_1029.height - 1;
+                    this.renderMenuButtons(width, height, mouseX, mouseY);
+                }
+            } else { // usual loading screen
+                GlStateManager.matrixMode(5889);
+                GlStateManager.loadIdentity();
+                GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
+                GlStateManager.matrixMode(5888);
+                GlStateManager.loadIdentity();
+                GlStateManager.translatef(0.0F, 0.0F, -200.0F);
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder bufferBuilder = tessellator.getBuffer();
+                this.field_1029.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+                float f = 32.0F;
+                bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+                bufferBuilder.vertex(0.0D, (double)height, 0.0D).texture(0.0D, (double)((float)height / f)).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex((double)width, (double)height, 0.0D).texture((double)((float)width / f), (double)((float)height / f)).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex((double)width, 0.0D, 0.0D).texture((double)((float)width / f), 0.0D).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0D, 0.0D).color(64, 64, 64, 255).next();
+                tessellator.draw();
+                if (percentage >= 0) {
+                    int m = 100;
+                    int n = 2;
+                    int o = width / 2 - m / 2;
+                    int p = width / 2 + 16;
+                    GlStateManager.disableTexture();
+                    bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+                    bufferBuilder.vertex((double)o, (double)p, 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double)o, (double)(p + n), 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double)(o + m), (double)(p + n), 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double)(o + m), (double)p, 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double)o, (double)p, 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double)o, (double)(p + n), 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double)(o + percentage), (double)(p + n), 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double)(o + percentage), (double)p, 0.0D).color(128, 255, 128, 255).next();
+                    tessellator.draw();
+                    GlStateManager.enableTexture();
                 }
             }
+            this.field_1029.textRenderer.drawWithShadow(this.field_1030, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1030)) / 2), (float)(height / 2 - 4 - 16), 16777215);
+            this.field_1029.textRenderer.drawWithShadow(this.field_1028, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1028)) / 2), (float)(height / 2 - 4 + 8), 16777215);
+            GlStateManager.enableBlend();
+            GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+            this.field_1029.updateDisplay();
+            this.nanoTime = System.nanoTime();
+
             try {
                 Thread.yield();
             } catch (Exception var15) {
@@ -467,8 +515,7 @@ public abstract class LoadingScreenRendererMixin {
         return this.field_1029.options.fov;
     }
 
-    private void renderPauseButtons(Window window) {
-        //background
+    private void renderGreyedBackground(int width, int height) {
         float f = (float) (-1072689136 >> 24 & 255) / 255.0F;
         float g = (float) (-1072689136 >> 16 & 255) / 255.0F;
         float h = (float) (-1072689136 >> 8 & 255) / 255.0F;
@@ -477,8 +524,6 @@ public abstract class LoadingScreenRendererMixin {
         float k = (float) (-804253680 >> 16 & 255) / 255.0F;
         float l = (float) (-804253680 >> 8 & 255) / 255.0F;
         float m = (float) (-804253680 & 255) / 255.0F;
-        int width = window.getWidth();
-        int height = window.getHeight();
         GlStateManager.disableTexture();
         GlStateManager.enableBlend();
         GlStateManager.disableAlphaTest();
@@ -496,5 +541,51 @@ public abstract class LoadingScreenRendererMixin {
         GlStateManager.disableBlend();
         GlStateManager.enableAlphaTest();
         GlStateManager.enableTexture();
+    }
+
+    private void renderMenuButtons(int width, int height, int mouseX, int mouseY) {
+        ArrayList<ButtonWidget> buttons = new ArrayList<ButtonWidget>();
+        buttons.add(new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
+        buttons.add(new ButtonWidget(4, width / 2 - 100, height / 4 + 24 - 16, I18n.translate("menu.returnToGame")));
+        buttons.add(new ButtonWidget(0, width / 2 - 100, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.options")));
+        buttons.add(new ButtonWidget(7, width / 2 + 2, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.shareToLan")));
+        buttons.add(new ButtonWidget(5, width / 2 - 100, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.achievements")));
+        buttons.add(new ButtonWidget(6, width / 2 + 2, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.stats")));
+        TextRenderer textRenderer = this.field_1029.textRenderer;
+        for (ButtonWidget button: buttons) {
+            int buttonWidth = button.getWidth();
+            int buttonHeight = 20;
+            this.field_1029.getTextureManager().bindTexture(WorldPreview.WIDGETS_LOCATION);
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            boolean hovered = mouseX >= button.x && mouseY >= button.y && mouseX < button.x + buttonWidth && mouseY < button.y + buttonHeight;
+            int i = hovered ? 2 : 1;
+            GlStateManager.enableBlend();
+            GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+            GlStateManager.blendFunc(770, 771);
+            this.drawTexture(button.x, button.y, 0, 46 + i * 20, buttonWidth / 2, buttonHeight);
+            this.drawTexture(button.x + buttonWidth / 2, button.y, 200 - buttonWidth / 2, 46 + i * 20, buttonWidth / 2, buttonHeight);
+            int j = 14737632;
+            if (hovered) {
+                j = 16777120;
+            }
+            this.renderCenteredString(textRenderer, button.message, button.x + buttonWidth / 2, button.y + (buttonHeight - 8) / 2, j);
+        }
+    }
+
+    private void renderCenteredString(TextRenderer textRenderer, String text, int centerX, int y, int color) {
+        textRenderer.drawWithShadow(text, (float)(centerX - textRenderer.getStringWidth(text) / 2), (float)y, color);
+    }
+
+    private void drawTexture(int x, int y, int u, int v, int width, int height) {
+        float f = 0.00390625F;
+        float g = 0.00390625F;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.vertex((double)(x + 0), (double)(y + height), (double)0).texture((double)((float)(u + 0) * f), (double)((float)(v + height) * g)).next();
+        bufferBuilder.vertex((double)(x + width), (double)(y + height), (double)0).texture((double)((float)(u + width) * f), (double)((float)(v + height) * g)).next();
+        bufferBuilder.vertex((double)(x + width), (double)(y + 0), (double)0).texture((double)((float)(u + width) * f), (double)((float)(v + 0) * g)).next();
+        bufferBuilder.vertex((double)(x + 0), (double)(y + 0), (double)0).texture((double)((float)(u + 0) * f), (double)((float)(v + 0) * g)).next();
+        tessellator.draw();
     }
 }

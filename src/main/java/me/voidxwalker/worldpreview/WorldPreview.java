@@ -6,6 +6,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
@@ -32,6 +33,7 @@ public class WorldPreview implements ClientModInitializer {
    public static void log(Level level, String message) {
       LOGGER.log(level, message);
    }
+   public static Identifier WIDGETS_LOCATION = new Identifier("textures/gui/widgets.png");
    @Override
    public void onInitializeClient() {
       init();

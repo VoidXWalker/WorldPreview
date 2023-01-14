@@ -1,23 +1,23 @@
-[03:11:29] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-[03:11:29] [main/INFO] (FabricLoader) Loading 4 mods:
+[04:35:29] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[04:35:29] [main/INFO] (FabricLoader) Loading 4 mods:
 	- fabricloader 0.12.12
 	- java 17
 	- minecraft 1.8.9
 	- worldpreview 1.0.0
-[03:11:29] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-[03:11:29] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
-[03:11:30] [main/INFO] (Minecraft) Setting user: Player563
-[03:11:30] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player563)
-[03:11:31] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
-[03:11:31] [main/INFO] (Minecraft) Reloading ResourceManager: Default
-[03:11:31] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
-[03:11:31] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
-[03:11:31] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
-[03:11:31] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[03:11:31] [Thread-4/INFO] (Minecraft) OpenAL initialized.
-[03:11:32] [Sound Library Loader/INFO] (Minecraft) Sound engine started
-[03:11:33] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
-[03:11:33] [main/ERROR] (Minecraft) Realms module missing
+[04:35:29] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[04:35:30] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[04:35:30] [main/INFO] (Minecraft) Setting user: Player925
+[04:35:30] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player925)
+[04:35:31] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
+[04:35:31] [main/INFO] (Minecraft) Reloading ResourceManager: Default
+[04:35:32] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
+[04:35:32] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
+[04:35:32] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
+[04:35:32] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[04:35:32] [Thread-4/INFO] (Minecraft) OpenAL initialized.
+[04:35:32] [Sound Library Loader/INFO] (Minecraft) Sound engine started
+[04:35:33] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
+[04:35:33] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -36,7 +36,7 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[03:11:34] [main/ERROR] (Minecraft) Realms module missing
+[04:35:34] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -61,16 +61,17 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[03:11:34] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[03:11:34] [Server thread/INFO] (Minecraft) Generating keypair
-[03:11:34] [Server thread/INFO] (Minecraft) Converting map!
-[03:11:34] [Server thread/INFO] (Minecraft) Scanning folders...
-[03:11:34] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[03:11:35] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[03:11:36] [Server thread/INFO] (Minecraft) Preparing spawn area: 24%
-[03:11:37] [Server thread/INFO] (Minecraft) Preparing spawn area: 51%
-[03:11:38] [Server thread/INFO] (Minecraft) Preparing spawn area: 84%
-[03:11:38] [main/ERROR] (Minecraft) Realms module missing
+[04:35:35] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[04:35:35] [Server thread/INFO] (Minecraft) Generating keypair
+[04:35:35] [Server thread/INFO] (Minecraft) Converting map!
+[04:35:35] [Server thread/INFO] (Minecraft) Scanning folders...
+[04:35:35] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[04:35:35] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[04:35:36] [Server thread/INFO] (Minecraft) Preparing spawn area: 13%
+[04:35:37] [Server thread/INFO] (Minecraft) Preparing spawn area: 37%
+[04:35:38] [Server thread/INFO] (Minecraft) Preparing spawn area: 63%
+[04:35:39] [Server thread/INFO] (Minecraft) Preparing spawn area: 89%
+[04:35:39] [main/ERROR] (Minecraft) Realms module missing
 java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
 	at java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
 	at java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
@@ -96,19 +97,19 @@ java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotif
 	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
 	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-[03:11:38] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
-[03:11:38] [Server thread/INFO] (Minecraft) Player563[local:E:08362e16] logged in with entity id 12 at (-238.5, 69.0, -219.5)
-[03:11:38] [Server thread/INFO] (Minecraft) Player563 joined the game
-[03:11:39] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[03:11:39] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[03:11:40] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[03:11:40] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[03:11:40] [main/INFO] (Minecraft) Stopping!
-[03:11:40] [main/INFO] (Minecraft) SoundSystem shutting down...
-[03:11:40] [Server thread/INFO] (Minecraft) Stopping server
-[03:11:40] [Server thread/INFO] (Minecraft) Saving players
-[03:11:40] [Server thread/INFO] (Minecraft) Saving worlds
-[03:11:40] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
-[03:11:40] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
-[03:11:40] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
-[03:11:40] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com
+[04:35:39] [Server thread/INFO] (Minecraft) Changing view distance to 12, from 10
+[04:35:40] [Server thread/INFO] (Minecraft) Player925[local:E:5f04958e] logged in with entity id 224 at (-198.5, 62.0, 269.5)
+[04:35:40] [Server thread/INFO] (Minecraft) Player925 joined the game
+[04:35:49] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[04:35:49] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
+[04:35:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
+[04:35:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
+[04:35:50] [main/INFO] (Minecraft) Stopping!
+[04:35:50] [main/INFO] (Minecraft) SoundSystem shutting down...
+[04:35:50] [Server thread/INFO] (Minecraft) Stopping server
+[04:35:50] [Server thread/INFO] (Minecraft) Saving players
+[04:35:50] [Server thread/INFO] (Minecraft) Saving worlds
+[04:35:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Overworld
+[04:35:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/Nether
+[04:35:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'New World'/The End
+[04:35:50] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com
