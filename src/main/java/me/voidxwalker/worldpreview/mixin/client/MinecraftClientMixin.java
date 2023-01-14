@@ -69,7 +69,7 @@ public abstract class MinecraftClientMixin {
     private void worldpreview_onHotKeyPressed(CallbackInfo ci) {
         int resetKeyCode = WorldPreview.resetKey.getCode();
         int freezeKeyCode = WorldPreview.freezeKey.getCode();
-        if (Keyboard.isKeyDown(resetKeyCode)) {
+        if (Keyboard.isKeyDown(resetKeyCode) || WorldPreview.kill == 1) {
             soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
             WorldPreview.log(Level.INFO,"Leaving world generation");
             WorldPreview.kill = 1;

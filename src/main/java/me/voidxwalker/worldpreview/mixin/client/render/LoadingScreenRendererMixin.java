@@ -20,10 +20,12 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.debug.CameraView;
 import net.minecraft.client.render.debug.StructureDebugRenderer;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.Clipper;
 import net.minecraft.client.util.GlAllocationUtils;
 import net.minecraft.client.util.Window;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -60,24 +62,17 @@ public abstract class LoadingScreenRendererMixin {
 
     @Shadow private String field_1028;
 
-    @Shadow private boolean field_1032;
-
-    @Shadow private Framebuffer field_7696;
-
     private int frameCount = 0;
 
     private long nanoTime = 0;
 
-    private boolean spawnReady = false;
     /**
      * @author Pixfumy
      * @reason This method is absolutely unrecognizable with all the changes. Any other mod targeting this method should know about this.
      */
     @Overwrite
     public void progressStagePercentage(int percentage) {
-
         if(WorldPreview.worldRenderer==null){
-
             WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
             ((ChunkSetter)WorldPreview.worldRenderer).setPreviewRenderer();
         }
@@ -87,6 +82,7 @@ public abstract class LoadingScreenRendererMixin {
         }
         long l = MinecraftClient.getTime();
         if (l - this.field_1031 >= 100L) {
+            this.field_1031 = l;
             Window window = new Window(this.field_1029);
             int width = window.getWidth();
             int height = window.getHeight();
@@ -124,9 +120,9 @@ public abstract class LoadingScreenRendererMixin {
                     GlStateManager.translatef(0.0F, 0.0F, -200.0F);
                     this.renderGreyedBackground(width, height);
                     this.renderCenteredString(this.field_1029.textRenderer, I18n.translate("menu.game"), width/ 2, 40, 16777215);
-                    final int mouseX = (int) (Mouse.getX() * width / this.field_1029.width);
+                    final int mouseX = Mouse.getX() * width / this.field_1029.width;
                     final int mouseY = height - Mouse.getY() * height / this.field_1029.height - 1;
-                    this.renderMenuButtons(width, height, mouseX, mouseY);
+                    this.renderAndUpdateMenuButtons(width, height, mouseX, mouseY);
                 }
             } else { // usual loading screen
                 GlStateManager.matrixMode(5889);
@@ -543,9 +539,10 @@ public abstract class LoadingScreenRendererMixin {
         GlStateManager.enableTexture();
     }
 
-    private void renderMenuButtons(int width, int height, int mouseX, int mouseY) {
+    private void renderAndUpdateMenuButtons(int width, int height, int mouseX, int mouseY) {
         ArrayList<ButtonWidget> buttons = new ArrayList<ButtonWidget>();
-        buttons.add(new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
+        ButtonWidget resetButton;
+        buttons.add(resetButton = new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
         buttons.add(new ButtonWidget(4, width / 2 - 100, height / 4 + 24 - 16, I18n.translate("menu.returnToGame")));
         buttons.add(new ButtonWidget(0, width / 2 - 100, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.options")));
         buttons.add(new ButtonWidget(7, width / 2 + 2, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.shareToLan")));
@@ -567,6 +564,16 @@ public abstract class LoadingScreenRendererMixin {
             int j = 14737632;
             if (hovered) {
                 j = 16777120;
+                if (button == resetButton) {
+                    while (Mouse.next()) {
+                        if (Mouse.getEventButtonState()) {
+                            this.field_1029.getSoundManager().play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
+                            WorldPreview.kill = 1;
+                            WorldPreview.inPreview = false;
+                            return;
+                        }
+                    }
+                }
             }
             this.renderCenteredString(textRenderer, button.message, button.x + buttonWidth / 2, button.y + (buttonHeight - 8) / 2, j);
         }
