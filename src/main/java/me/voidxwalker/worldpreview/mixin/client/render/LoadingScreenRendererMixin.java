@@ -86,7 +86,10 @@ public abstract class LoadingScreenRendererMixin {
             Window window = new Window(this.field_1029);
             int width = window.getWidth();
             int height = window.getHeight();
-            if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && !WorldPreview.freezePreview && WorldPreview.inPreview) {
+            if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview) {
+                if (WorldPreview.freezePreview) {
+                    return;
+                }
                 if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                     WorldPreview.worldRenderer.method_1371(WorldPreview.clientWorld);
                 }

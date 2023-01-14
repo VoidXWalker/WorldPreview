@@ -81,7 +81,7 @@ public abstract class MinecraftClientMixin {
             this.connect((ClientWorld) null);
             WorldPreview.kill=0;
             ci.cancel();
-        } else if (Keyboard.isKeyDown(freezeKeyCode)) {
+        } else if (Keyboard.isKeyDown(freezeKeyCode) && WorldPreview.inPreview) {
             WorldPreview.freezePreview = true;
         }
     }
