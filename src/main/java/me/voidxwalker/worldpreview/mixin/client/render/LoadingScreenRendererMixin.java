@@ -11,14 +11,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.class_321;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.render.GuiLighting;
-import net.minecraft.client.render.LoadingScreenRenderer;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.debug.CameraView;
 import net.minecraft.client.render.debug.StructureDebugRenderer;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.Clipper;
 import net.minecraft.client.util.GlAllocationUtils;
@@ -29,6 +29,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -107,10 +108,24 @@ public abstract class LoadingScreenRendererMixin {
                     q = Math.max(q, 60);
                     long r = System.nanoTime() - nanoTime;
                     long s = Math.max((long)(1000000000 / q / 4) - r, 0L);
-                    renderWorld(((MinecraftClientMixin)this.field_1029).getTricker().tickDelta, System.nanoTime() + s);
+                    Window window = new Window(this.field_1029);
+                    this.renderWorld(((MinecraftClientMixin)this.field_1029).getTricker().tickDelta, System.nanoTime() + s);
+                    GlStateManager.matrixMode(5889);
+                    GlStateManager.loadIdentity();
+                    GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
+                    GlStateManager.matrixMode(5888);
+                    GlStateManager.loadIdentity();
+                    GlStateManager.translatef(0.0F, 0.0F, -200.0F);
+                    this.renderPauseButtons(window);
+                    GlStateManager.enableBlend();
+                    GlStateManager.blendFuncSeparate(770, 771, 1, 0);
                     this.field_1029.updateDisplay();
                     this.nanoTime = System.nanoTime();
                 }
+            }
+            try {
+                Thread.yield();
+            } catch (Exception var15) {
             }
         }
     }
@@ -450,5 +465,36 @@ public abstract class LoadingScreenRendererMixin {
 
     private double getFov( double tickDelta, boolean changingFov) {
         return this.field_1029.options.fov;
+    }
+
+    private void renderPauseButtons(Window window) {
+        //background
+        float f = (float) (-1072689136 >> 24 & 255) / 255.0F;
+        float g = (float) (-1072689136 >> 16 & 255) / 255.0F;
+        float h = (float) (-1072689136 >> 8 & 255) / 255.0F;
+        float i = (float) (-1072689136 & 255) / 255.0F;
+        float j = (float) (-804253680 >> 24 & 255) / 255.0F;
+        float k = (float) (-804253680 >> 16 & 255) / 255.0F;
+        float l = (float) (-804253680 >> 8 & 255) / 255.0F;
+        float m = (float) (-804253680 & 255) / 255.0F;
+        int width = window.getWidth();
+        int height = window.getHeight();
+        GlStateManager.disableTexture();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlphaTest();
+        GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(7425);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+        bufferBuilder.vertex((double) width, (double) 0.0, (double) 0).color(g, h, i, f).next();
+        bufferBuilder.vertex((double) 0, (double) 0.0, (double) 0).color(g, h, i, f).next();
+        bufferBuilder.vertex((double) 0, (double) height, (double) 0).color(k, l, m, j).next();
+        bufferBuilder.vertex((double) width, (double) height, (double) 0).color(k, l, m, j).next();
+        tessellator.draw();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlphaTest();
+        GlStateManager.enableTexture();
     }
 }
