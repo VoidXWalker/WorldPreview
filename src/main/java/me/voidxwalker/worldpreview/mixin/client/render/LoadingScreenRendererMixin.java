@@ -62,6 +62,7 @@ public abstract class LoadingScreenRendererMixin {
 
     @Shadow private String field_1028;
 
+    @Shadow private Framebuffer field_7696;
     private int frameCount = 0;
 
     private long nanoTime = 0;
@@ -86,7 +87,7 @@ public abstract class LoadingScreenRendererMixin {
             Window window = new Window(this.field_1029);
             int width = window.getWidth();
             int height = window.getHeight();
-            if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview) {
+            if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview && WorldPreview.loadedSpawn) {
                 if (WorldPreview.freezePreview) {
                     return;
                 }
@@ -163,10 +164,10 @@ public abstract class LoadingScreenRendererMixin {
                     GlStateManager.enableTexture();
                 }
             }
-            this.field_1029.textRenderer.drawWithShadow(this.field_1030, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1030)) / 2), (float)(height / 2 - 4 - 16), 16777215);
-            this.field_1029.textRenderer.drawWithShadow(this.field_1028, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1028)) / 2), (float)(height / 2 - 4 + 8), 16777215);
             GlStateManager.enableBlend();
             GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+            this.field_1029.textRenderer.drawWithShadow(this.field_1030, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1030)) / 2), (float)(height / 2 - 4 - 16), 16777215);
+            this.field_1029.textRenderer.drawWithShadow(this.field_1028, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1028)) / 2), (float)(height / 2 - 4 + 8), 16777215);
             this.field_1029.updateDisplay();
             this.nanoTime = System.nanoTime();
 
