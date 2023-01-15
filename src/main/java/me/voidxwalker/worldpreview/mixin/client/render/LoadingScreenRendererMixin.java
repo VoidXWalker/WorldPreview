@@ -39,6 +39,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
@@ -57,12 +58,12 @@ public abstract class LoadingScreenRendererMixin {
     @Shadow private MinecraftClient field_1029;
 
     @Shadow private long field_1031;
+    private long lastRenderTime;
 
     @Shadow private String field_1030;
 
     @Shadow private String field_1028;
 
-    @Shadow private Framebuffer field_7696;
     @Shadow private Window field_7695;
     private int frameCount = 0;
 
@@ -81,6 +82,7 @@ public abstract class LoadingScreenRendererMixin {
             WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
             ((ChunkSetter)WorldPreview.worldRenderer).setPreviewRenderer();
         }
+        long l = MinecraftClient.getTime();
         Window window = this.field_7695;
         int width = window.getWidth();
         int height = window.getHeight();
@@ -105,39 +107,37 @@ public abstract class LoadingScreenRendererMixin {
                 return;
             }
         }
-        long l = MinecraftClient.getTime();
-        if (l - this.field_1031 >= 100L) {
-            this.field_1031 = l;
-            if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview && WorldPreview.loadedSpawn) {
-                if (WorldPreview.freezePreview) {
-                    return;
-                }
-                if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
-                    WorldPreview.worldRenderer.method_1371(WorldPreview.clientWorld);
-                    frameCount = 0;
-                    WorldPreview.canFreeze = true;
-                }
-                if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
-                    this.field_1842 = this.field_1843;
-                    float h = WorldPreview.world.getBrightness(new BlockPos(WorldPreview.player));
-                    float x = (float) this.field_1029.options.viewDistance / 32.0F;
-                    float y = h * (1.0F - x) + x;
-                    this.field_1843 += (y - this.field_1843) * 0.1F;
-                    this.lastSkyDarkness = this.skyDarkness;
-                    if (BossBar.darkenSky) {
-                        this.skyDarkness += 0.05F;
-                        if (this.skyDarkness > 1.0F) {
-                            this.skyDarkness = 1.0F;
-                        }
-                        BossBar.darkenSky = false;
-                    } else if (this.skyDarkness > 0.0F) {
-                        this.skyDarkness -= 0.0125F;
+        if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview && WorldPreview.loadedSpawn) {
+            if (WorldPreview.freezePreview) {
+                return;
+            }
+            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
+                WorldPreview.worldRenderer.method_1371(WorldPreview.clientWorld);
+                frameCount = 0;
+                WorldPreview.canFreeze = true;
+            }
+            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
+                this.field_1842 = this.field_1843;
+                float h = WorldPreview.world.getBrightness(new BlockPos(WorldPreview.player));
+                float x = (float) this.field_1029.options.viewDistance / 32.0F;
+                float y = h * (1.0F - x) + x;
+                this.field_1843 += (y - this.field_1843) * 0.1F;
+                this.lastSkyDarkness = this.skyDarkness;
+                if (BossBar.darkenSky) {
+                    this.skyDarkness += 0.05F;
+                    if (this.skyDarkness > 1.0F) {
+                        this.skyDarkness = 1.0F;
                     }
-                    int p = this.field_1029.options.maxFramerate;
-                    int q = Math.min(10, p);
-                    q = Math.max(q, 60);
-                    long r = System.nanoTime() - nanoTime;
-                    long s = Math.max((long) (1000000000 / q / 4) - r, 0L);
+                    BossBar.darkenSky = false;
+                } else if (this.skyDarkness > 0.0F) {
+                    this.skyDarkness -= 0.0125F;
+                }
+                int p = this.field_1029.options.maxFramerate;
+                int q = Math.min(10, p);
+                q = Math.max(q, 60);
+                long r = System.nanoTime() - nanoTime;
+                long s = Math.max((long) (1000000000 / q / 4) - r, 0L);
+                if (l - this.lastRenderTime >= 1000L / 40) { // TODO: change 20 to LOADING_SCREEN_FPS if mods decide it should be configurable
                     this.renderWorld(((MinecraftClientMixin) this.field_1029).getTricker().tickDelta, System.nanoTime() + s);
                     GlStateManager.matrixMode(5889);
                     GlStateManager.loadIdentity();
@@ -149,53 +149,57 @@ public abstract class LoadingScreenRendererMixin {
                     this.renderCenteredString(this.field_1029.textRenderer, I18n.translate("menu.game"), width / 2, 40, 16777215);
                     this.renderMenuButtons(width, height, mouseX, mouseY);
                 }
-            } else { // usual loading screen
-                GlStateManager.matrixMode(5889);
-                GlStateManager.loadIdentity();
-                GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
-                GlStateManager.matrixMode(5888);
-                GlStateManager.loadIdentity();
-                GlStateManager.translatef(0.0F, 0.0F, -200.0F);
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder bufferBuilder = tessellator.getBuffer();
-                this.field_1029.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-                float f = 32.0F;
-                bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
-                bufferBuilder.vertex(0.0D, (double) height, 0.0D).texture(0.0D, (double) ((float) height / f)).color(64, 64, 64, 255).next();
-                bufferBuilder.vertex((double) width, (double) height, 0.0D).texture((double) ((float) width / f), (double) ((float) height / f)).color(64, 64, 64, 255).next();
-                bufferBuilder.vertex((double) width, 0.0D, 0.0D).texture((double) ((float) width / f), 0.0D).color(64, 64, 64, 255).next();
-                bufferBuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0D, 0.0D).color(64, 64, 64, 255).next();
-                tessellator.draw();
-                if (percentage >= 0) {
-                    int m = 100;
-                    int n = 2;
-                    int o = width / 2 - m / 2;
-                    int p = width / 2 + 16;
-                    GlStateManager.disableTexture();
-                    bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
-                    bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double) (o + m), (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double) (o + m), (double) p, 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 255, 128, 255).next();
-                    bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
-                    bufferBuilder.vertex((double) (o + percentage), (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
-                    bufferBuilder.vertex((double) (o + percentage), (double) p, 0.0D).color(128, 255, 128, 255).next();
-                    tessellator.draw();
-                    GlStateManager.enableTexture();
-                }
             }
+        } else { // usual loading screen
+            GlStateManager.matrixMode(5889);
+            GlStateManager.loadIdentity();
+            GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
+            GlStateManager.matrixMode(5888);
+            GlStateManager.loadIdentity();
+            GlStateManager.translatef(0.0F, 0.0F, -200.0F);
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
+            this.field_1029.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+            float f = 32.0F;
+            bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+            bufferBuilder.vertex(0.0D, (double) height, 0.0D).texture(0.0D, (double) ((float) height / f)).color(64, 64, 64, 255).next();
+            bufferBuilder.vertex((double) width, (double) height, 0.0D).texture((double) ((float) width / f), (double) ((float) height / f)).color(64, 64, 64, 255).next();
+            bufferBuilder.vertex((double) width, 0.0D, 0.0D).texture((double) ((float) width / f), 0.0D).color(64, 64, 64, 255).next();
+            bufferBuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0D, 0.0D).color(64, 64, 64, 255).next();
+            tessellator.draw();
+            if (percentage >= 0) {
+                int m = 100;
+                int n = 2;
+                int o = width / 2 - m / 2;
+                int p = width / 2 + 16;
+                GlStateManager.disableTexture();
+                bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+                bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 128, 128, 255).next();
+                bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
+                bufferBuilder.vertex((double) (o + m), (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
+                bufferBuilder.vertex((double) (o + m), (double) p, 0.0D).color(128, 128, 128, 255).next();
+                bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 255, 128, 255).next();
+                bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
+                bufferBuilder.vertex((double) (o + percentage), (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
+                bufferBuilder.vertex((double) (o + percentage), (double) p, 0.0D).color(128, 255, 128, 255).next();
+                tessellator.draw();
+                GlStateManager.enableTexture();
+            }
+        }
+        if (l - this.lastRenderTime >= 1000L / 40) {
+            this.lastRenderTime = l;
             GlStateManager.enableBlend();
             GlStateManager.blendFuncSeparate(770, 771, 1, 0);
             this.field_1029.textRenderer.drawWithShadow(this.field_1030, (float) ((width - this.field_1029.textRenderer.getStringWidth(this.field_1030)) / 2), (float) (height / 2 - 4 - 16), 16777215);
             this.field_1029.textRenderer.drawWithShadow(this.field_1028, (float) ((width - this.field_1029.textRenderer.getStringWidth(this.field_1028)) / 2), (float) (height / 2 - 4 + 8), 16777215);
             this.field_1029.updateDisplay();
-            this.nanoTime = System.nanoTime();
-
-            try {
-                Thread.yield();
-            } catch (Exception var15) {
-            }
+        }
+        this.nanoTime = System.nanoTime();
+        // Sleepbackground will do a check here to see if it's time to poll devices yet 
+        Display.processMessages();
+        try {
+            Thread.yield();
+        } catch (Exception var15) {
         }
     }
 
@@ -251,13 +255,14 @@ public abstract class LoadingScreenRendererMixin {
         this.field_1029.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         GuiLighting.disable();
         this.field_1029.profiler.swap("terrain_setup");
-        if (WorldPreview.loadedSpawn) {
-            if (WorldPreview.canReload) {
-                worldRenderer.reload();
-                WorldPreview.canReload = false;
-            }
-        }
+//        if (WorldPreview.loadedSpawn) {
+//            if (WorldPreview.canReload) {
+//                worldRenderer.reload();
+//                WorldPreview.canReload = false;
+//            }
+//        }
         worldRenderer.method_9906(entity, (double)tickDelta, cameraView, frameCount++, true);
+        System.out.println(frameCount);
         this.field_1029.profiler.swap("updatechunks");
         worldRenderer.method_9892(endTime);
         this.field_1029.profiler.swap("terrain");
