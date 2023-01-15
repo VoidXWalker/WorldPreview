@@ -63,9 +63,13 @@ public abstract class LoadingScreenRendererMixin {
     @Shadow private String field_1028;
 
     @Shadow private Framebuffer field_7696;
+    @Shadow private Window field_7695;
     private int frameCount = 0;
 
     private long nanoTime = 0;
+
+    private ButtonWidget resetButton;
+    private ArrayList<ButtonWidget> buttons = new ArrayList<ButtonWidget>();
 
     /**
      * @author Pixfumy
@@ -77,22 +81,41 @@ public abstract class LoadingScreenRendererMixin {
             WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
             ((ChunkSetter)WorldPreview.worldRenderer).setPreviewRenderer();
         }
+        Window window = this.field_7695;
+        int width = window.getWidth();
+        int height = window.getHeight();
+        int mouseX = Mouse.getX() * width / this.field_1029.width;
+        int mouseY = height - Mouse.getY() * height / this.field_1029.height - 1;
         if (!WorldPreview.inPreview) {
             WorldPreview.inPreview = true;
             WorldPreview.init();
+            buttons.add(this.resetButton = new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
+            buttons.add(new ButtonWidget(4, width / 2 - 100, height / 4 + 24 - 16, I18n.translate("menu.returnToGame")));
+            buttons.add(new ButtonWidget(0, width / 2 - 100, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.options")));
+            buttons.add(new ButtonWidget(7, width / 2 + 2, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.shareToLan")));
+            buttons.add(new ButtonWidget(5, width / 2 - 100, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.achievements")));
+            buttons.add(new ButtonWidget(6, width / 2 + 2, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.stats")));
+        }
+        if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
+            int buttonHeight = 20;
+            boolean resetHovered = mouseX >= this.resetButton.x && mouseY >= this.resetButton.y && mouseX < this.resetButton.x + this.resetButton.getWidth() && mouseY < this.resetButton.y + buttonHeight;
+            if (resetHovered && Mouse.isButtonDown(0)) {
+                WorldPreview.kill = 1;
+                WorldPreview.inPreview = false;
+                return;
+            }
         }
         long l = MinecraftClient.getTime();
         if (l - this.field_1031 >= 100L) {
             this.field_1031 = l;
-            Window window = new Window(this.field_1029);
-            int width = window.getWidth();
-            int height = window.getHeight();
             if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview && WorldPreview.loadedSpawn) {
                 if (WorldPreview.freezePreview) {
                     return;
                 }
                 if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                     WorldPreview.worldRenderer.method_1371(WorldPreview.clientWorld);
+                    frameCount = 0;
+                    WorldPreview.canFreeze = true;
                 }
                 if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
                     this.field_1842 = this.field_1843;
@@ -114,8 +137,8 @@ public abstract class LoadingScreenRendererMixin {
                     int q = Math.min(10, p);
                     q = Math.max(q, 60);
                     long r = System.nanoTime() - nanoTime;
-                    long s = Math.max((long)(1000000000 / q / 4) - r, 0L);
-                    this.renderWorld(((MinecraftClientMixin)this.field_1029).getTricker().tickDelta, System.nanoTime() + s);
+                    long s = Math.max((long) (1000000000 / q / 4) - r, 0L);
+                    this.renderWorld(((MinecraftClientMixin) this.field_1029).getTricker().tickDelta, System.nanoTime() + s);
                     GlStateManager.matrixMode(5889);
                     GlStateManager.loadIdentity();
                     GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
@@ -123,10 +146,8 @@ public abstract class LoadingScreenRendererMixin {
                     GlStateManager.loadIdentity();
                     GlStateManager.translatef(0.0F, 0.0F, -200.0F);
                     this.renderGreyedBackground(width, height);
-                    this.renderCenteredString(this.field_1029.textRenderer, I18n.translate("menu.game"), width/ 2, 40, 16777215);
-                    final int mouseX = Mouse.getX() * width / this.field_1029.width;
-                    final int mouseY = height - Mouse.getY() * height / this.field_1029.height - 1;
-                    this.renderAndUpdateMenuButtons(width, height, mouseX, mouseY);
+                    this.renderCenteredString(this.field_1029.textRenderer, I18n.translate("menu.game"), width / 2, 40, 16777215);
+                    this.renderMenuButtons(width, height, mouseX, mouseY);
                 }
             } else { // usual loading screen
                 GlStateManager.matrixMode(5889);
@@ -140,9 +161,9 @@ public abstract class LoadingScreenRendererMixin {
                 this.field_1029.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
                 float f = 32.0F;
                 bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
-                bufferBuilder.vertex(0.0D, (double)height, 0.0D).texture(0.0D, (double)((float)height / f)).color(64, 64, 64, 255).next();
-                bufferBuilder.vertex((double)width, (double)height, 0.0D).texture((double)((float)width / f), (double)((float)height / f)).color(64, 64, 64, 255).next();
-                bufferBuilder.vertex((double)width, 0.0D, 0.0D).texture((double)((float)width / f), 0.0D).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex(0.0D, (double) height, 0.0D).texture(0.0D, (double) ((float) height / f)).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex((double) width, (double) height, 0.0D).texture((double) ((float) width / f), (double) ((float) height / f)).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex((double) width, 0.0D, 0.0D).texture((double) ((float) width / f), 0.0D).color(64, 64, 64, 255).next();
                 bufferBuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0D, 0.0D).color(64, 64, 64, 255).next();
                 tessellator.draw();
                 if (percentage >= 0) {
@@ -152,22 +173,22 @@ public abstract class LoadingScreenRendererMixin {
                     int p = width / 2 + 16;
                     GlStateManager.disableTexture();
                     bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
-                    bufferBuilder.vertex((double)o, (double)p, 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double)o, (double)(p + n), 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double)(o + m), (double)(p + n), 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double)(o + m), (double)p, 0.0D).color(128, 128, 128, 255).next();
-                    bufferBuilder.vertex((double)o, (double)p, 0.0D).color(128, 255, 128, 255).next();
-                    bufferBuilder.vertex((double)o, (double)(p + n), 0.0D).color(128, 255, 128, 255).next();
-                    bufferBuilder.vertex((double)(o + percentage), (double)(p + n), 0.0D).color(128, 255, 128, 255).next();
-                    bufferBuilder.vertex((double)(o + percentage), (double)p, 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + m), (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + m), (double) p, 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + percentage), (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + percentage), (double) p, 0.0D).color(128, 255, 128, 255).next();
                     tessellator.draw();
                     GlStateManager.enableTexture();
                 }
             }
             GlStateManager.enableBlend();
             GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-            this.field_1029.textRenderer.drawWithShadow(this.field_1030, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1030)) / 2), (float)(height / 2 - 4 - 16), 16777215);
-            this.field_1029.textRenderer.drawWithShadow(this.field_1028, (float)((width - this.field_1029.textRenderer.getStringWidth(this.field_1028)) / 2), (float)(height / 2 - 4 + 8), 16777215);
+            this.field_1029.textRenderer.drawWithShadow(this.field_1030, (float) ((width - this.field_1029.textRenderer.getStringWidth(this.field_1030)) / 2), (float) (height / 2 - 4 - 16), 16777215);
+            this.field_1029.textRenderer.drawWithShadow(this.field_1028, (float) ((width - this.field_1029.textRenderer.getStringWidth(this.field_1028)) / 2), (float) (height / 2 - 4 + 8), 16777215);
             this.field_1029.updateDisplay();
             this.nanoTime = System.nanoTime();
 
@@ -543,17 +564,9 @@ public abstract class LoadingScreenRendererMixin {
         GlStateManager.enableTexture();
     }
 
-    private void renderAndUpdateMenuButtons(int width, int height, int mouseX, int mouseY) {
-        ArrayList<ButtonWidget> buttons = new ArrayList<ButtonWidget>();
-        ButtonWidget resetButton;
-        buttons.add(resetButton = new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
-        buttons.add(new ButtonWidget(4, width / 2 - 100, height / 4 + 24 - 16, I18n.translate("menu.returnToGame")));
-        buttons.add(new ButtonWidget(0, width / 2 - 100, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.options")));
-        buttons.add(new ButtonWidget(7, width / 2 + 2, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.shareToLan")));
-        buttons.add(new ButtonWidget(5, width / 2 - 100, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.achievements")));
-        buttons.add(new ButtonWidget(6, width / 2 + 2, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.stats")));
+    private void renderMenuButtons(int width, int height, int mouseX, int mouseY) {
         TextRenderer textRenderer = this.field_1029.textRenderer;
-        for (ButtonWidget button: buttons) {
+        for (ButtonWidget button: this.buttons) {
             int buttonWidth = button.getWidth();
             int buttonHeight = 20;
             this.field_1029.getTextureManager().bindTexture(WorldPreview.WIDGETS_LOCATION);
@@ -565,20 +578,7 @@ public abstract class LoadingScreenRendererMixin {
             GlStateManager.blendFunc(770, 771);
             this.drawTexture(button.x, button.y, 0, 46 + i * 20, buttonWidth / 2, buttonHeight);
             this.drawTexture(button.x + buttonWidth / 2, button.y, 200 - buttonWidth / 2, 46 + i * 20, buttonWidth / 2, buttonHeight);
-            int j = 14737632;
-            if (hovered) {
-                j = 16777120;
-                if (button == resetButton) {
-                    while (Mouse.next()) {
-                        if (Mouse.getEventButtonState()) {
-                            this.field_1029.getSoundManager().play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
-                            WorldPreview.kill = 1;
-                            WorldPreview.inPreview = false;
-                            return;
-                        }
-                    }
-                }
-            }
+            int j = hovered ? 16777120 : 14737632;
             this.renderCenteredString(textRenderer, button.message, button.x + buttonWidth / 2, button.y + (buttonHeight - 8) / 2, j);
         }
     }

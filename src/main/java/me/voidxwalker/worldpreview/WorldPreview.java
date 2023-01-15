@@ -26,11 +26,13 @@ public class WorldPreview implements ClientModInitializer {
    public static boolean loadedSpawn;
    public static boolean canReload;
    public static KeyBinding resetKey;
+   public static boolean canFreeze;
    public static KeyBinding freezeKey;
    public static boolean freezePreview;
    public static final Object lock= new Object();
    public static Logger LOGGER = LogManager.getLogger();
-   public static void log(Level level, String message) {
+
+    public static void log(Level level, String message) {
       LOGGER.log(level, message);
    }
    public static Identifier WIDGETS_LOCATION = new Identifier("textures/gui/widgets.png");
@@ -41,6 +43,7 @@ public class WorldPreview implements ClientModInitializer {
 
    public static void init() {
       WorldPreview.freezePreview = false;
+      WorldPreview.canFreeze = false;
       WorldPreview.loadedSpawn = false;
       WorldPreview.canReload = false;
       KeyBinding.unpressAll();
