@@ -187,7 +187,6 @@ public abstract class LoadingScreenRendererMixin {
             this.client.updateDisplay();
         }
         this.nanoTime = System.nanoTime();
-        // Sleepbackground will do a check here to see if it's time to poll devices yet 
         Display.processMessages();
         try {
             Thread.yield();
@@ -255,7 +254,6 @@ public abstract class LoadingScreenRendererMixin {
             }
         }
         worldRenderer.setupTerrain(entity, (double)tickDelta, cameraView, frameCount++, true);
-        System.out.println(frameCount);
         this.client.profiler.swap("updatechunks");
         worldRenderer.updateChunks(endTime);
         this.client.profiler.swap("terrain");

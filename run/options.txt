@@ -3,7 +3,7 @@ mouseSensitivity:0.40140846
 fov:0.25
 gamma:5.0
 saturation:0.0
-renderDistance:16
+renderDistance:8
 guiScale:3
 particles:0
 bobView:false

@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.redlimerl.sleepbackground.SleepBackground;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class WorldPreview implements ClientModInitializer {

@@ -40,7 +40,6 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.legacyfabric:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	compileOnlyApi files('build/libs/sleepbackground-3.8-1.8.x-1.12.x.jar')
 	if (lwjgl2) {
 		if (currentOs.contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
