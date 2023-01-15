@@ -4,9 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95075fa7-6fcb-4028-8c9a-4a753b70469f" name="Changes" comment="">
+    <list default="true" id="1d9953b5-e954-44fb-9211-8eea1b65a2ec" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/RealmsCompatibilityMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/WorldPreview.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/WorldPreview.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-19-1.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-19-2.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-19-3.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-19-4.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-19-5.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-19-6.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-19-7.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-23-1.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-23-2.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-23-3.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-23-4.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-23-5.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-23-6.log.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/logs/2022-03-23-7.log.gz" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/run/logs/debug-1.log.gz" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/debug-1.log.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/logs/debug-2.log.gz" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/debug-2.log.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/logs/debug-3.log.gz" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/debug-3.log.gz" afterDir="false" />
@@ -14,10 +41,17 @@
       <change beforePath="$PROJECT_DIR$/run/logs/debug-5.log.gz" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/debug-5.log.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/logs/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/logs/latest.log" beforeDir="false" afterPath="$PROJECT_DIR$/run/logs/latest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/options.txt" beforeDir="false" afterPath="$PROJECT_DIR$/run/options.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/usercache.json" beforeDir="false" afterPath="$PROJECT_DIR$/run/usercache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/WorldPreview.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/WorldPreview.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/MinecraftClientMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/access/MinecraftClientMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/MinecraftClientMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/MinecraftClientMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/LoadingScreenRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/LoadingScreenRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/WorldRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/client/render/WorldRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/MinecraftServerMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/MinecraftServerMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerPlayerEntityMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/voidxwalker/worldpreview/mixin/server/ServerPlayerEntityMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/worldpreview.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/worldpreview.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,25 +67,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitSEFilterConfiguration">
-    <file-type-list>
-      <filtered-out-file-type name="LOCAL_BRANCH" />
-      <filtered-out-file-type name="REMOTE_BRANCH" />
-      <filtered-out-file-type name="TAG" />
-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
-    </file-type-list>
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="26cZfzU3EYQuTovKGZ2nTC0gaHi" />
+  <component name="ProjectId" id="2KMH5IQv1Gx4RHnxv45zS4UgKMA" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -59,21 +84,44 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/run/mods" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\asadd\Desktop\World Preview\run\mods" />
+      <recent name="C:\Users\asadd\Desktop\World Preview\run" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\asadd\Desktop\WorldPreview\run\mods" />
+      <recent name="C:\Users\asadd\Desktop\World Preview\build\libs" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Minecraft Client" />
+  <component name="RunManager" selected="Application.Minecraft Client">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="World Preview" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="World Preview" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Minecraft Client" />
+      <item itemvalue="Application.Minecraft Server" />
+    </list>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="95075fa7-6fcb-4028-8c9a-4a753b70469f" name="Changes" comment="" />
-      <created>1647724944457</created>
+      <changelist id="1d9953b5-e954-44fb-9211-8eea1b65a2ec" name="Changes" comment="" />
+      <created>1673777350631</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1647724944457</updated>
+      <updated>1673777350631</updated>
     </task>
     <servers />
   </component>
@@ -82,25 +130,10 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="HEAD" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/WorldPreview$Minecraft_Client.ic" NAME="Minecraft Client Coverage Results" MODIFIED="1651614659411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

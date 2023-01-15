@@ -1,12 +1,16 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Minecraft Server" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main" />
-    <module name="WorldPreview.main" />
+    <module name="World Preview.main" />
     <option name="PROGRAM_PARAMETERS" value="nogui" />
-    <option name="VM_PARAMETERS" value="-Dfabric.dli.config=C:\Users\asadd\Desktop\WorldPreview\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=server -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotServer" />
+    <option name="VM_PARAMETERS" value="-Dfabric.dli.config=C:\Users\asadd\Desktop\World@@0020Preview\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=server -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotServer" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run/" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
+    <envs>
+      
+    </envs>
+    <shortenClasspath name="ARGS_FILE" />
   </configuration>
 </component>

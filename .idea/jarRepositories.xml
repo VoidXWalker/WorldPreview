@@ -12,19 +12,14 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="legacy-fabric" />
-      <option name="name" value="legacy-fabric" />
-      <option name="url" value="https://maven.legacyfabric.net" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="UserLocalRemappedMods" />
-      <option name="name" value="UserLocalRemappedMods" />
-      <option name="url" value="file:/$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="MavenRepo" />
       <option name="name" value="MavenRepo" />
       <option name="url" value="https://repo.maven.apache.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Babric" />
+      <option name="name" value="Babric" />
+      <option name="url" value="https://maven.glass-launcher.net/babric" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="Fabric" />
@@ -35,6 +30,16 @@
       <option name="id" value="Mojang" />
       <option name="name" value="Mojang" />
       <option name="url" value="https://libraries.minecraft.net/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Legacy Fabric" />
+      <option name="name" value="Legacy Fabric" />
+      <option name="url" value="https://repo.legacyfabric.net/repository/legacyfabric/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="UserLocalRemappedMods" />
+      <option name="name" value="UserLocalRemappedMods" />
+      <option name="url" value="file:/$PROJECT_DIR$/../World%20Preview/.gradle/loom-cache/remapped_mods/" />
     </remote-repository>
   </component>
 </project>

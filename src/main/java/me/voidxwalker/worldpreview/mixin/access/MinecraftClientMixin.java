@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(MinecraftClient.class)
 public interface MinecraftClientMixin {
     @Accessor
-    ClientTickTracker getTricker();
+    ClientTickTracker getTicker();
 }

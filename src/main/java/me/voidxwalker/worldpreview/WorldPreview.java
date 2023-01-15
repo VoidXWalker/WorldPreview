@@ -2,16 +2,17 @@ package me.voidxwalker.worldpreview;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.redlimerl.sleepbackground.SleepBackground;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class WorldPreview implements ClientModInitializer {

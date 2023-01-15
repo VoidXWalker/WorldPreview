@@ -60,12 +60,12 @@ public abstract class MinecraftClientMixin {
 
     @Shadow public boolean focused;
 
-    @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
+    @Redirect(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
     private void cancelSleep(long l) {
 
     }
 
-    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z", shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z", shift = At.Shift.AFTER), cancellable = true)
     private void worldpreview_onHotKeyPressed(CallbackInfo ci) {
         int resetKeyCode = WorldPreview.resetKey.getCode();
         int freezeKeyCode = WorldPreview.freezeKey.getCode();
@@ -87,7 +87,7 @@ public abstract class MinecraftClientMixin {
     }
 
 
-    @Inject(method="startGame",at=@At(value = "HEAD"))
+    @Inject(method="startIntegratedServer",at=@At(value = "HEAD"))
     public void isExistingWorld(String name, String displayName, LevelInfo levelInfo, CallbackInfo ci){
         WorldPreview.existingWorld = levelInfo == null;
     }
@@ -100,7 +100,7 @@ public abstract class MinecraftClientMixin {
                 WorldPreview.player = null;
                 WorldPreview.clientWorld = null;
                 if (WorldPreview.worldRenderer != null) {
-                    WorldPreview.worldRenderer.method_1371(null);
+                    WorldPreview.worldRenderer.setWorld(null);
                 }
             }
         }
