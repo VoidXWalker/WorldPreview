@@ -7,13 +7,11 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.Packet;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.LevelInfo;
@@ -72,14 +70,13 @@ public abstract class MinecraftClientMixin {
     private void worldpreview_onHotKeyPressed(CallbackInfo ci) {
         int resetKeyCode = WorldPreview.resetKey.getCode();
         int freezeKeyCode = WorldPreview.freezeKey.getCode();
-        if (Keyboard.isKeyDown(resetKeyCode) || WorldPreview.kill == 1) {
+        if (WorldPreview.loadedSpawn && (Keyboard.isKeyDown(resetKeyCode) || WorldPreview.kill == 1)) {
             WorldPreview.log(Level.INFO,"Leaving world generation");
             WorldPreview.kill = 1;
             soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
             while(WorldPreview.inPreview){
                 Thread.yield();
             }
-            this.server.stopRunning(); // Anchiale handles this from here, so we can set the server to null.
             this.server = null;
             this.connect((ClientWorld) null);
             WorldPreview.kill=0;
