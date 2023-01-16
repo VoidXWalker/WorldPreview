@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import me.voidxwalker.autoreset.Atum;
 import me.voidxwalker.worldpreview.ChunkSetter;
 import me.voidxwalker.worldpreview.WorldPreview;
 

@@ -15,7 +15,8 @@
     "client.GameOptionsMixin",
     "server.MinecraftServerMixin",
     "server.ServerPlayerEntityMixin",
-    "RealmsCompatibilityMixin"
+    "RealmsCompatibilityMixin",
+    "RealmsBridgeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

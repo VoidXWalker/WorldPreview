@@ -1,531 +1,90 @@
-Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-Requesting deobfuscation of {client=C:\Users\asadd\.gradle\caches\fabric-loom\1.8.9\net.legacyfabric.yarn.1_8_9.1.8.9+build.451-v2\minecraft-merged-named.jar}
-Found game constructor: net.minecraft.client.main.Main -> net.minecraft.client.MinecraftClient
-Patching game constructor initializeGame()V
-Run directory field is thought to be net/minecraft/client/MinecraftClient/runDirectory
-Applying brand name hook to net/minecraft/client/ClientBrandRetriever::getClientModName
-Applying brand name hook to net/minecraft/server/MinecraftServer::getServerModName
-Patched 3 classs
-Mod discovery time: 17.0 ms
-Mod resolution time: 38.1 ms
-Loading 5 mods:
+[09:27:03] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[09:27:03] [main/INFO] (FabricLoader) Loading 5 mods:
+	- atum 1.1.3+1.8.9
 	- fabricloader 0.12.12
-	- java 17
+	- java 8
 	- minecraft 1.8.9
-	- sleepbackground 3.8-1.8.x-1.12.x
-	- worldpreview 1.8.9_BETA
-Loading mappings took 56 ms
-Adding C:\Users\asadd\Desktop\World Preview\run\.fabric\processedMods\sleepbackground-3.8-1.8.x-1.12.x-64b5720b4b825f21.jar to classpath.
-Adding C:\Users\asadd\Desktop\World Preview\build\resources\main to classpath.
-Adding C:\Users\asadd\Desktop\World Preview\build\classes\java\main to classpath.
-Mod `worldpreview` (1.8.9_BETA) does not respect SemVer - comparison support is limited.
-Registering new-style initializer com.redlimerl.sleepbackground.SleepBackground for mod sleepbackground (key client)
-Registering new-style initializer me.voidxwalker.worldpreview.WorldPreview for mod worldpreview (key client)
-Mixin bootstrap service org.spongepowered.asm.service.mojang.MixinServiceLaunchWrapperBootstrap is not available: LaunchWrapper is not available
-Mixin bootstrap service org.spongepowered.asm.service.modlauncher.MixinServiceModLauncherBootstrap is not available: ModLauncher is not available
-MixinService [Knot/Fabric] was successfully booted in jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa
-SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-Error cleaning class output directory: .mixin.out
-Initialising Mixin Platform Manager
-Adding mixin platform agents for container ContainerHandleURI(file:/C:/Users/asadd/Desktop/World%20Preview/.gradle/loom-cache/remapped_mods/net_legacyfabric_yarn_1_8_9_1_8_9_build_451_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-Instancing new MixinPlatformAgentDefault for ContainerHandleURI(file:/C:/Users/asadd/Desktop/World%20Preview/.gradle/loom-cache/remapped_mods/net_legacyfabric_yarn_1_8_9_1_8_9_build_451_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-MixinPlatformAgentDefault accepted container ContainerHandleURI(file:/C:/Users/asadd/Desktop/World%20Preview/.gradle/loom-cache/remapped_mods/net_legacyfabric_yarn_1_8_9_1_8_9_build_451_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-Instancing new MixinPlatformAgentDefault for ContainerHandleURI(file:/C:/Users/asadd/Desktop/World%20Preview/.gradle/loom-cache/remapped_mods/net_legacyfabric_yarn_1_8_9_1_8_9_build_451_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-MixinPlatformAgentDefault accepted container ContainerHandleURI(file:/C:/Users/asadd/Desktop/World%20Preview/.gradle/loom-cache/remapped_mods/net_legacyfabric_yarn_1_8_9_1_8_9_build_451_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)
-Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:ContainerHandleURI(file:/C:/Users/asadd/Desktop/World%20Preview/.gradle/loom-cache/remapped_mods/net_legacyfabric_yarn_1_8_9_1_8_9_build_451_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)]
-Processing prepare() for PlatformAgent[MixinPlatformAgentDefault:ContainerHandleURI(file:/C:/Users/asadd/Desktop/World%20Preview/.gradle/loom-cache/remapped_mods/net_legacyfabric_yarn_1_8_9_1_8_9_build_451_v2/net/fabricmc/fabric-loader/0.12.12/fabric-loader-0.12.12.jar)]
-Loaded Fabric development mappings for mixin remapper!
-Adding C:\Users\asadd\.gradle\caches\fabric-loom\1.8.9\net.legacyfabric.yarn.1_8_9.1.8.9+build.451-v2\minecraft-merged-named.jar to classpath.
-No subscribers for entrypoint 'preLaunch'
-Preparing mixins for MixinEnvironment[DEFAULT]
-Selecting config sleepbackground.mixins.json
-Remapping refMap sleepbackground-refmap.json using remapper chain
-Selecting config worldpreview.mixins.json
-Preparing sleepbackground.mixins.json (6)
-Added class metadata for net/minecraft/client/gl/Framebuffer to metadata cache
-Added class metadata for net/minecraft/client/render/GameRenderer to metadata cache
-Added class metadata for net/minecraft/client/MinecraftClient to metadata cache
-Added class metadata for com/mojang/blaze3d/platform/GlStateManager to metadata cache
-Added class metadata for net/minecraft/util/snooper/Snooper to metadata cache
-Catching java.lang.ClassNotFoundException: net/minecraft/class_3264
-java.lang.ClassNotFoundException: net/minecraft/class_3264
-	at net.fabricmc.loader.impl.launch.knot.MixinServiceKnot.getClassBytes(MixinServiceKnot.java:65) ~[fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.MixinServiceKnot.getClassNode(MixinServiceKnot.java:76) ~[fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.MixinServiceKnot.getClassNode(MixinServiceKnot.java:71) ~[fabric-loader-0.12.12.jar:?]
-	at org.spongepowered.asm.mixin.transformer.ClassInfo.forName(ClassInfo.java:2022) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinInfo.getTargetClass(MixinInfo.java:1018) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinInfo.readTargetClasses(MixinInfo.java:1008) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinInfo.parseTargets(MixinInfo.java:896) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinConfig.prepareMixins(MixinConfig.java:869) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinConfig.prepare(MixinConfig.java:781) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinProcessor.prepareConfigs(MixinProcessor.java:540) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinProcessor.select(MixinProcessor.java:462) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinProcessor.checkSelect(MixinProcessor.java:438) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:290) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClass(MixinTransformer.java:234) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClassBytes(MixinTransformer.java:202) [sponge-mixin-0.10.7+mixin.0.8.4.jar:0.10.7+mixin.0.8.4]
-	at net.fabricmc.loader.impl.launch.knot.KnotClassDelegate.getPostMixinClassByteArray(KnotClassDelegate.java:247) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClassDelegate.tryLoadClass(KnotClassDelegate.java:150) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClassLoader.loadClass(KnotClassLoader.java:155) [fabric-loader-0.12.12.jar:?]
-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:520) [?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:606) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Error loading class: net/minecraft/class_3264 (java.lang.ClassNotFoundException: net/minecraft/class_3264)
-Added class metadata for net/minecraft/class_3264 to metadata cache
-Skipping virtual target net.minecraft.class_3264 for sleepbackground.mixins.json:MixinToastManager
-Preparing worldpreview.mixins.json (12)
-Added class metadata for net/minecraft/client/render/WorldRenderer to metadata cache
-Added class metadata for net/minecraft/world/chunk/ClientChunkProvider to metadata cache
-Added class metadata for net/minecraft/world/chunk/ServerChunkProvider to metadata cache
-Added class metadata for net/minecraft/client/render/LoadingScreenRenderer to metadata cache
-Added class metadata for net/minecraft/client/options/GameOptions to metadata cache
-Added class metadata for net/minecraft/server/MinecraftServer to metadata cache
-Added class metadata for net/minecraft/entity/player/ServerPlayerEntity to metadata cache
-Added class metadata for com/mojang/realmsclient/gui/screens/RealmsNotificationsScreen to metadata cache
-Registering new injector for @Inject with org.spongepowered.asm.mixin.injection.struct.CallbackInjectionInfo
-Registering new injector for @ModifyArg with org.spongepowered.asm.mixin.injection.struct.ModifyArgInjectionInfo
-Registering new injector for @ModifyArgs with org.spongepowered.asm.mixin.injection.struct.ModifyArgsInjectionInfo
-Registering new injector for @Redirect with org.spongepowered.asm.mixin.injection.struct.RedirectInjectionInfo
-Registering new injector for @ModifyVariable with org.spongepowered.asm.mixin.injection.struct.ModifyVariableInjectionInfo
-Registering new injector for @ModifyConstant with org.spongepowered.asm.mixin.injection.struct.ModifyConstantInjectionInfo
-Added class metadata for org/spongepowered/asm/mixin/injection/At$Shift to metadata cache
-Added class metadata for net/minecraft/world/level/LevelInfo$GameMode to metadata cache
-Mixing MixinMinecraftClient from sleepbackground.mixins.json into net.minecraft.client.MinecraftClient
-Added class metadata for com/redlimerl/sleepbackground/SleepBackground to metadata cache
-Added class metadata for com/redlimerl/sleepbackground/config/ConfigValues to metadata cache
-Added class metadata for com/redlimerl/sleepbackground/config/PollingRateConfigValue to metadata cache
-Added class metadata for com/redlimerl/sleepbackground/config/ConfigValue to metadata cache
-Added class metadata for org/spongepowered/asm/mixin/injection/callback/CallbackInfo to metadata cache
-Added class metadata for org/lwjgl/opengl/Display to metadata cache
-Added class metadata for com/redlimerl/sleepbackground/config/FrameTickConfigValue to metadata cache
-Added class metadata for java/lang/Math to metadata cache
-Mixing access.MinecraftClientMixin from worldpreview.mixins.json into net.minecraft.client.MinecraftClient
-Mixing client.MinecraftClientMixin from worldpreview.mixins.json into net.minecraft.client.MinecraftClient
-Added class metadata for me/voidxwalker/worldpreview/WorldPreview to metadata cache
-Added class metadata for net/minecraft/client/options/KeyBinding to metadata cache
-Added class metadata for org/lwjgl/input/Keyboard to metadata cache
-Added class metadata for net/minecraft/util/Identifier to metadata cache
-Added class metadata for net/minecraft/client/sound/PositionedSoundInstance to metadata cache
-Added class metadata for net/minecraft/client/sound/SoundManager to metadata cache
-Added class metadata for org/apache/logging/log4j/Level to metadata cache
-Added class metadata for java/lang/Thread to metadata cache
-Added class metadata for net/minecraft/server/integrated/IntegratedServer to metadata cache
-Added class metadata for org/spongepowered/asm/mixin/injection/callback/CallbackInfoReturnable to metadata cache
-Added class metadata for net/minecraft/util/ThreadExecutor to metadata cache
-Added class metadata for net/minecraft/util/snooper/Snoopable to metadata cache
-Added class metadata for java/lang/String to metadata cache
-Added class metadata for net/minecraft/world/level/LevelInfo to metadata cache
-Added class metadata for net/minecraft/client/world/ClientWorld to metadata cache
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onRender(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground doesn't use it's CallbackInfo
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onRender(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground has 0 override(s) in child classes
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onRender(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground won't be passed a CallbackInfo as a result
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onUpdate(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onTick(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground doesn't use it's CallbackInfo
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onTick(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground has 0 override(s) in child classes
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onTick(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground won't be passed a CallbackInfo as a result
-sleepbackground.mixins.json:MixinMinecraftClient->@Inject::onDraw(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::worldpreview_onHotKeyPressed(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::isExistingWorld(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::reset(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-worldpreview.mixins.json:client.MinecraftClientMixin->@Inject::getWorldPreviewPlayer(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfoReturnable;)V from mod worldpreview does use it's CallbackInfoReturnable
-Added class metadata for java/lang/RuntimeException to metadata cache
-Added class metadata for java/util/Iterator to metadata cache
-Added class metadata for java/lang/Exception to metadata cache
-Added class metadata for java/lang/Throwable to metadata cache
-Added class metadata for net/minecraft/client/gui/screen/DeathScreen to metadata cache
-Added class metadata for net/minecraft/client/gui/screen/Screen to metadata cache
-Added class metadata for net/minecraft/client/gui/screen/TitleScreen to metadata cache
-Added class metadata for java/lang/Integer to metadata cache
-Added class metadata for java/lang/Number to metadata cache
-Added class metadata for net/minecraft/item/ArmorStandItem to metadata cache
-Added class metadata for net/minecraft/item/Item to metadata cache
-Mixing MixinSnooper from sleepbackground.mixins.json into net.minecraft.util.snooper.Snooper
-sleepbackground.mixins.json:MixinSnooper->@Inject::onUpdate(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-Mixing server.MinecraftServerMixin from worldpreview.mixins.json into net.minecraft.server.MinecraftServer
-Added class metadata for net/minecraft/world/World to metadata cache
-Added class metadata for java/util/List to metadata cache
-Added class metadata for net/minecraft/util/math/BlockPos to metadata cache
-Added class metadata for net/minecraft/util/math/Vec3i to metadata cache
-Added class metadata for net/minecraft/world/chunk/Chunk to metadata cache
-Added class metadata for net/minecraft/util/math/ChunkPos to metadata cache
-Added class metadata for net/minecraft/util/collection/LongObjectStorage to metadata cache
-Added class metadata for net/minecraft/server/world/ServerWorld to metadata cache
-Added class metadata for net/minecraft/world/level/LevelProperties to metadata cache
-Added class metadata for net/minecraft/world/Difficulty to metadata cache
-Added class metadata for net/minecraft/world/BlockView to metadata cache
-Added class metadata for net/minecraft/client/util/Session to metadata cache
-Added class metadata for net/minecraft/client/network/ClientPlayNetworkHandler to metadata cache
-Added class metadata for net/minecraft/network/listener/ClientPlayPacketListener to metadata cache
-Added class metadata for net/minecraft/network/listener/PacketListener to metadata cache
-Added class metadata for net/minecraft/entity/player/ClientPlayerEntity to metadata cache
-Added class metadata for net/minecraft/client/network/AbstractClientPlayerEntity to metadata cache
-Added class metadata for net/minecraft/entity/player/PlayerEntity to metadata cache
-Added class metadata for net/minecraft/entity/LivingEntity to metadata cache
-Added class metadata for net/minecraft/entity/Entity to metadata cache
-Added class metadata for net/minecraft/command/CommandSource to metadata cache
-Added class metadata for net/minecraft/world/dimension/Dimension to metadata cache
-Added class metadata for net/minecraft/world/border/WorldBorder to metadata cache
-Added class metadata for net/minecraft/util/math/MathHelper to metadata cache
-Added class metadata for java/util/Random to metadata cache
-Added class metadata for java/io/Serializable to metadata cache
-Added class metadata for java/util/random/RandomGenerator to metadata cache
-Added class metadata for java/lang/Comparable to metadata cache
-Added class metadata for org/apache/logging/log4j/Logger to metadata cache
-Added class metadata for net/minecraft/server/ServerNetworkIo to metadata cache
-Added class metadata for java/lang/Runnable to metadata cache
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::worldpreview_getWorld(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::resetLastRow(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::resetLastRow(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::resetLastRow(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill2(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill3(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-worldpreview.mixins.json:server.MinecraftServerMixin->@Inject::kill3(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview does use it's CallbackInfo
-Mixing client.GameOptionsMixin from worldpreview.mixins.json into net.minecraft.client.options.GameOptions
-Added class metadata for java/util/Arrays to metadata cache
-Added class metadata for java/util/ArrayList to metadata cache
-Added class metadata for java/util/AbstractList to metadata cache
-Added class metadata for java/util/AbstractCollection to metadata cache
-Added class metadata for java/util/Collection to metadata cache
-Added class metadata for java/lang/Iterable to metadata cache
-Added class metadata for java/lang/Cloneable to metadata cache
-Added class metadata for java/util/RandomAccess to metadata cache
-worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview doesn't use it's CallbackInfo
-worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview has 0 override(s) in child classes
-worldpreview.mixins.json:client.GameOptionsMixin->@Inject::initInject(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod worldpreview won't be passed a CallbackInfo as a result
-Added class metadata for java/io/BufferedReader to metadata cache
-Added class metadata for java/io/Reader to metadata cache
-Added class metadata for java/io/PrintWriter to metadata cache
-Added class metadata for java/io/Writer to metadata cache
-No subscribers for entrypoint 'main'
-Iterating over entrypoint 'client'
-FPS limit in the background has been initalized.
-> Config data
-{
-  "lock_instance": {
-    "_description": "It works when instance is in the background with sleepbg.lock file is exist in user directory at every interval ticks. (for macros option)",
-    "enable": true,
-    "fps_limit": 1,
-    "tick_interval": 20,
-    "wp_render_times_enable": true,
-    "wp_render_times": 10
-  },
-  "background": {
-    "_description": "It works when instance is in the background after joined the world.",
-    "enable": true,
-    "fps_limit": 1
-  },
-  "world_setup": {
-    "_description": "same with (background) config but for (max_ticks) ticks after the joined the world.",
-    "enable": true,
-    "fps_limit": 10,
-    "max_ticks": 30
-  },
-  "loading_screen": {
-    "_description": "It works when instance is in the world loading screen. minimum (fps_limit) is 15.",
-    "enable": true,
-    "fps_limit": 30
-  },
-  "world_preview": {
-    "_description": "config for world preview, every time (loading_screen) is rendered (render_times) times, will be render a preview. ex) if (loading_screen.fps_limit) is 30 and this value is 2, preview fps will be 15 (as 30 / 2).",
-    "enable": true,
-    "render_times": 5
-  },
-  "polling_rate_limit": {
-    "_description": "Limits input detection when the instance is in the background. When enabled, it will be make problem if you are using macros.",
-    "enable": true
-  }
-}
-Mixing MixinFramebuffer from sleepbackground.mixins.json into net.minecraft.client.gl.Framebuffer
-sleepbackground.mixins.json:MixinFramebuffer->@Inject::onBegin(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-sleepbackground.mixins.json:MixinFramebuffer->@Inject::onEnd(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-sleepbackground.mixins.json:MixinFramebuffer->@Inject::onDraw(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-Mixing MixinRenderSystem from sleepbackground.mixins.json into com.mojang.blaze3d.platform.GlStateManager
-sleepbackground.mixins.json:MixinRenderSystem->@Inject::onClear(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-sleepbackground.mixins.json:MixinRenderSystem->@Inject::onCull(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-sleepbackground.mixins.json:MixinRenderSystem->@Inject::onTexture(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-Couldn't initialize twitch stream
-Mixing MixinGameRenderer from sleepbackground.mixins.json into net.minecraft.client.render.GameRenderer
-Mixing access.GameRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.GameRenderer
-Added class metadata for net/minecraft/resource/ResourceReloadListener to metadata cache
-sleepbackground.mixins.json:MixinGameRenderer->@Inject::onRender(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-sleepbackground.mixins.json:MixinGameRenderer->@Inject::onRenderStream(Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V from mod sleepbackground does use it's CallbackInfo
-Mixing access.WorldRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.WorldRenderer
-Mixing client.render.WorldRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.WorldRenderer
-Added class metadata for me/voidxwalker/worldpreview/ChunkSetter to metadata cache
-Added class metadata for net/minecraft/world/WorldEventListener to metadata cache
-Added class metadata for java/util/Set to metadata cache
-Added class metadata for net/minecraft/client/render/BlockBreakingInfo to metadata cache
-Added class metadata for net/minecraft/client/world/BuiltChunk to metadata cache
-Added class metadata for net/minecraft/client/render/WorldRenderer$ChunkInfo to metadata cache
-Added class metadata for net/minecraft/util/math/Direction to metadata cache
-Added class metadata for java/lang/Enum to metadata cache
-Added class metadata for net/minecraft/client/render/CullingCameraView to metadata cache
-Added class metadata for net/minecraft/client/render/CameraView to metadata cache
-Added class metadata for net/minecraft/client/sound/SoundInstance to metadata cache
-Added class metadata for net/minecraft/client/sound/AbstractSoundInstance to metadata cache
-Mixing server.ServerPlayerEntityMixin from worldpreview.mixins.json into net.minecraft.entity.player.ServerPlayerEntity
-Added class metadata for net/minecraft/screen/ScreenHandlerListener to metadata cache
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.initializeGame(MinecraftClient.java:476) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:310) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Mixing client.render.LoadingScreenRendererMixin from worldpreview.mixins.json into net.minecraft.client.render.LoadingScreenRenderer
-Added class metadata for net/minecraft/client/util/GlAllocationUtils to metadata cache
-Added class metadata for net/minecraft/client/util/Window to metadata cache
-Added class metadata for org/lwjgl/input/Mouse to metadata cache
-Added class metadata for net/minecraft/client/resource/language/I18n to metadata cache
-Added class metadata for net/minecraft/client/gui/widget/ButtonWidget to metadata cache
-Added class metadata for net/minecraft/client/gui/DrawableHelper to metadata cache
-Added class metadata for net/minecraft/entity/boss/BossBar to metadata cache
-Added class metadata for java/lang/System to metadata cache
-Added class metadata for net/minecraft/client/render/ClientTickTracker to metadata cache
-Added class metadata for net/minecraft/client/render/Tessellator to metadata cache
-Added class metadata for net/minecraft/client/texture/TextureManager to metadata cache
-Added class metadata for net/minecraft/client/render/VertexFormats to metadata cache
-Added class metadata for net/minecraft/client/render/BufferBuilder to metadata cache
-Added class metadata for net/minecraft/client/font/TextRenderer to metadata cache
-Added class metadata for net/minecraft/util/profiler/Profiler to metadata cache
-Added class metadata for net/minecraft/client/render/Camera to metadata cache
-Added class metadata for net/minecraft/client/render/Frustum to metadata cache
-Added class metadata for org/lwjgl/util/glu/Project to metadata cache
-Added class metadata for net/minecraft/client/texture/SpriteAtlasTexture to metadata cache
-Added class metadata for net/minecraft/client/render/DiffuseLighting to metadata cache
-Added class metadata for java/io/PrintStream to metadata cache
-Added class metadata for net/minecraft/client/render/RenderLayer to metadata cache
-Added class metadata for net/minecraft/client/texture/Texture to metadata cache
-Added class metadata for net/minecraft/util/math/Vec3d to metadata cache
-Added class metadata for net/minecraft/block/Block to metadata cache
-Added class metadata for net/minecraft/block/material/Material to metadata cache
-Added class metadata for net/minecraft/util/hit/BlockHitResult to metadata cache
-Added class metadata for java/nio/FloatBuffer to metadata cache
-Added class metadata for org/lwjgl/opengl/GL11 to metadata cache
-Added class metadata for org/lwjgl/opengl/GLContext to metadata cache
-Added class metadata for org/lwjgl/opengl/ContextCapabilities to metadata cache
-Added class metadata for net/minecraft/util/ProgressListener to metadata cache
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:179) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Mixing access.ServerChunkProviderMixin from worldpreview.mixins.json into net.minecraft.world.chunk.ServerChunkProvider
-Mixing access.ClientChunkProviderMixin from worldpreview.mixins.json into net.minecraft.world.chunk.ClientChunkProvider
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.startIntegratedServer(MinecraftClient.java:1940) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:210) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:52) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:179) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.startIntegratedServer(MinecraftClient.java:1940) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:210) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.GameMenuScreen.buttonClicked(GameMenuScreen.java:52) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:179) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
-Realms module missing
-java.lang.NoSuchMethodException: com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen.<init>(net.minecraft.realms.RealmsScreen)
-	at java.base/java.lang.Class.getConstructor0(Class.java:3585) ~[?:?]
-	at java.base/java.lang.Class.getDeclaredConstructor(Class.java:2754) ~[?:?]
-	at net.minecraft.realms.RealmsBridge.getNotificationScreen(RealmsBridge.java:33) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.TitleScreen.init(TitleScreen.java:202) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.init(Screen.java:376) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.openScreen(MinecraftClient.java:819) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.startIntegratedServer(MinecraftClient.java:1940) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.buttonClicked(CreateWorldScreen.java:210) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.mouseClicked(Screen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.world.CreateWorldScreen.mouseClicked(CreateWorldScreen.java:350) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleMouse(Screen.java:413) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.gui.screen.Screen.handleInput(Screen.java:390) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.tick(MinecraftClient.java:1498) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.runGameLoop(MinecraftClient.java:889) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.MinecraftClient.run(MinecraftClient.java:325) [minecraft-merged-named.jar:?]
-	at net.minecraft.client.main.Main.main(Main.java:124) [minecraft-merged-named.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:608) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:77) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) [fabric-loader-0.12.12.jar:?]
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
+	- worldpreview 1.8.9_BETA3
+[09:27:04] [main/WARN] (FabricLoader/Metadata) Mod `worldpreview` (1.8.9_BETA3) does not respect SemVer - comparison support is limited.
+[09:27:04] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[09:27:04] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[09:27:04] [main/INFO] (Minecraft) Setting user: Player305
+[09:27:04] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player305)
+[09:27:05] [main/INFO] (Atum) Initializing
+[09:27:05] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
+[09:27:05] [main/INFO] (Minecraft) Reloading ResourceManager: Default
+[09:27:06] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
+[09:27:06] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
+[09:27:06] [Thread-5/INFO] (Minecraft) Initializing LWJGL OpenAL
+[09:27:06] [Thread-5/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[09:27:06] [Thread-5/INFO] (Minecraft) OpenAL initialized.
+[09:27:06] [Sound Library Loader/INFO] (Minecraft) Sound engine started
+[09:27:07] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
+[09:27:09] [main/INFO] (Atum) Resetting a random seed
+[09:27:10] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[09:27:10] [Server thread/INFO] (Minecraft) Generating keypair
+[09:27:10] [Server thread/INFO] (Minecraft) Converting map!
+[09:27:10] [Server thread/INFO] (Minecraft) Scanning folders...
+[09:27:10] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[09:27:10] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[09:27:11] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[09:27:12] [Server thread/INFO] (Minecraft) Preparing spawn area: 36%
+[09:27:13] [Server thread/INFO] (Minecraft) Preparing spawn area: 61%
+[09:27:14] [Server thread/INFO] (Minecraft) Preparing spawn area: 88%
+[09:27:15] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
+[09:27:15] [main/INFO] (Atum) Resetting a random seed
+[09:27:15] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[09:27:15] [Server thread/INFO] (Minecraft) Generating keypair
+[09:27:15] [Server thread/INFO] (Minecraft) Converting map!
+[09:27:15] [Server thread/INFO] (Minecraft) Stopping server
+[09:27:15] [Server thread/INFO] (Minecraft) Scanning folders...
+[09:27:15] [Server thread/INFO] (Minecraft) Saving players
+[09:27:15] [Server thread/INFO] (Minecraft) Saving worlds
+[09:27:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #90'/Overworld
+[09:27:15] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[09:27:15] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[09:27:16] [Server thread/INFO] (Minecraft) Preparing spawn area: 30%
+[09:27:16] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #90'/Nether
+[09:27:16] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #90'/The End
+[09:27:17] [Server thread/INFO] (Minecraft) Preparing spawn area: 62%
+[09:27:18] [Server thread/INFO] (Minecraft) Preparing spawn area: 91%
+[09:27:19] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
+[09:27:19] [main/INFO] (Atum) Resetting a random seed
+[09:27:19] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[09:27:19] [Server thread/INFO] (Minecraft) Generating keypair
+[09:27:19] [Server thread/INFO] (Minecraft) Converting map!
+[09:27:19] [Server thread/INFO] (Minecraft) Scanning folders...
+[09:27:19] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[09:27:19] [Server thread/INFO] (Minecraft) Stopping server
+[09:27:19] [Server thread/INFO] (Minecraft) Saving players
+[09:27:19] [Server thread/INFO] (Minecraft) Saving worlds
+[09:27:19] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #91'/Overworld
+[09:27:19] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[09:27:20] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #91'/Nether
+[09:27:20] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #91'/The End
+[09:27:20] [Server thread/INFO] (Minecraft) Preparing spawn area: 33%
+[09:27:21] [Server thread/INFO] (Minecraft) Preparing spawn area: 67%
+[09:27:22] [Server thread/INFO] (Minecraft) Preparing spawn area: 98%
+[09:27:22] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
+[09:27:22] [main/INFO] (Atum) Resetting a random seed
+[09:27:23] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[09:27:23] [Server thread/INFO] (Minecraft) Generating keypair
+[09:27:23] [Server thread/INFO] (Minecraft) Stopping server
+[09:27:23] [Server thread/INFO] (Minecraft) Saving players
+[09:27:23] [Server thread/INFO] (Minecraft) Saving worlds
+[09:27:23] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #92'/Overworld
+[09:27:23] [Server thread/INFO] (Minecraft) Converting map!
+[09:27:23] [Server thread/INFO] (Minecraft) Scanning folders...
+[09:27:23] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[09:27:23] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[09:27:23] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #92'/Nether
+[09:27:23] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #92'/The End
+[09:27:24] [Server thread/INFO] (Minecraft) Preparing spawn area: 35%
+[09:27:25] [Server thread/INFO] (Minecraft) Preparing spawn area: 68%
+[09:27:26] [Server thread/INFO] (Minecraft) Preparing spawn area: 95%
+[09:27:26] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
+[09:27:26] [main/INFO] (Atum) Resetting a random seed
+[09:27:26] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[09:27:26] [Client Shutdown Thread/INFO] (Minecraft) Stopping server
+[09:27:26] [Server thread/INFO] (Minecraft) Generating keypair
+[09:27:26] [Client Shutdown Thread/INFO] (Minecraft) Saving players
