@@ -100,9 +100,7 @@ public abstract class LoadingScreenRendererMixin {
             }
         }
         if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview && WorldPreview.loadedSpawn) {
-            if (WorldPreview.freezePreview) {
-                return;
-            }
+            // render the world
             if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                 WorldPreview.worldRenderer.setWorld(WorldPreview.clientWorld);
                 frameCount = 0;
@@ -129,7 +127,7 @@ public abstract class LoadingScreenRendererMixin {
                 q = Math.max(q, 60);
                 long r = System.nanoTime() - nanoTime;
                 long s = Math.max((long) (1000000000 / q / 4) - r, 0L);
-                if (l - this.lastRenderTime >= 1000L / 40) { // TODO: change 20 to LOADING_SCREEN_FPS if mods decide it should be configurable
+                if (l - this.lastRenderTime >= 1000L / 40) { // TODO: change to LOADING_SCREEN_FPS if mods decide it should be configurable
                     this.renderWorld(((MinecraftClientMixin) this.client).getTicker().tickDelta, System.nanoTime() + s);
                     GlStateManager.matrixMode(5889);
                     GlStateManager.loadIdentity();
@@ -248,7 +246,7 @@ public abstract class LoadingScreenRendererMixin {
         DiffuseLighting.disable();
         this.client.profiler.swap("terrain_setup");
         if (WorldPreview.loadedSpawn) {
-            if (WorldPreview.canReload) {
+            if (WorldPreview.canReload && !WorldPreview.freezePreview) {
                 worldRenderer.reload();
                 WorldPreview.canReload = false;
             }
