@@ -1,5 +1,6 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -60,6 +61,8 @@ public abstract class MinecraftClientMixin {
 
     @Shadow public boolean focused;
 
+    @Shadow public abstract ListenableFuture<Object> submit(Runnable task);
+
     @Redirect(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
     private void cancelSleep(long l) {
 
@@ -70,13 +73,13 @@ public abstract class MinecraftClientMixin {
         int resetKeyCode = WorldPreview.resetKey.getCode();
         int freezeKeyCode = WorldPreview.freezeKey.getCode();
         if (Keyboard.isKeyDown(resetKeyCode) || WorldPreview.kill == 1) {
-            soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
             WorldPreview.log(Level.INFO,"Leaving world generation");
             WorldPreview.kill = 1;
+            soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
             while(WorldPreview.inPreview){
                 Thread.yield();
             }
-            this.server.stopServer();
+            this.server.stopRunning(); // Anchiale handles this from here, so we can set the server to null.
             this.server = null;
             this.connect((ClientWorld) null);
             WorldPreview.kill=0;

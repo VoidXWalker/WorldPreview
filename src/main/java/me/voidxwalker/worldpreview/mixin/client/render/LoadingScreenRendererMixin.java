@@ -562,7 +562,7 @@ public abstract class LoadingScreenRendererMixin {
         for (ButtonWidget button: this.buttons) {
             int buttonWidth = button.getWidth();
             int buttonHeight = 20;
-            this.client.getTextureManager().bindTexture(WorldPreview.WIDGETS_LOCATION);
+            this.client.getTextureManager().bindTexture(new Identifier("textures/gui/widgets.png"));
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             boolean hovered = mouseX >= button.x && mouseY >= button.y && mouseX < button.x + buttonWidth && mouseY < button.y + buttonHeight;
             int i = hovered ? 2 : 1;

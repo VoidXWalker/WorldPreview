@@ -15,6 +15,7 @@
     "client.GameOptionsMixin",
     "server.MinecraftServerMixin",
     "server.ServerPlayerEntityMixin",
+    "server.IntegratedServerMixin",
     "RealmsCompatibilityMixin"
   ],
   "injectors": {

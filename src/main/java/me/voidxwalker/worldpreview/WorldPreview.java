@@ -35,7 +35,6 @@ public class WorldPreview implements ClientModInitializer {
     public static void log(Level level, String message) {
       LOGGER.log(level, message);
    }
-   public static Identifier WIDGETS_LOCATION = new Identifier("textures/gui/widgets.png");
    @Override
    public void onInitializeClient() {
       init();
