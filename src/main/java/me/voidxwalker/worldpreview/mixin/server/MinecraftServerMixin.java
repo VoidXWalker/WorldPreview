@@ -84,7 +84,7 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                             worldpreview_calculateSpawn((ServerWorld) getWorld());
                             WorldPreview.loadedSpawn = true;
                         }
-                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && chunk.chunkX % 6 == 0) {
+                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && Math.abs(chunk.chunkX - spawnChunkX) % 6 == 0) {
                             lastRow = chunk.chunkX;
                             WorldPreview.canReload = true;
                         }
@@ -108,7 +108,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                 WorldPreview.clientWorld = new ClientWorld(null, properties, 0, Difficulty.NORMAL , MinecraftClient.getInstance().profiler);
                 ClientPlayNetworkHandler networkHandler = new ClientPlayNetworkHandler(MinecraftClient.getInstance(), null, null, MinecraftClient.getInstance().getSession().getProfile());
                 WorldPreview.player = new ClientPlayerEntity(MinecraftClient.getInstance(), WorldPreview.clientWorld, networkHandler,null);
-
             }
             WorldPreview.existingWorld=false;
         }

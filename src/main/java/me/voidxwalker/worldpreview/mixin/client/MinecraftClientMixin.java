@@ -1,12 +1,14 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import me.voidxwalker.autoreset.Atum;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
@@ -79,7 +81,11 @@ public abstract class MinecraftClientMixin {
             }
             this.server = null;
             this.connect((ClientWorld) null);
-            WorldPreview.kill=0;
+            WorldPreview.kill = 0;
+            Atum.hotkeyPressed=false;
+            Atum.isRunning=true;
+            Atum.loopPrevent2 = true;
+            MinecraftClient.getInstance().openScreen(new TitleScreen());
             ci.cancel();
         } else if (Keyboard.isKeyDown(freezeKeyCode) && WorldPreview.inPreview && WorldPreview.loadedSpawn && WorldPreview.canFreeze) {
             WorldPreview.freezePreview = true;

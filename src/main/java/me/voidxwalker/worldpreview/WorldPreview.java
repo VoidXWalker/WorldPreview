@@ -44,7 +44,7 @@ public class WorldPreview implements ClientModInitializer {
       WorldPreview.freezePreview = false;
       WorldPreview.canFreeze = false;
       WorldPreview.loadedSpawn = false;
-      WorldPreview.canReload = false;
+      WorldPreview.canReload = true;
       KeyBinding.unpressAll();
    }
 }
