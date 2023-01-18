@@ -95,7 +95,6 @@ public abstract class LoadingScreenRendererMixin {
             boolean resetHovered = mouseX >= this.resetButton.x && mouseY >= this.resetButton.y && mouseX < this.resetButton.x + this.resetButton.getWidth() && mouseY < this.resetButton.y + buttonHeight;
             if (resetHovered && Mouse.isButtonDown(0)) {
                 WorldPreview.kill = 1;
-                WorldPreview.inPreview = false;
                 return;
             }
         }
