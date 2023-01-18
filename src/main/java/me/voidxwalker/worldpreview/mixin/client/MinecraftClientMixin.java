@@ -82,8 +82,8 @@ public abstract class MinecraftClientMixin {
             this.server = null;
             this.connect((ClientWorld) null);
             WorldPreview.kill = 0;
-            if (WorldPreview.atumInterface != null) {
-                WorldPreview.atumInterface.atumReset();
+            if (WorldPreview.HAS_ATUM) {
+                AtumInterface.atumReset();
                 MinecraftClient.getInstance().openScreen(new TitleScreen());
             }
             ci.cancel();
