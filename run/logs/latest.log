@@ -1,106 +1,21 @@
-[23:40:34] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-[23:40:35] [main/INFO] (FabricLoader) Loading 5 mods:
-	- atum 1.1.3+1.8.9
+[04:57:25] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[04:57:25] [main/INFO] (FabricLoader) Loading 4 mods:
 	- fabricloader 0.12.12
 	- java 17
 	- minecraft 1.8.9
-	- worldpreview 1.0.0+1.8.9
-[23:40:35] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-[23:40:35] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
-[23:40:36] [main/INFO] (Minecraft) Setting user: Player819
-[23:40:36] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player819)
-[23:40:37] [main/INFO] (Atum) Initializing
-[23:40:37] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
-[23:40:37] [main/INFO] (Minecraft) Reloading ResourceManager: Default
-[23:40:37] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
-[23:40:37] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
-[23:40:37] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
-[23:40:37] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[23:40:37] [Thread-4/INFO] (Minecraft) OpenAL initialized.
-[23:40:37] [Sound Library Loader/INFO] (Minecraft) Sound engine started
-[23:40:38] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
-[23:40:39] [main/INFO] (Atum) Resetting a random seed
-[23:40:39] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[23:40:39] [Server thread/INFO] (Minecraft) Generating keypair
-[23:40:39] [Server thread/INFO] (Minecraft) Converting map!
-[23:40:39] [Server thread/INFO] (Minecraft) Scanning folders...
-[23:40:39] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[23:40:40] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[23:40:41] [Server thread/INFO] (Minecraft) Preparing spawn area: 20%
-[23:40:42] [Server thread/INFO] (Minecraft) Preparing spawn area: 49%
-[23:40:43] [Server thread/INFO] (Minecraft) Preparing spawn area: 68%
-[23:40:43] [main/INFO] (WorldPreview) Leaving world generation
-[23:40:44] [main/INFO] (Atum) Resetting a random seed
-[23:40:44] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[23:40:44] [Server thread/INFO] (Minecraft) Generating keypair
-[23:40:44] [Server thread/INFO] (Minecraft) Converting map!
-[23:40:44] [Server thread/INFO] (Minecraft) Scanning folders...
-[23:40:44] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[23:40:44] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[23:40:45] [Server thread/INFO] (Minecraft) Preparing spawn area: 39%
-[23:40:46] [Server thread/INFO] (Minecraft) Preparing spawn area: 73%
-[23:40:47] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
-[23:40:47] [Server thread/INFO] (Minecraft) Player819[local:E:d8bfae62] logged in with entity id 259 at (245.5, 62.0, 251.5)
-[23:40:47] [Server thread/INFO] (Minecraft) Player819 joined the game
-[23:40:49] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[23:40:49] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Overworld
-[23:40:49] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Nether
-[23:40:49] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/The End
-[23:40:50] [Server thread/INFO] (Minecraft) Stopping server
-[23:40:50] [Server thread/INFO] (Minecraft) Saving players
-[23:40:50] [Server thread/INFO] (Minecraft) Saving worlds
-[23:40:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Overworld
-[23:40:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Nether
-[23:40:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/The End
-[23:40:50] [main/INFO] (Atum) Resetting a random seed
-[23:40:50] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[23:40:50] [Server thread/INFO] (Minecraft) Generating keypair
-[23:40:50] [Server thread/INFO] (Minecraft) Converting map!
-[23:40:50] [Server thread/INFO] (Minecraft) Scanning folders...
-[23:40:50] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[23:40:50] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[23:40:51] [Server thread/INFO] (Minecraft) Preparing spawn area: 29%
-[23:40:52] [Server thread/INFO] (Minecraft) Preparing spawn area: 52%
-[23:40:53] [Server thread/INFO] (Minecraft) Preparing spawn area: 70%
-[23:40:53] [main/WARN] (Minecraft) Needed to grow BufferBuilder buffer: Old size 524288 bytes, new size 2621440 bytes.
-[23:40:54] [Server thread/INFO] (Minecraft) Preparing spawn area: 87%
-[23:40:55] [Server thread/INFO] (Minecraft) Player819[local:E:2ff5e208] logged in with entity id 1880 at (-14.5, 68.0, 257.5)
-[23:40:55] [Server thread/INFO] (Minecraft) Player819 joined the game
-[23:40:55] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
-[23:40:56] [main/WARN] (Minecraft) Needed to grow BufferBuilder buffer: Old size 524288 bytes, new size 2621440 bytes.
-[23:40:58] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Overworld
-[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Nether
-[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/The End
-[23:40:58] [Server thread/INFO] (Minecraft) Stopping server
-[23:40:58] [Server thread/INFO] (Minecraft) Saving players
-[23:40:58] [Server thread/INFO] (Minecraft) Saving worlds
-[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Overworld
-[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Nether
-[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/The End
-[23:40:58] [main/INFO] (Atum) Resetting a random seed
-[23:40:58] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[23:40:58] [Server thread/INFO] (Minecraft) Generating keypair
-[23:40:58] [Server thread/INFO] (Minecraft) Converting map!
-[23:40:58] [Server thread/INFO] (Minecraft) Scanning folders...
-[23:40:58] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[23:40:58] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[23:40:59] [Server thread/INFO] (Minecraft) Preparing spawn area: 34%
-[23:41:00] [Server thread/INFO] (Minecraft) Preparing spawn area: 63%
-[23:41:01] [Server thread/INFO] (Minecraft) Preparing spawn area: 93%
-[23:41:02] [Server thread/INFO] (Minecraft) Player819[local:E:e9d1df68] logged in with entity id 3401 at (30.5, 62.0, 203.5)
-[23:41:02] [Server thread/INFO] (Minecraft) Player819 joined the game
-[23:41:02] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
-[23:41:03] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[23:41:03] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Overworld
-[23:41:03] [main/INFO] (Minecraft) Stopping!
-[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Nether
-[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/The End
-[23:41:04] [main/INFO] (Minecraft) SoundSystem shutting down...
-[23:41:04] [Server thread/INFO] (Minecraft) Stopping server
-[23:41:04] [Server thread/INFO] (Minecraft) Saving players
-[23:41:04] [Server thread/INFO] (Minecraft) Saving worlds
-[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Overworld
-[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Nether
-[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/The End
-[23:41:04] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com
+	- worldpreview BETA5+1.8.9
+[04:57:25] [main/WARN] (FabricLoader/Metadata) Mod `worldpreview` (BETA5+1.8.9) does not respect SemVer - comparison support is limited.
+[04:57:25] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[04:57:26] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[04:57:26] [main/INFO] (Minecraft) Setting user: Player128
+[04:57:26] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player128)
+[04:57:27] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
+[04:57:27] [main/INFO] (Minecraft) Reloading ResourceManager: Default
+[04:57:27] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
+[04:57:27] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
+[04:57:27] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
+[04:57:27] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[04:57:27] [Thread-4/INFO] (Minecraft) OpenAL initialized.
+[04:57:28] [Sound Library Loader/INFO] (Minecraft) Sound engine started
+[04:57:29] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
+[05:04:02] [Client Shutdown Thread/INFO] (Minecraft) Stopping server

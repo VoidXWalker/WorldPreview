@@ -101,6 +101,7 @@ public abstract class LoadingScreenRendererMixin {
             // render the world
             if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                 WorldPreview.worldRenderer.setWorld(WorldPreview.clientWorld);
+                WorldPreview.log("Starting preview.");
                 frameCount = 0;
                 WorldPreview.canFreeze = true;
             }
