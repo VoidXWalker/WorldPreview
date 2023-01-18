@@ -8,7 +8,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 repositories {
@@ -40,7 +40,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.legacyfabric:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	compileOnlyApi files("build/libs/atum-1.1.3+1.8.9.jar")
+	compileOnlyApi files("libs/atum-1.1.3+1.8.9.jar")
 	if (lwjgl2) {
 		if (currentOs.contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'

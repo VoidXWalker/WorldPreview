@@ -1,7 +1,7 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import me.voidxwalker.autoreset.Atum;
+import me.voidxwalker.worldpreview.AtumInterface;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -76,16 +76,16 @@ public abstract class MinecraftClientMixin {
             WorldPreview.log(Level.INFO,"Leaving world generation");
             WorldPreview.kill = 1;
             soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
-            while(WorldPreview.inPreview){
+            while(WorldPreview.inPreview) {
                 Thread.yield();
             }
             this.server = null;
             this.connect((ClientWorld) null);
             WorldPreview.kill = 0;
-            Atum.hotkeyPressed=false;
-            Atum.isRunning=true;
-            Atum.loopPrevent2 = true;
-            MinecraftClient.getInstance().openScreen(new TitleScreen());
+            if (WorldPreview.atumInterface != null) {
+                WorldPreview.atumInterface.atumReset();
+                MinecraftClient.getInstance().openScreen(new TitleScreen());
+            }
             ci.cancel();
         } else if (Keyboard.isKeyDown(freezeKeyCode) && WorldPreview.inPreview && WorldPreview.loadedSpawn && WorldPreview.canFreeze) {
             WorldPreview.freezePreview = true;

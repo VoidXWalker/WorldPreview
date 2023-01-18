@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.WorldRenderer;
@@ -29,6 +30,7 @@ public class WorldPreview implements ClientModInitializer {
    public static boolean canFreeze;
    public static KeyBinding freezeKey;
    public static boolean freezePreview;
+   public static AtumInterface atumInterface;
    public static final Object lock= new Object();
    public static Logger LOGGER = LogManager.getLogger();
 
@@ -45,6 +47,7 @@ public class WorldPreview implements ClientModInitializer {
       WorldPreview.canFreeze = false;
       WorldPreview.loadedSpawn = false;
       WorldPreview.canReload = true;
+      WorldPreview.atumInterface = FabricLoader.getInstance().isModLoaded("atum") ? new AtumInterface() : null;
       KeyBinding.unpressAll();
    }
 }

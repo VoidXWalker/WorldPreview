@@ -3,7 +3,6 @@ package me.voidxwalker.worldpreview.mixin.server;
 //import net.minecraft.client.gui.screen.LevelLoadingScreen;
 
 import com.mojang.authlib.GameProfile;
-import me.voidxwalker.autoreset.Atum;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;

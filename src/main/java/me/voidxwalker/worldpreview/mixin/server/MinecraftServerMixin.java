@@ -1,6 +1,5 @@
 package me.voidxwalker.worldpreview.mixin.server;
 
-import me.voidxwalker.autoreset.Atum;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.ClientChunkProviderMixin;
 import me.voidxwalker.worldpreview.mixin.access.ServerChunkProviderMixin;
