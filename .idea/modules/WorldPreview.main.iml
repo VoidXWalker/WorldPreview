@@ -5,6 +5,7 @@
       <configuration>
         <autoDetectTypes>
           <platformType>MIXIN</platformType>
+          <platformType>MCP</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>

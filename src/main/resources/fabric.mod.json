@@ -5,7 +5,9 @@
   "name": "WorldPreview",
   "description": "Makes you reset block game fast",
   "authors": [
-    "Void_X_Walker"
+    "Void_X_Walker",
+    "pixfumy",
+    "tildejustin"
   ],
   "contact": {
     "repo": "https://github.com/VoidXWalker/WorldPreview"
@@ -15,7 +17,6 @@
 
   "environment": "*",
 
-  "accessWidener": "worldpreview.accesswidener",
   "entrypoints": {
     "client": [
       "me.voidxwalker.worldpreview.WorldPreview"

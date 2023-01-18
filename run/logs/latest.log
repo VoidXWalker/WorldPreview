@@ -1,123 +1,106 @@
-[07:24:56] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
-[07:24:56] [main/INFO] (FabricLoader) Loading 5 mods:
+[23:40:34] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.8.9 with Fabric Loader 0.12.12
+[23:40:35] [main/INFO] (FabricLoader) Loading 5 mods:
 	- atum 1.1.3+1.8.9
 	- fabricloader 0.12.12
-	- java 8
+	- java 17
 	- minecraft 1.8.9
-	- worldpreview 1.8.9_BETA3
-[07:24:57] [main/WARN] (FabricLoader/Metadata) Mod `worldpreview` (1.8.9_BETA3) does not respect SemVer - comparison support is limited.
-[07:24:57] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
-[07:24:57] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
-[07:24:58] [main/INFO] (Minecraft) Setting user: Player698
-[07:24:58] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player698)
-[07:24:58] [main/INFO] (Atum) Initializing
-[07:24:58] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
-[07:24:58] [main/INFO] (Minecraft) Reloading ResourceManager: Default
-[07:24:59] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
-[07:24:59] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
-[07:24:59] [Thread-5/INFO] (Minecraft) Initializing LWJGL OpenAL
-[07:24:59] [Thread-5/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[07:24:59] [Thread-5/INFO] (Minecraft) OpenAL initialized.
-[07:24:59] [Sound Library Loader/INFO] (Minecraft) Sound engine started
-[07:25:00] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
-[07:25:01] [main/INFO] (Atum) Resetting a random seed
-[07:25:01] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[07:25:01] [Server thread/INFO] (Minecraft) Generating keypair
-[07:25:01] [Server thread/INFO] (Minecraft) Converting map!
-[07:25:01] [Server thread/INFO] (Minecraft) Scanning folders...
-[07:25:01] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[07:25:02] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[07:25:03] [Server thread/INFO] (Minecraft) Preparing spawn area: 21%
-[07:25:04] [Server thread/INFO] (Minecraft) Preparing spawn area: 55%
-[07:25:05] [Server thread/INFO] (Minecraft) Preparing spawn area: 85%
-[07:25:05] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
-[07:25:05] [Server thread/INFO] (Minecraft) Player698[local:E:47aba93d] logged in with entity id 212 at (-50.5, 77.0, 39.5)
-[07:25:05] [Server thread/INFO] (Minecraft) Player698 joined the game
-[07:25:08] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[07:25:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Overworld
-[07:25:09] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Nether
-[07:25:09] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/The End
-[07:25:09] [Server thread/INFO] (Minecraft) Stopping server
-[07:25:09] [Server thread/INFO] (Minecraft) Saving players
-[07:25:09] [Server thread/INFO] (Minecraft) Saving worlds
-[07:25:09] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Overworld
-[07:25:09] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Nether
-[07:25:09] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/The End
-[07:25:09] [main/INFO] (Atum) Resetting a random seed
-[07:25:09] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[07:25:09] [Server thread/INFO] (Minecraft) Generating keypair
-[07:25:09] [Server thread/INFO] (Minecraft) Converting map!
-[07:25:09] [Server thread/INFO] (Minecraft) Scanning folders...
-[07:25:09] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[07:25:09] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[07:25:10] [Server thread/INFO] (Minecraft) Preparing spawn area: 45%
-[07:25:11] [Server thread/INFO] (Minecraft) Preparing spawn area: 90%
-[07:25:11] [main/INFO] (WorldPreview) Leaving world generation
-[07:25:11] [main/INFO] (Atum) Resetting a random seed
-[07:25:12] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[07:25:12] [Server thread/INFO] (Minecraft) Generating keypair
-[07:25:12] [Server thread/INFO] (Minecraft) Converting map!
-[07:25:12] [Server thread/INFO] (Minecraft) Scanning folders...
-[07:25:12] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[07:25:12] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[07:25:13] [Server thread/INFO] (Minecraft) Preparing spawn area: 53%
-[07:25:14] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
-[07:25:14] [Server thread/INFO] (Minecraft) Player698[local:E:09051622] logged in with entity id 1816 at (8.5, 65.0, 52.5)
-[07:25:14] [Server thread/INFO] (Minecraft) Player698 joined the game
-[07:25:25] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[07:25:25] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Overworld
-[07:25:25] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Nether
-[07:25:25] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/The End
-[07:25:26] [Server thread/INFO] (Minecraft) Stopping server
-[07:25:26] [Server thread/INFO] (Minecraft) Saving players
-[07:25:26] [Server thread/INFO] (Minecraft) Saving worlds
-[07:25:26] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Overworld
-[07:25:26] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Nether
-[07:25:26] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/The End
-[07:25:26] [main/INFO] (Atum) Resetting a random seed
-[07:25:26] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[07:25:26] [Server thread/INFO] (Minecraft) Generating keypair
-[07:25:26] [Server thread/INFO] (Minecraft) Converting map!
-[07:25:26] [Server thread/INFO] (Minecraft) Scanning folders...
-[07:25:26] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[07:25:26] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[07:25:27] [Server thread/INFO] (Minecraft) Preparing spawn area: 35%
-[07:25:28] [Server thread/INFO] (Minecraft) Preparing spawn area: 67%
-[07:25:29] [Server thread/INFO] (Minecraft) Preparing spawn area: 97%
-[07:25:29] [main/INFO] (WorldPreview) Leaving world generation
-[07:25:30] [main/INFO] (Atum) Resetting a random seed
-[07:25:30] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[07:25:30] [Server thread/INFO] (Minecraft) Generating keypair
-[07:25:30] [Server thread/INFO] (Minecraft) Converting map!
-[07:25:30] [Server thread/INFO] (Minecraft) Scanning folders...
-[07:25:30] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[07:25:30] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[07:25:31] [Server thread/INFO] (Minecraft) Preparing spawn area: 43%
-[07:25:32] [Server thread/INFO] (Minecraft) Preparing spawn area: 82%
-[07:25:32] [main/INFO] (WorldPreview) Leaving world generation
-[07:25:32] [main/INFO] (Atum) Resetting a random seed
-[07:25:33] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
-[07:25:33] [Server thread/INFO] (Minecraft) Generating keypair
-[07:25:33] [Server thread/INFO] (Minecraft) Converting map!
-[07:25:33] [Server thread/INFO] (Minecraft) Scanning folders...
-[07:25:33] [Server thread/INFO] (Minecraft) Total conversion count is 0
-[07:25:33] [Server thread/WARN] (Minecraft) Unable to find spawn biome
-[07:25:33] [Server thread/INFO] (Minecraft) Preparing start region for level 0
-[07:25:34] [Server thread/INFO] (Minecraft) Preparing spawn area: 43%
-[07:25:35] [Server thread/INFO] (Minecraft) Preparing spawn area: 81%
-[07:25:35] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
-[07:25:35] [Server thread/INFO] (Minecraft) Player698[local:E:9344293c] logged in with entity id 6931 at (8.5, 70.0, 9.5)
-[07:25:35] [Server thread/INFO] (Minecraft) Player698 joined the game
-[07:25:36] [Server thread/INFO] (Minecraft) Saving and pausing game...
-[07:25:36] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #7'/Overworld
-[07:25:37] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #7'/Nether
-[07:25:37] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #7'/The End
-[07:25:38] [Server thread/INFO] (Minecraft) Stopping server
-[07:25:38] [Server thread/INFO] (Minecraft) Saving players
-[07:25:38] [Server thread/INFO] (Minecraft) Saving worlds
-[07:25:38] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #7'/Overworld
-[07:25:38] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #7'/Nether
-[07:25:38] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #7'/The End
-[07:25:39] [main/INFO] (Minecraft) Stopping!
-[07:25:39] [main/INFO] (Minecraft) SoundSystem shutting down...
-[07:25:39] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com
+	- worldpreview 1.0.0+1.8.9
+[23:40:35] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.4 Source=file:/C:/Users/asadd/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.10.7+mixin.0.8.4/7a4ca9d54d9ae564dea0363d668036a8420ed9b8/sponge-mixin-0.10.7+mixin.0.8.4.jar Service=Knot/Fabric Env=CLIENT
+[23:40:35] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[23:40:36] [main/INFO] (Minecraft) Setting user: Player819
+[23:40:36] [main/INFO] (Minecraft) (Session ID is token:FabricMC:Player819)
+[23:40:37] [main/INFO] (Atum) Initializing
+[23:40:37] [main/INFO] (Minecraft) LWJGL Version: 2.9.4
+[23:40:37] [main/INFO] (Minecraft) Reloading ResourceManager: Default
+[23:40:37] [main/ERROR] (Minecraft) Couldn't initialize twitch stream
+[23:40:37] [Sound Library Loader/INFO] (Minecraft) Starting up SoundSystem...
+[23:40:37] [Thread-4/INFO] (Minecraft) Initializing LWJGL OpenAL
+[23:40:37] [Thread-4/INFO] (Minecraft) (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[23:40:37] [Thread-4/INFO] (Minecraft) OpenAL initialized.
+[23:40:37] [Sound Library Loader/INFO] (Minecraft) Sound engine started
+[23:40:38] [main/INFO] (Minecraft) Created: 512x512 textures-atlas
+[23:40:39] [main/INFO] (Atum) Resetting a random seed
+[23:40:39] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[23:40:39] [Server thread/INFO] (Minecraft) Generating keypair
+[23:40:39] [Server thread/INFO] (Minecraft) Converting map!
+[23:40:39] [Server thread/INFO] (Minecraft) Scanning folders...
+[23:40:39] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[23:40:40] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[23:40:41] [Server thread/INFO] (Minecraft) Preparing spawn area: 20%
+[23:40:42] [Server thread/INFO] (Minecraft) Preparing spawn area: 49%
+[23:40:43] [Server thread/INFO] (Minecraft) Preparing spawn area: 68%
+[23:40:43] [main/INFO] (WorldPreview) Leaving world generation
+[23:40:44] [main/INFO] (Atum) Resetting a random seed
+[23:40:44] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[23:40:44] [Server thread/INFO] (Minecraft) Generating keypair
+[23:40:44] [Server thread/INFO] (Minecraft) Converting map!
+[23:40:44] [Server thread/INFO] (Minecraft) Scanning folders...
+[23:40:44] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[23:40:44] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[23:40:45] [Server thread/INFO] (Minecraft) Preparing spawn area: 39%
+[23:40:46] [Server thread/INFO] (Minecraft) Preparing spawn area: 73%
+[23:40:47] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
+[23:40:47] [Server thread/INFO] (Minecraft) Player819[local:E:d8bfae62] logged in with entity id 259 at (245.5, 62.0, 251.5)
+[23:40:47] [Server thread/INFO] (Minecraft) Player819 joined the game
+[23:40:49] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[23:40:49] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Overworld
+[23:40:49] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Nether
+[23:40:49] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/The End
+[23:40:50] [Server thread/INFO] (Minecraft) Stopping server
+[23:40:50] [Server thread/INFO] (Minecraft) Saving players
+[23:40:50] [Server thread/INFO] (Minecraft) Saving worlds
+[23:40:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Overworld
+[23:40:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/Nether
+[23:40:50] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #2'/The End
+[23:40:50] [main/INFO] (Atum) Resetting a random seed
+[23:40:50] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[23:40:50] [Server thread/INFO] (Minecraft) Generating keypair
+[23:40:50] [Server thread/INFO] (Minecraft) Converting map!
+[23:40:50] [Server thread/INFO] (Minecraft) Scanning folders...
+[23:40:50] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[23:40:50] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[23:40:51] [Server thread/INFO] (Minecraft) Preparing spawn area: 29%
+[23:40:52] [Server thread/INFO] (Minecraft) Preparing spawn area: 52%
+[23:40:53] [Server thread/INFO] (Minecraft) Preparing spawn area: 70%
+[23:40:53] [main/WARN] (Minecraft) Needed to grow BufferBuilder buffer: Old size 524288 bytes, new size 2621440 bytes.
+[23:40:54] [Server thread/INFO] (Minecraft) Preparing spawn area: 87%
+[23:40:55] [Server thread/INFO] (Minecraft) Player819[local:E:2ff5e208] logged in with entity id 1880 at (-14.5, 68.0, 257.5)
+[23:40:55] [Server thread/INFO] (Minecraft) Player819 joined the game
+[23:40:55] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
+[23:40:56] [main/WARN] (Minecraft) Needed to grow BufferBuilder buffer: Old size 524288 bytes, new size 2621440 bytes.
+[23:40:58] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Overworld
+[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Nether
+[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/The End
+[23:40:58] [Server thread/INFO] (Minecraft) Stopping server
+[23:40:58] [Server thread/INFO] (Minecraft) Saving players
+[23:40:58] [Server thread/INFO] (Minecraft) Saving worlds
+[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Overworld
+[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/Nether
+[23:40:58] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #3'/The End
+[23:40:58] [main/INFO] (Atum) Resetting a random seed
+[23:40:58] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.8.9
+[23:40:58] [Server thread/INFO] (Minecraft) Generating keypair
+[23:40:58] [Server thread/INFO] (Minecraft) Converting map!
+[23:40:58] [Server thread/INFO] (Minecraft) Scanning folders...
+[23:40:58] [Server thread/INFO] (Minecraft) Total conversion count is 0
+[23:40:58] [Server thread/INFO] (Minecraft) Preparing start region for level 0
+[23:40:59] [Server thread/INFO] (Minecraft) Preparing spawn area: 34%
+[23:41:00] [Server thread/INFO] (Minecraft) Preparing spawn area: 63%
+[23:41:01] [Server thread/INFO] (Minecraft) Preparing spawn area: 93%
+[23:41:02] [Server thread/INFO] (Minecraft) Player819[local:E:e9d1df68] logged in with entity id 3401 at (30.5, 62.0, 203.5)
+[23:41:02] [Server thread/INFO] (Minecraft) Player819 joined the game
+[23:41:02] [Server thread/INFO] (Minecraft) Changing view distance to 8, from 10
+[23:41:03] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[23:41:03] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Overworld
+[23:41:03] [main/INFO] (Minecraft) Stopping!
+[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Nether
+[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/The End
+[23:41:04] [main/INFO] (Minecraft) SoundSystem shutting down...
+[23:41:04] [Server thread/INFO] (Minecraft) Stopping server
+[23:41:04] [Server thread/INFO] (Minecraft) Saving players
+[23:41:04] [Server thread/INFO] (Minecraft) Saving worlds
+[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Overworld
+[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/Nether
+[23:41:04] [Server thread/INFO] (Minecraft) Saving chunks for level 'Random Speedrun #4'/The End
+[23:41:04] [main/WARN] (Minecraft) Author: Paul Lamb, www.paulscode.com
