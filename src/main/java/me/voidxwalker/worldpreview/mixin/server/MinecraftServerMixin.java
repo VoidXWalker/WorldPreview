@@ -83,7 +83,7 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                             worldpreview_calculateSpawn((ServerWorld) getWorld());
                             WorldPreview.loadedSpawn = true;
                         }
-                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && Math.abs(chunk.chunkX - spawnChunkX) % 6 == 0) {
+                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && Math.abs(chunk.chunkX - spawnChunkX) % 4 == 0) {
                             lastRow = chunk.chunkX;
                             WorldPreview.canReload = true;
                         }

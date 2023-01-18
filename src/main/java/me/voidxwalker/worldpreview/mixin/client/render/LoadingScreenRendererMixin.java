@@ -128,16 +128,15 @@ public abstract class LoadingScreenRendererMixin {
                 long r = System.nanoTime() - nanoTime;
                 long s = Math.max((long) (1000000000 / q / 4) - r, 0L);
                 if (l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {
-                    this.renderWorld(((MinecraftClientMixin) this.client).getTicker().tickDelta, System.nanoTime() + s);
+                    this.worldpreview_renderWorld(((MinecraftClientMixin) this.client).getTicker().tickDelta, System.nanoTime() + s);
                     GlStateManager.matrixMode(5889);
                     GlStateManager.loadIdentity();
                     GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
                     GlStateManager.matrixMode(5888);
                     GlStateManager.loadIdentity();
                     GlStateManager.translatef(0.0F, 0.0F, -200.0F);
-                    this.renderGreyedBackground(width, height);
-                    this.renderCenteredString(this.client.textRenderer, I18n.translate("menu.game"), width / 2, 40, 16777215);
-                    this.renderMenuButtons(width, height, mouseX, mouseY);
+                    this.worldpreview_renderCenteredString(this.client.textRenderer, I18n.translate("menu.game"), width / 2, 40, 16777215);
+                    this.worldpreview_renderMenuButtons(width, height, mouseX, mouseY);
                 }
             }
         } else { // usual loading screen
@@ -193,24 +192,24 @@ public abstract class LoadingScreenRendererMixin {
         }
     }
 
-    public void renderWorld(float tickDelta, long endTime) {
+    public void worldpreview_renderWorld(float tickDelta, long endTime) {
         GlStateManager.enableDepthTest();
         GlStateManager.enableAlphaTest();
         GlStateManager.alphaFunc(516, 0.5F);
-        this.renderCenter(tickDelta, endTime);
+        this.worldpreview_renderCenter(tickDelta, endTime);
     }
 
-    private void renderCenter(float tickDelta, long endTime) {
+    private void worldpreview_renderCenter(float tickDelta, long endTime) {
         WorldRenderer worldRenderer =  WorldPreview.worldRenderer;
         ( (ChunkSetter)worldRenderer).setPreviewRenderer();
         GlStateManager.enableCull();
 
         this.client.profiler.swap("clear");
         GlStateManager.viewPort(0, 0, this.client.width, this.client.height);
-        updateFog(tickDelta);
+        worldpreview_updateFog(tickDelta);
         GlStateManager.clear(16640);
         this.client.profiler.swap("camera");
-        setupCamera(tickDelta, 2);
+        worldpreview_setupCamera(tickDelta, 2);
         Camera.update(WorldPreview.player, this.client.options.perspective == 2);
         this.client.profiler.swap("frustum");
         Frustum.getInstance();
@@ -222,7 +221,7 @@ public abstract class LoadingScreenRendererMixin {
         double f = entity.prevTickZ + (entity.z - entity.prevTickZ) * (double)tickDelta;
         cameraView.setPos(d, e, f);
         if (this.client.options.viewDistance >= 4) {
-            renderFog(-1, tickDelta);
+            worldpreview_renderFog(-1, tickDelta);
             this.client.profiler.swap("sky");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
@@ -235,14 +234,14 @@ public abstract class LoadingScreenRendererMixin {
             GlStateManager.matrixMode(5888);
         }
 
-        renderFog(0, tickDelta);
+        worldpreview_renderFog(0, tickDelta);
         GlStateManager.shadeModel(7425);
         if (entity.y + (double)entity.getEyeHeight() < 128.0D) {
             renderClouds(worldRenderer, tickDelta, 2);
         }
 
         this.client.profiler.swap("prepareterrain");
-        renderFog(-1, tickDelta);
+        worldpreview_renderFog(-1, tickDelta);
         this.client.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         DiffuseLighting.disable();
         this.client.profiler.swap("terrain_setup");
@@ -280,7 +279,7 @@ public abstract class LoadingScreenRendererMixin {
         GlStateManager.disableFog();
     }
 
-    private void updateFog(float tickDelta) {
+    private void worldpreview_updateFog(float tickDelta) {
         World world =WorldPreview.clientWorld;
         Entity entity = WorldPreview.player;
         float f = 0.25F + 0.75F * (float)this.client.options.viewDistance / 32.0F;
@@ -374,7 +373,7 @@ public abstract class LoadingScreenRendererMixin {
 
         GlStateManager.clearColor(this.fogRed, this.fogGreen, this.fogBlue, 0.0F);
     }
-    private void setupCamera(float tickDelta, int anaglyphFilter) {
+    private void worldpreview_setupCamera(float tickDelta, int anaglyphFilter) {
 
         GlStateManager.matrixMode(5889);
         GlStateManager.loadIdentity();
@@ -383,7 +382,7 @@ public abstract class LoadingScreenRendererMixin {
 
 
 
-        Project.gluPerspective((float) this.getFov(tickDelta, true), (float)this.client.width / (float)this.client.height, 0.05F, this.client.options.viewDistance * 16 * MathHelper.SQUARE_ROOT_OF_TWO);
+        Project.gluPerspective((float) this.worldpreview_getFov(tickDelta, true), (float)this.client.width / (float)this.client.height, 0.05F, this.client.options.viewDistance * 16 * MathHelper.SQUARE_ROOT_OF_TWO);
         GlStateManager.matrixMode(5888);
         GlStateManager.loadIdentity();
 
@@ -392,13 +391,13 @@ public abstract class LoadingScreenRendererMixin {
 
 
 
-        this.transformCamera(tickDelta);
+        this.worldpreview_transformCamera(tickDelta);
 
 
     }
 
 
-    private void transformCamera(float tickDelta) {
+    private void worldpreview_transformCamera(float tickDelta) {
         Entity entity = WorldPreview.player;
         float f = entity.getEyeHeight();
         double d = entity.prevX + (entity.x - entity.prevX) * (double)tickDelta;
@@ -466,7 +465,7 @@ public abstract class LoadingScreenRendererMixin {
     private float lastSkyDarkness;
     private float skyDarkness;
 
-    private FloatBuffer updateFogColorBuffer(float red, float green, float blue, float alpha) {
+    private FloatBuffer worldpreview_updateFogColorBuffer(float red, float green, float blue, float alpha) {
         this.fogColorBuffer.clear();
         this.fogColorBuffer.put(red).put(green).put(blue).put(alpha);
         this.fogColorBuffer.flip();
@@ -477,24 +476,24 @@ public abstract class LoadingScreenRendererMixin {
             this.client.profiler.swap("clouds");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective((float) this.getFov(tickDelta, true), (float)this.client.width / (float)this.client.height, 0.05F, (float)(this.client.options.viewDistance * 16) * 4.0F);
+            Project.gluPerspective((float) this.worldpreview_getFov(tickDelta, true), (float)this.client.width / (float)this.client.height, 0.05F, (float)(this.client.options.viewDistance * 16) * 4.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();
-            this.renderFog(0, tickDelta);
+            this.worldpreview_renderFog(0, tickDelta);
             worldRenderer.renderClouds(tickDelta, anaglyphFilter);
             GlStateManager.disableFog();
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective((float) this.getFov(tickDelta, true), (float)this.client.width / (float)this.client.height, 0.05F, (float)(this.client.options.viewDistance * 16)* MathHelper.SQUARE_ROOT_OF_TWO);
+            Project.gluPerspective((float) this.worldpreview_getFov(tickDelta, true), (float)this.client.width / (float)this.client.height, 0.05F, (float)(this.client.options.viewDistance * 16)* MathHelper.SQUARE_ROOT_OF_TWO);
             GlStateManager.matrixMode(5888);
         }
 
     }
 
-    private void renderFog(int i, float tickDelta) {
+    private void worldpreview_renderFog(int i, float tickDelta) {
         Entity entity = this.client.getCameraEntity();
-        GL11.glFog(2918, (FloatBuffer)this.updateFogColorBuffer(this.fogRed, this.fogGreen, this.fogBlue, 1.0F));
+        GL11.glFog(2918, (FloatBuffer)this.worldpreview_updateFogColorBuffer(this.fogRed, this.fogGreen, this.fogBlue, 1.0F));
         GL11.glNormal3f(0.0F, -1.0F, 0.0F);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Block block = Camera.getSubmergedBlock(WorldPreview.clientWorld, entity, tickDelta);
@@ -526,39 +525,11 @@ public abstract class LoadingScreenRendererMixin {
         GlStateManager.colorMaterial(1028, 4608);
     }
 
-    private double getFov( double tickDelta, boolean changingFov) {
+    private double worldpreview_getFov( double tickDelta, boolean changingFov) {
         return this.client.options.fov;
     }
 
-    private void renderGreyedBackground(int width, int height) {
-        float f = (float) (-1072689136 >> 24 & 255) / 255.0F;
-        float g = (float) (-1072689136 >> 16 & 255) / 255.0F;
-        float h = (float) (-1072689136 >> 8 & 255) / 255.0F;
-        float i = (float) (-1072689136 & 255) / 255.0F;
-        float j = (float) (-804253680 >> 24 & 255) / 255.0F;
-        float k = (float) (-804253680 >> 16 & 255) / 255.0F;
-        float l = (float) (-804253680 >> 8 & 255) / 255.0F;
-        float m = (float) (-804253680 & 255) / 255.0F;
-        GlStateManager.disableTexture();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlphaTest();
-        GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.shadeModel(7425);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
-        bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
-        bufferBuilder.vertex((double) width, (double) 0.0, (double) 0).color(g, h, i, f).next();
-        bufferBuilder.vertex((double) 0, (double) 0.0, (double) 0).color(g, h, i, f).next();
-        bufferBuilder.vertex((double) 0, (double) height, (double) 0).color(k, l, m, j).next();
-        bufferBuilder.vertex((double) width, (double) height, (double) 0).color(k, l, m, j).next();
-        tessellator.draw();
-        GlStateManager.shadeModel(7424);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.enableTexture();
-    }
-
-    private void renderMenuButtons(int width, int height, int mouseX, int mouseY) {
+    private void worldpreview_renderMenuButtons(int width, int height, int mouseX, int mouseY) {
         TextRenderer textRenderer = this.client.textRenderer;
         for (ButtonWidget button: this.buttons) {
             int buttonWidth = button.getWidth();
@@ -570,18 +541,18 @@ public abstract class LoadingScreenRendererMixin {
             GlStateManager.enableBlend();
             GlStateManager.blendFuncSeparate(770, 771, 1, 0);
             GlStateManager.blendFunc(770, 771);
-            this.drawTexture(button.x, button.y, 0, 46 + i * 20, buttonWidth / 2, buttonHeight);
-            this.drawTexture(button.x + buttonWidth / 2, button.y, 200 - buttonWidth / 2, 46 + i * 20, buttonWidth / 2, buttonHeight);
+            this.worldpreview_drawTexture(button.x, button.y, 0, 46 + i * 20, buttonWidth / 2, buttonHeight);
+            this.worldpreview_drawTexture(button.x + buttonWidth / 2, button.y, 200 - buttonWidth / 2, 46 + i * 20, buttonWidth / 2, buttonHeight);
             int j = hovered ? 16777120 : 14737632;
-            this.renderCenteredString(textRenderer, button.message, button.x + buttonWidth / 2, button.y + (buttonHeight - 8) / 2, j);
+            this.worldpreview_renderCenteredString(textRenderer, button.message, button.x + buttonWidth / 2, button.y + (buttonHeight - 8) / 2, j);
         }
     }
 
-    private void renderCenteredString(TextRenderer textRenderer, String text, int centerX, int y, int color) {
+    private void worldpreview_renderCenteredString(TextRenderer textRenderer, String text, int centerX, int y, int color) {
         textRenderer.drawWithShadow(text, (float)(centerX - textRenderer.getStringWidth(text) / 2), (float)y, color);
     }
 
-    private void drawTexture(int x, int y, int u, int v, int width, int height) {
+    private void worldpreview_drawTexture(int x, int y, int u, int v, int width, int height) {
         float f = 0.00390625F;
         float g = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
