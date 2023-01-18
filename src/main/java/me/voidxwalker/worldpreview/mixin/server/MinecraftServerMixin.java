@@ -25,9 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Iterator;
@@ -58,6 +56,8 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
     @Shadow private Thread serverThread;
 
     @Shadow public abstract World getWorld();
+
+    @Shadow protected abstract void logProgress(String progressType, int worldProgress);
 
     private int lastRow = -100;
 
@@ -161,6 +161,20 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
             WorldPreview.inPreview=false;
             ci.cancel();
         }
+    }
+
+    @ModifyConstant(method = "prepareWorlds", constant = @Constant(longValue = 1000L))
+    private long changeLogInterval(long constant) {
+        return WorldPreview.worldGenLogInterval;
+    }
+
+    @Redirect(method = "prepareWorlds", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;logProgress(Ljava/lang/String;I)V"))
+    private void freezeIfAtPercentage(MinecraftServer instance, String progressType, int worldProgress) {
+        if (worldProgress >= WorldPreview.worldGenFreezePercentage && !WorldPreview.freezePreview) {
+            WorldPreview.log("Preview at " + worldProgress + "%, " + "freezing automatically.");
+            WorldPreview.freezePreview = true;
+        }
+        this.logProgress(progressType, worldProgress);
     }
 
     public void worldpreview_shutdownWithoutSave() {

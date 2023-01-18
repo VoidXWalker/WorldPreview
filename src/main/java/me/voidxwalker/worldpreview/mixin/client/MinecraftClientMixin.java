@@ -88,8 +88,8 @@ public abstract class MinecraftClientMixin {
             }
             WorldPreview.log("Reset hotkey pressed.");
             ci.cancel();
-        } else if (Keyboard.isKeyDown(freezeKeyCode) && WorldPreview.inPreview && WorldPreview.loadedSpawn && WorldPreview.canFreeze) {
-            WorldPreview.log("Preview frozen.");
+        } else if (Keyboard.isKeyDown(freezeKeyCode) && WorldPreview.inPreview && WorldPreview.loadedSpawn && WorldPreview.canFreeze && !WorldPreview.freezePreview) {
+            WorldPreview.log("Preview frozen with hotkey.");
             WorldPreview.freezePreview = true;
         }
     }

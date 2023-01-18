@@ -69,17 +69,20 @@ public class WorldPreview implements ClientModInitializer {
                 FileInputStream fileInputStream = new FileInputStream(configFile);
                 properties.load(fileInputStream);
                 log("Found worldpreview.properties file in .minecraft/config. Reading it in.");
+            } else {
+                log("No worldpreview.properties file found in .minecraft/config. Creating one with default values..");
             }
             loadingScreenFPS = Math.max(5, Integer.parseInt(properties.getProperty("loading_screen_fps", "60")));
             loadingScreenPollingRate = Integer.parseInt(properties.getProperty("loading_screen_polling_rate", "30"));
-            worldGenLogInterval = Math.min(50, Math.max(1000, Integer.parseInt(properties.getProperty("worldgen_log_interval", "50"))));
-            worldGenFreezePercentage = Math.min(50, Math.max(100, Integer.parseInt(properties.getProperty("worldgen_freeze_percentage", "70"))));
+            worldGenLogInterval = Math.max(50, Math.min(1000, Integer.parseInt(properties.getProperty("worldgen_log_interval", "200"))));
+            worldGenFreezePercentage = Math.max(50, Math.min(100, Integer.parseInt(properties.getProperty("worldgen_freeze_percentage", "70"))));
             FileWriter fileWriter = new FileWriter(configFile);
             fileWriter.write("# FPS during the preview. Minimum: 5fps\n");
             fileWriter.write("loading_screen_fps = " + loadingScreenFPS + "\n\n");
             fileWriter.write("# Input detections per second during preview. Lowers GPU usage, but inputs may not be detected if it's too low.\n");
             fileWriter.write("loading_screen_polling_rate = " + loadingScreenPollingRate + "\n\n");
             fileWriter.write("# time in milliseconds between each world generation percentage log. Minimum: 50, Maximum: 1000\n");
+            fileWriter.write("# Smaller values allow worldgen_freeze_percentage to update more accurately.\n");
             fileWriter.write("worldgen_log_interval = " + worldGenLogInterval + "\n\n");
             fileWriter.write("# Worldgen percentage to freeze at. Must be a value between 50 and 100 since preview starts at 50%.\n");
             fileWriter.write("# Frozen previews are still rendered at loading_screen_fps, but no additional terrain is loaded.\n");

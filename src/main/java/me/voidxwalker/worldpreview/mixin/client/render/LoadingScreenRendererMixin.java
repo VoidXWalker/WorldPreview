@@ -52,6 +52,7 @@ public abstract class LoadingScreenRendererMixin {
     @Shadow private MinecraftClient client;
     
     private long lastRenderTime;
+    private long lastInputPollTime;
 
     @Shadow private String field_1028;
 
@@ -126,7 +127,7 @@ public abstract class LoadingScreenRendererMixin {
                 q = Math.max(q, 60);
                 long r = System.nanoTime() - nanoTime;
                 long s = Math.max((long) (1000000000 / q / 4) - r, 0L);
-                if (l - this.lastRenderTime >= 1000L / 40) { // TODO: change to LOADING_SCREEN_FPS if mods decide it should be configurable
+                if (l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {
                     this.renderWorld(((MinecraftClientMixin) this.client).getTicker().tickDelta, System.nanoTime() + s);
                     GlStateManager.matrixMode(5889);
                     GlStateManager.loadIdentity();
@@ -175,15 +176,15 @@ public abstract class LoadingScreenRendererMixin {
                 GlStateManager.enableTexture();
             }
         }
-        if (l - this.lastRenderTime >= 1000L / 40) {
+        if (l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {
             this.lastRenderTime = l;
             GlStateManager.enableBlend();
             GlStateManager.blendFuncSeparate(770, 771, 1, 0);
             this.client.textRenderer.drawWithShadow(this.title, (float) ((width - this.client.textRenderer.getStringWidth(this.title)) / 2), (float) (height / 2 - 4 - 16), 16777215);
             this.client.textRenderer.drawWithShadow(this.field_1028, (float) ((width - this.client.textRenderer.getStringWidth(this.field_1028)) / 2), (float) (height / 2 - 4 + 8), 16777215);
             this.client.updateDisplay();
-        } else {
-            Display.processMessages();
+        } else if (l - this.lastInputPollTime >= 1000L / WorldPreview.loadingScreenPollingRate){
+            Display.processMessages(); //updateDisplay() calls Display.processMessages() anyway, so no need to run both in one render.
         }
         this.nanoTime = System.nanoTime();
         try {
