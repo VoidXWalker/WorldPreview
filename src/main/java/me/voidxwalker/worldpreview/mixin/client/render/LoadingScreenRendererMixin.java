@@ -82,7 +82,6 @@ public abstract class LoadingScreenRendererMixin {
         int mouseY = height - Mouse.getY() * height / this.client.height - 1;
         if (!WorldPreview.inPreview) {
             WorldPreview.inPreview = true;
-            WorldPreview.init();
             buttons.add(this.resetButton = new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
             buttons.add(new ButtonWidget(4, width / 2 - 100, height / 4 + 24 - 16, I18n.translate("menu.returnToGame")));
             buttons.add(new ButtonWidget(0, width / 2 - 100, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.options")));
@@ -92,7 +91,7 @@ public abstract class LoadingScreenRendererMixin {
         }
         if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
             int buttonHeight = 20;
-            boolean resetHovered = mouseX >= this.resetButton.x && mouseY >= this.resetButton.y && mouseX < this.resetButton.x + this.resetButton.getWidth() && mouseY < this.resetButton.y + buttonHeight;
+            boolean resetHovered = this.resetButton != null && mouseX >= this.resetButton.x && mouseY >= this.resetButton.y && mouseX < this.resetButton.x + this.resetButton.getWidth() && mouseY < this.resetButton.y + buttonHeight;
             if (resetHovered && Mouse.isButtonDown(0)) {
                 WorldPreview.kill = 1;
                 return;
@@ -182,9 +181,10 @@ public abstract class LoadingScreenRendererMixin {
             this.client.textRenderer.drawWithShadow(this.title, (float) ((width - this.client.textRenderer.getStringWidth(this.title)) / 2), (float) (height / 2 - 4 - 16), 16777215);
             this.client.textRenderer.drawWithShadow(this.field_1028, (float) ((width - this.client.textRenderer.getStringWidth(this.field_1028)) / 2), (float) (height / 2 - 4 + 8), 16777215);
             this.client.updateDisplay();
+        } else {
+            Display.processMessages();
         }
         this.nanoTime = System.nanoTime();
-        Display.processMessages();
         try {
             Thread.yield();
         } catch (Exception var15) {

@@ -43,10 +43,11 @@ public class WorldPreview implements ClientModInitializer {
    }
 
    public static void init() {
-      WorldPreview.freezePreview = false;
-      WorldPreview.canFreeze = false;
-      WorldPreview.loadedSpawn = false;
-      WorldPreview.canReload = true;
-      KeyBinding.unpressAll();
+       WorldPreview.inPreview = false;
+       WorldPreview.freezePreview = false;
+       WorldPreview.canFreeze = false;
+       WorldPreview.loadedSpawn = false;
+       WorldPreview.canReload = true;
+       KeyBinding.unpressAll();
    }
 }

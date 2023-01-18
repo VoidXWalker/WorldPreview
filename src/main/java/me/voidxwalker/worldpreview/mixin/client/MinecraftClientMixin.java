@@ -102,6 +102,7 @@ public abstract class MinecraftClientMixin {
     public void reset(ClientWorld world, String loadingMessage, CallbackInfo ci){
         synchronized (WorldPreview.lock){
             if (world == null) {
+                WorldPreview.init();
                 WorldPreview.world = null;
                 WorldPreview.player = null;
                 WorldPreview.clientWorld = null;
