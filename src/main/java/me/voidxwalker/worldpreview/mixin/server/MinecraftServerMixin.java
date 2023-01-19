@@ -99,7 +99,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
     public void worldpreview_getWorld(CallbackInfo ci){
         synchronized (WorldPreview.lock){
             if(!WorldPreview.existingWorld){
-
                 ServerWorld serverWorld = this.getWorld(0);
                 WorldPreview.spawnPos= serverWorld.getSpawnPos();
                 WorldPreview.freezePreview=false;
@@ -109,7 +108,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                 ClientPlayNetworkHandler networkHandler = new ClientPlayNetworkHandler(MinecraftClient.getInstance(), null, null, MinecraftClient.getInstance().getSession().getProfile());
                 WorldPreview.player = new ClientPlayerEntity(MinecraftClient.getInstance(), WorldPreview.clientWorld, networkHandler,null);
             }
-            WorldPreview.existingWorld=false;
         }
     }
 
