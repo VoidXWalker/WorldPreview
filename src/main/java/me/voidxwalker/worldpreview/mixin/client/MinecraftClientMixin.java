@@ -14,6 +14,7 @@ import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.server.command.Console;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.LevelInfo;
@@ -75,18 +76,15 @@ public abstract class MinecraftClientMixin {
         if (WorldPreview.loadedSpawn && (Keyboard.isKeyDown(resetKeyCode) || WorldPreview.kill == 1)) {
             WorldPreview.log("Leaving world generation");
             WorldPreview.kill = 1;
-            soundManager.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
-            while(WorldPreview.inPreview) {
+            while(WorldPreview.kill == 1) {
                 Thread.yield();
             }
             this.server = null;
             this.connect((ClientWorld) null);
-            WorldPreview.kill = 0;
             if (WorldPreview.HAS_ATUM) {
                 AtumInterface.atumReset();
                 MinecraftClient.getInstance().openScreen(new TitleScreen());
             }
-            WorldPreview.log("Reset hotkey pressed.");
             ci.cancel();
         } else if (Keyboard.isKeyDown(freezeKeyCode) && WorldPreview.inPreview && WorldPreview.loadedSpawn && WorldPreview.canFreeze && !WorldPreview.freezePreview) {
             WorldPreview.log("Preview frozen with hotkey.");

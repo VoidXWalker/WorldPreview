@@ -10,6 +10,7 @@ import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.ServerNetworkIo;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.LongObjectStorage;
 import net.minecraft.util.math.BlockPos;
@@ -138,27 +139,38 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
         }
     }
 
+    /**
+     * This inject will not run as a direct result of WorldPreview code, but we keep it here just in case other mods do
+     * stop the server mid-preview.
+     */
     @Inject(method = "stopServer", at=@At(value = "HEAD"), cancellable = true)
     public void kill(CallbackInfo ci) {
-        if (!this.isLoading() && Thread.currentThread().equals(this.serverThread)) {
+        if (!this.isLoading() && Thread.currentThread().equals(this.serverThread)) { //isLoading() should really be called isDoneLoading()
             worldpreview_shutdownWithoutSave();
             ci.cancel();
         }
-        WorldPreview.inPreview=false;
+        WorldPreview.kill = 0;
     }
 
-    @Inject(method="run",at=@At(value="INVOKE",target="Lnet/minecraft/server/MinecraftServer;setupServer()Z",shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "prepareWorlds",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", shift = At.Shift.AFTER), cancellable = true)
     public void kill2(CallbackInfo ci){
         if(WorldPreview.kill==1){
-            WorldPreview.inPreview=false;
             ci.cancel();
         }
     }
 
-    @Inject(method = "prepareWorlds",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method="run",at=@At(value="INVOKE",target="Lnet/minecraft/server/MinecraftServer;setupServer()Z",shift = At.Shift.AFTER), cancellable = true)
     public void kill3(CallbackInfo ci){
         if(WorldPreview.kill==1){
-            WorldPreview.inPreview=false;
+            worldpreview_shutdownWithoutSave();
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "run",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", ordinal = 1, shift = At.Shift.AFTER), cancellable = true)
+    public void kill4(CallbackInfo ci){
+        if(WorldPreview.kill==1){
+            worldpreview_shutdownWithoutSave();
             ci.cancel();
         }
     }
@@ -177,7 +189,11 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
         this.logProgress(progressType, worldProgress);
     }
 
+    /**
+     * Identical to stopServer() except without saving player data.
+     */
     public void worldpreview_shutdownWithoutSave() {
+        WorldPreview.kill = 0;
         if (!this.shouldResetWorld) {
             LOGGER.info("Stopping server");
             if (this.getNetworkIo() != null) {
