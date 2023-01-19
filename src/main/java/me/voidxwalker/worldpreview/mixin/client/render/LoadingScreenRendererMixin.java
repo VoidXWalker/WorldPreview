@@ -135,39 +135,41 @@ public abstract class LoadingScreenRendererMixin {
                 }
             }
         } else { // usual loading screen
-            GlStateManager.matrixMode(5889);
-            GlStateManager.loadIdentity();
-            GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
-            GlStateManager.matrixMode(5888);
-            GlStateManager.loadIdentity();
-            GlStateManager.translatef(0.0F, 0.0F, -200.0F);
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferBuilder = tessellator.getBuffer();
-            this.client.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-            float f = 32.0F;
-            bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
-            bufferBuilder.vertex(0.0D, (double) height, 0.0D).texture(0.0D, (double) ((float) height / f)).color(64, 64, 64, 255).next();
-            bufferBuilder.vertex((double) width, (double) height, 0.0D).texture((double) ((float) width / f), (double) ((float) height / f)).color(64, 64, 64, 255).next();
-            bufferBuilder.vertex((double) width, 0.0D, 0.0D).texture((double) ((float) width / f), 0.0D).color(64, 64, 64, 255).next();
-            bufferBuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0D, 0.0D).color(64, 64, 64, 255).next();
-            tessellator.draw();
-            if (percentage >= 0) {
-                int m = 100;
-                int n = 2;
-                int o = width / 2 - m / 2;
-                int p = width / 2 + 16;
-                GlStateManager.disableTexture();
-                bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
-                bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 128, 128, 255).next();
-                bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
-                bufferBuilder.vertex((double) (o + m), (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
-                bufferBuilder.vertex((double) (o + m), (double) p, 0.0D).color(128, 128, 128, 255).next();
-                bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 255, 128, 255).next();
-                bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
-                bufferBuilder.vertex((double) (o + percentage), (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
-                bufferBuilder.vertex((double) (o + percentage), (double) p, 0.0D).color(128, 255, 128, 255).next();
+            if (l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {
+                GlStateManager.matrixMode(5889);
+                GlStateManager.loadIdentity();
+                GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
+                GlStateManager.matrixMode(5888);
+                GlStateManager.loadIdentity();
+                GlStateManager.translatef(0.0F, 0.0F, -200.0F);
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder bufferBuilder = tessellator.getBuffer();
+                this.client.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+                float f = 32.0F;
+                bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+                bufferBuilder.vertex(0.0D, (double) height, 0.0D).texture(0.0D, (double) ((float) height / f)).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex((double) width, (double) height, 0.0D).texture((double) ((float) width / f), (double) ((float) height / f)).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex((double) width, 0.0D, 0.0D).texture((double) ((float) width / f), 0.0D).color(64, 64, 64, 255).next();
+                bufferBuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0D, 0.0D).color(64, 64, 64, 255).next();
                 tessellator.draw();
-                GlStateManager.enableTexture();
+                if (percentage >= 0) {
+                    int m = 100;
+                    int n = 2;
+                    int o = width / 2 - m / 2;
+                    int p = width / 2 + 16;
+                    GlStateManager.disableTexture();
+                    bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+                    bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + m), (double) (p + n), 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + m), (double) p, 0.0D).color(128, 128, 128, 255).next();
+                    bufferBuilder.vertex((double) o, (double) p, 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double) o, (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + percentage), (double) (p + n), 0.0D).color(128, 255, 128, 255).next();
+                    bufferBuilder.vertex((double) (o + percentage), (double) p, 0.0D).color(128, 255, 128, 255).next();
+                    tessellator.draw();
+                    GlStateManager.enableTexture();
+                }
             }
         }
         if (l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {

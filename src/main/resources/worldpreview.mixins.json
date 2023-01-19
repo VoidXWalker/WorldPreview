@@ -13,6 +13,7 @@
     "client.render.LoadingScreenRendererMixin",
     "client.MinecraftClientMixin",
     "client.GameOptionsMixin",
+    "client.GameMenuScreenMixin",
     "server.MinecraftServerMixin",
     "server.ServerPlayerEntityMixin",
     "RealmsBridgeMixin"
