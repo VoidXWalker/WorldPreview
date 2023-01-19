@@ -81,14 +81,9 @@ public abstract class LoadingScreenRendererMixin {
         int height = window.getHeight();
         int mouseX = Mouse.getX() * width / this.client.width;
         int mouseY = height - Mouse.getY() * height / this.client.height - 1;
-        if (!WorldPreview.inPreview) {
+        if (!WorldPreview.inPreview || Display.wasResized()) {
             WorldPreview.inPreview = true;
-            buttons.add(this.resetButton = new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
-            buttons.add(new ButtonWidget(4, width / 2 - 100, height / 4 + 24 - 16, I18n.translate("menu.returnToGame")));
-            buttons.add(new ButtonWidget(0, width / 2 - 100, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.options")));
-            buttons.add(new ButtonWidget(7, width / 2 + 2, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.shareToLan")));
-            buttons.add(new ButtonWidget(5, width / 2 - 100, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.achievements")));
-            buttons.add(new ButtonWidget(6, width / 2 + 2, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.stats")));
+            worldpreview_setButtons(width, height);
         }
         if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
             int buttonHeight = 20;
@@ -190,6 +185,15 @@ public abstract class LoadingScreenRendererMixin {
             Thread.yield();
         } catch (Exception var15) {
         }
+    }
+
+    private void worldpreview_setButtons(int width, int height) {
+        buttons.add(this.resetButton = new ButtonWidget(1, width / 2 - 100, height / 4 + 120 - 16, I18n.translate("menu.returnToMenu")));
+        buttons.add(new ButtonWidget(4, width / 2 - 100, height / 4 + 24 - 16, I18n.translate("menu.returnToGame")));
+        buttons.add(new ButtonWidget(0, width / 2 - 100, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.options")));
+        buttons.add(new ButtonWidget(7, width / 2 + 2, height / 4 + 96 - 16, 98, 20, I18n.translate("menu.shareToLan")));
+        buttons.add(new ButtonWidget(5, width / 2 - 100, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.achievements")));
+        buttons.add(new ButtonWidget(6, width / 2 + 2, height / 4 + 48 - 16, 98, 20, I18n.translate("gui.stats")));
     }
 
     public void worldpreview_renderWorld(float tickDelta, long endTime) {
