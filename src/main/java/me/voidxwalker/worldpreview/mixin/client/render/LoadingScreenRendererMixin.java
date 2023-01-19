@@ -245,7 +245,7 @@ public abstract class LoadingScreenRendererMixin {
         }
 
         this.client.profiler.swap("prepareterrain");
-        worldpreview_renderFog(-1, tickDelta);
+        worldpreview_renderFog(0, tickDelta);
         this.client.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         DiffuseLighting.disable();
         this.client.profiler.swap("terrain_setup");
