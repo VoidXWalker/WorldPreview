@@ -11,6 +11,7 @@
     "access.ServerChunkProviderMixin",
     "client.render.WorldRendererMixin",
     "client.render.LoadingScreenRendererMixin",
+    "client.ClientChunkProviderMixin",
     "client.MinecraftClientMixin",
     "client.GameOptionsMixin",
     "client.GameMenuScreenMixin",
