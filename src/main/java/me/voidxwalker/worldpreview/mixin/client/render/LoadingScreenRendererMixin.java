@@ -71,7 +71,7 @@ public abstract class LoadingScreenRendererMixin {
      */
     @Overwrite
     public void setProgressPercentage(int percentage) {
-        if(WorldPreview.worldRenderer==null){
+        if(WorldPreview.worldRenderer==null && WorldPreview.clientWorld != null){
             WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
             ((ChunkSetter)WorldPreview.worldRenderer).setPreviewRenderer();
         }
@@ -81,11 +81,11 @@ public abstract class LoadingScreenRendererMixin {
         int height = window.getHeight();
         int mouseX = Mouse.getX() * width / this.client.width;
         int mouseY = height - Mouse.getY() * height / this.client.height - 1;
-        if (!WorldPreview.inPreview || Display.wasResized()) {
+        if (WorldPreview.clientWorld != null && (!WorldPreview.inPreview || Display.wasResized())) {
             WorldPreview.inPreview = true;
             worldpreview_setButtons(width, height);
         }
-        if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
+        if (WorldPreview.worldRenderer != null && ((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
             int buttonHeight = 20;
             boolean resetHovered = this.resetButton != null && mouseX >= this.resetButton.x && mouseY >= this.resetButton.y && mouseX < this.resetButton.x + this.resetButton.getWidth() && mouseY < this.resetButton.y + buttonHeight;
             if (resetHovered && Mouse.isButtonDown(0)) {
