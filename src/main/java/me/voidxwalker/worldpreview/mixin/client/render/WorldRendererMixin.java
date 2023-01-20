@@ -6,6 +6,7 @@ import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.world.AbstractChunkRenderManager;
 import net.minecraft.client.world.BuiltChunk;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -35,6 +36,16 @@ public abstract class WorldRendererMixin implements ChunkSetter {
         }
         return  instance.getCameraEntity();
     }
+
+    @Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/world/AbstractChunkRenderManager;setViewPos(DDD)V"))
+    private void useCorrectYHeight(AbstractChunkRenderManager instance, double viewX, double viewY, double viewZ) {
+        if (this.previewRenderer) {
+            instance.setViewPos(viewX, WorldPreview.player.y, viewZ);
+        } else {
+            instance.setViewPos(viewX, viewY, viewZ);
+        }
+    }
+
     @Redirect(method = "renderEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     public Entity worldpreview_getCameraEntity2(MinecraftClient instance){
         if(instance.getCameraEntity()==null&&this.previewRenderer){
