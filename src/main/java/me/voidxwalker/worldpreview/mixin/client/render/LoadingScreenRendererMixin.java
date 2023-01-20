@@ -95,13 +95,13 @@ public abstract class LoadingScreenRendererMixin {
         }
         if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview && WorldPreview.loadedSpawn) {
             // render the world
-            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
+            if (WorldPreview.worldRenderer != null && ((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                 WorldPreview.worldRenderer.setWorld(WorldPreview.clientWorld);
                 WorldPreview.log("Starting preview.");
                 frameCount = 0;
                 WorldPreview.canFreeze = true;
             }
-            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
+            if (WorldPreview.worldRenderer != null && ((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
                 this.field_1842 = this.field_1843;
                 float h = WorldPreview.world.getBrightness(new BlockPos(WorldPreview.player));
                 float x = (float) this.client.options.viewDistance / 32.0F;
