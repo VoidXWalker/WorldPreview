@@ -130,6 +130,7 @@ public abstract class LoadingScreenRendererMixin {
                     GlStateManager.matrixMode(5888);
                     GlStateManager.loadIdentity();
                     GlStateManager.translatef(0.0F, 0.0F, -200.0F);
+                    GlStateManager.clear(256);
                     this.worldpreview_renderCenteredString(this.client.textRenderer, I18n.translate("menu.game"), width / 2, 40, 16777215);
                     this.worldpreview_renderMenuButtons(width, height, mouseX, mouseY);
                 }

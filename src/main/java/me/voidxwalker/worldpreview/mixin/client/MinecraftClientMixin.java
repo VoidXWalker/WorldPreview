@@ -101,15 +101,7 @@ public abstract class MinecraftClientMixin {
     @Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value = "HEAD"))
     public void reset(ClientWorld world, String loadingMessage, CallbackInfo ci){
         synchronized (WorldPreview.lock){
-            if (world == null) {
-                WorldPreview.init();
-                WorldPreview.world = null;
-                WorldPreview.player = null;
-                WorldPreview.clientWorld = null;
-                if (WorldPreview.worldRenderer != null) {
-                    WorldPreview.worldRenderer.setWorld(null);
-                }
-            }
+            WorldPreview.init();
         }
     }
 
