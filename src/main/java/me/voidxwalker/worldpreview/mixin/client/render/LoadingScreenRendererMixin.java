@@ -71,7 +71,7 @@ public abstract class LoadingScreenRendererMixin {
      */
     @Overwrite
     public void setProgressPercentage(int percentage) {
-        if(WorldPreview.worldRenderer==null && WorldPreview.clientWorld != null){
+        if(WorldPreview.worldRenderer==null){
             WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
             ((PreviewRenderer)WorldPreview.worldRenderer).setPreviewRenderer();
         }
@@ -81,11 +81,11 @@ public abstract class LoadingScreenRendererMixin {
         int height = window.getHeight();
         int mouseX = Mouse.getX() * width / this.client.width;
         int mouseY = height - Mouse.getY() * height / this.client.height - 1;
-        if (WorldPreview.clientWorld != null && (!WorldPreview.inPreview || Display.wasResized())) {
+        if (!WorldPreview.inPreview || Display.wasResized()) {
             WorldPreview.inPreview = true;
             worldpreview_setButtons(width, height);
         }
-        if (WorldPreview.worldRenderer != null && ((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
+        if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
             int buttonHeight = 20;
             boolean resetHovered = this.resetButton != null && mouseX >= this.resetButton.x && mouseY >= this.resetButton.y && mouseX < this.resetButton.x + this.resetButton.getWidth() && mouseY < this.resetButton.y + buttonHeight;
             if (resetHovered && Mouse.isButtonDown(0)) {
@@ -95,13 +95,13 @@ public abstract class LoadingScreenRendererMixin {
         }
         if (WorldPreview.world != null && WorldPreview.clientWorld != null && WorldPreview.player != null && WorldPreview.inPreview && WorldPreview.loadedSpawn) {
             // render the world
-            if (WorldPreview.worldRenderer != null && ((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
+            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() == null) {
                 WorldPreview.worldRenderer.setWorld(WorldPreview.clientWorld);
                 WorldPreview.log("Starting preview.");
                 frameCount = 0;
                 WorldPreview.canFreeze = true;
             }
-            if (WorldPreview.worldRenderer != null && ((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
+            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
                 this.field_1842 = this.field_1843;
                 float h = WorldPreview.world.getBrightness(new BlockPos(WorldPreview.player));
                 float x = (float) this.client.options.viewDistance / 32.0F;
@@ -208,7 +208,7 @@ public abstract class LoadingScreenRendererMixin {
 
     private void worldpreview_renderCenter(float tickDelta, long endTime) {
         WorldRenderer worldRenderer =  WorldPreview.worldRenderer;
-        ((PreviewRenderer)worldRenderer).setPreviewRenderer();
+        ( (PreviewRenderer)worldRenderer).setPreviewRenderer();
         GlStateManager.enableCull();
 
         this.client.profiler.swap("clear");
@@ -255,6 +255,7 @@ public abstract class LoadingScreenRendererMixin {
         if (WorldPreview.loadedSpawn) {
             if (WorldPreview.canReload && !WorldPreview.freezePreview) {
                 ((PreviewRenderer) worldRenderer).safeReload();
+                WorldPreview.canReload = false;
             }
         }
         worldRenderer.setupTerrain(entity, (double)tickDelta, cameraView, frameCount++, true);

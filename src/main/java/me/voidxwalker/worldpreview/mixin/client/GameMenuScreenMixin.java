@@ -10,14 +10,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = GameMenuScreen.class, priority = 900)
 public class GameMenuScreenMixin {
-    @Inject(method = "buttonClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;isIntegratedServerRunning()Z", shift = At.Shift.BEFORE),
-    cancellable = true)
+
 
     /**
      * With the way we handle mouse events and limited fps, sometimes the display is considered inactive when preview ends.
      * This causes the game to pause, and a click input can occur on the save and quit button before the client's world
      * is initialized. This causes a crash.
      */
+    @Inject(method = "buttonClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;isIntegratedServerRunning()Z", shift = At.Shift.BEFORE),
+            cancellable = true)
     private void cancelIfWorldNull(ButtonWidget button, CallbackInfo ci) {
         if (MinecraftClient.getInstance().world == null) {
             ci.cancel();

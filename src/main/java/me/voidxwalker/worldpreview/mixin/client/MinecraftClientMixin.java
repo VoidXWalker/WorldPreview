@@ -64,8 +64,6 @@ public abstract class MinecraftClientMixin {
 
     @Shadow public abstract ListenableFuture<Object> submit(Runnable task);
 
-    @Shadow public abstract void updateDisplay();
-
     @Redirect(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V"))
     private void cancelSleep(long l) {
 
@@ -76,7 +74,6 @@ public abstract class MinecraftClientMixin {
         int resetKeyCode = WorldPreview.resetKey.getCode();
         int freezeKeyCode = WorldPreview.freezeKey.getCode();
         if (WorldPreview.loadedSpawn && (Keyboard.isKeyDown(resetKeyCode) || WorldPreview.kill == 1)) {
-            this.updateDisplay();
             WorldPreview.log("Leaving world generation");
             WorldPreview.kill = 1;
             while(WorldPreview.kill == 1) {
@@ -103,7 +100,7 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V",at=@At(value = "HEAD"))
     public void reset(ClientWorld world, String loadingMessage, CallbackInfo ci){
-        synchronized (WorldPreview.lock){
+        synchronized (WorldPreview.lock) {
             WorldPreview.init();
         }
     }

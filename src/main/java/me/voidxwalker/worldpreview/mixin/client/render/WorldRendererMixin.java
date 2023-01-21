@@ -1,17 +1,15 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
 
-import com.mojang.blaze3d.platform.GLX;
 import me.voidxwalker.worldpreview.PreviewRenderer;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.BuiltChunkStorageMixin;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BuiltChunkStorage;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.world.*;
+import net.minecraft.client.render.world.AbstractChunkRenderManager;
+import net.minecraft.client.render.world.ChunkRenderFactory;
 import net.minecraft.client.world.BuiltChunk;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -26,22 +24,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
-import java.util.Set;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin implements PreviewRenderer {
     @Shadow private ClientWorld world;
 
     @Shadow private boolean needsTerrainUpdate;
-    @Shadow @Final private MinecraftClient client;
-    @Shadow private int renderDistance;
     @Shadow private BuiltChunkStorage chunks;
 
     @Shadow protected abstract void clearChunkRenderers();
 
-    @Shadow @Final private Set<BlockEntity> noCullingBlockEntities;
-    @Shadow private ChunkRenderFactory chunkRenderFactory;
+    @Shadow @Final private MinecraftClient client;
     @Shadow private int totalEntityCount;
+    @Shadow private ChunkRenderFactory chunkRenderFactory;
     public boolean previewRenderer;
     public void setPreviewRenderer(){
         this.previewRenderer=true;
@@ -53,22 +48,21 @@ public abstract class WorldRendererMixin implements PreviewRenderer {
         }
         return  instance.getCameraEntity();
     }
-
-    @Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/world/AbstractChunkRenderManager;setViewPos(DDD)V"))
-    private void useCorrectYHeight(AbstractChunkRenderManager instance, double viewX, double viewY, double viewZ) {
-        if (this.previewRenderer) {
-            instance.setViewPos(viewX, WorldPreview.player.y, viewZ);
-        } else {
-            instance.setViewPos(viewX, viewY, viewZ);
-        }
-    }
-
     @Redirect(method = "renderEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     public Entity worldpreview_getCameraEntity2(MinecraftClient instance){
         if(instance.getCameraEntity()==null&&this.previewRenderer){
             return WorldPreview.player;
         }
         return  instance.getCameraEntity();
+    }
+
+    @Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/world/AbstractChunkRenderManager;setViewPos(DDD)V"))
+    private void useCorrectYHeight(AbstractChunkRenderManager instance, double viewX, double viewY, double viewZ) {
+        if (this.previewRenderer && WorldPreview.player != null) {
+            instance.setViewPos(viewX, WorldPreview.player.y, viewZ);
+        } else {
+            instance.setViewPos(viewX, viewY, viewZ);
+        }
     }
     @Redirect(method = "renderSky", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;world:Lnet/minecraft/client/world/ClientWorld;", opcode = Opcodes.GETFIELD))
     public ClientWorld worldpreview_getCorrectWorld(MinecraftClient instance){
