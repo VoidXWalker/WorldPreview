@@ -80,11 +80,11 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                         chunkStorage.set(ChunkPos.getIdFromCoords(chunk.chunkX, chunk.chunkZ), chunk);
                         chunks.add(chunk);
                         chunk.setChunkLoaded(true);
-                        if (spawnChunkX == chunk.chunkX && spawnChunkZ == chunk.chunkZ && !WorldPreview.loadedSpawn) {
+                        if (spawnChunkX + 1 == chunk.chunkX && spawnChunkZ == chunk.chunkZ && !WorldPreview.loadedSpawn) {
                             worldpreview_calculateSpawn((ServerWorld) getWorld());
                             WorldPreview.loadedSpawn = true;
                         }
-                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && Math.abs(chunk.chunkX - spawnChunkX) % 4 == 0) {
+                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && Math.abs(chunk.chunkX - spawnChunkX) % 4 == 1) {
                             lastRow = chunk.chunkX;
                             WorldPreview.canReload = true;
                         }
