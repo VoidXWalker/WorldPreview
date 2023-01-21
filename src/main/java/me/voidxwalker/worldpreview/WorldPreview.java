@@ -76,14 +76,15 @@ public class WorldPreview implements ClientModInitializer {
             } else {
                 log("No worldpreview.properties file found in .minecraft/config. Creating one with default values..");
             }
-            loadingScreenFPS = Math.max(5, Integer.parseInt(properties.getProperty("loading_screen_fps", "60")));
-            loadingScreenPollingRate = Integer.parseInt(properties.getProperty("loading_screen_polling_rate", "30"));
+            loadingScreenFPS = Math.max(5, Integer.parseInt(properties.getProperty("loading_screen_fps", "30")));
+            loadingScreenPollingRate = Math.max(loadingScreenFPS, Integer.parseInt(properties.getProperty("loading_screen_polling_rate", "30")));
             worldGenLogInterval = Math.max(50, Math.min(1000, Integer.parseInt(properties.getProperty("worldgen_log_interval", "200"))));
             worldGenFreezePercentage = Math.max(50, Math.min(100, Integer.parseInt(properties.getProperty("worldgen_freeze_percentage", "70"))));
             FileWriter fileWriter = new FileWriter(configFile);
             fileWriter.write("# FPS during the preview. Minimum: 5fps\n");
             fileWriter.write("loading_screen_fps = " + loadingScreenFPS + "\n\n");
             fileWriter.write("# Input detections per second during preview. Lowers GPU usage, but inputs may not be detected if it's too low.\n");
+            fileWriter.write("# Note that inputs will also be checked every frame, so this value should be greater than or equal to loading_screen_fps.\n");
             fileWriter.write("loading_screen_polling_rate = " + loadingScreenPollingRate + "\n\n");
             fileWriter.write("# time in milliseconds between each world generation percentage log. Minimum: 50, Maximum: 1000\n");
             fileWriter.write("# Smaller values allow worldgen_freeze_percentage to update more accurately.\n");

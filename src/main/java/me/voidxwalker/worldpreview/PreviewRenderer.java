@@ -1,7 +1,9 @@
 package me.voidxwalker.worldpreview;
 
 
-public interface ChunkSetter {
+public interface PreviewRenderer {
 
      void setPreviewRenderer();
+
+     void safeReload();
 }

@@ -1,7 +1,7 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import me.voidxwalker.worldpreview.ChunkSetter;
+import me.voidxwalker.worldpreview.PreviewRenderer;
 import me.voidxwalker.worldpreview.WorldPreview;
 
 import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
@@ -73,7 +73,7 @@ public abstract class LoadingScreenRendererMixin {
     public void setProgressPercentage(int percentage) {
         if(WorldPreview.worldRenderer==null && WorldPreview.clientWorld != null){
             WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance());
-            ((ChunkSetter)WorldPreview.worldRenderer).setPreviewRenderer();
+            ((PreviewRenderer)WorldPreview.worldRenderer).setPreviewRenderer();
         }
         long l = MinecraftClient.getTime();
         Window window = this.window;
@@ -208,7 +208,7 @@ public abstract class LoadingScreenRendererMixin {
 
     private void worldpreview_renderCenter(float tickDelta, long endTime) {
         WorldRenderer worldRenderer =  WorldPreview.worldRenderer;
-        ( (ChunkSetter)worldRenderer).setPreviewRenderer();
+        ((PreviewRenderer)worldRenderer).setPreviewRenderer();
         GlStateManager.enableCull();
 
         this.client.profiler.swap("clear");
@@ -254,8 +254,7 @@ public abstract class LoadingScreenRendererMixin {
         this.client.profiler.swap("terrain_setup");
         if (WorldPreview.loadedSpawn) {
             if (WorldPreview.canReload && !WorldPreview.freezePreview) {
-                worldRenderer.reload();
-                WorldPreview.canReload = false;
+                ((PreviewRenderer) worldRenderer).safeReload();
             }
         }
         worldRenderer.setupTerrain(entity, (double)tickDelta, cameraView, frameCount++, true);

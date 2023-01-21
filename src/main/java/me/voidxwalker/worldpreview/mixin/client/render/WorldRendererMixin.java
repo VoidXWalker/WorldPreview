@@ -1,12 +1,17 @@
 package me.voidxwalker.worldpreview.mixin.client.render;
 
 
-import me.voidxwalker.worldpreview.ChunkSetter;
+import com.mojang.blaze3d.platform.GLX;
+import me.voidxwalker.worldpreview.PreviewRenderer;
 import me.voidxwalker.worldpreview.WorldPreview;
+import me.voidxwalker.worldpreview.mixin.access.BuiltChunkStorageMixin;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.BuiltChunkStorage;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.world.AbstractChunkRenderManager;
+import net.minecraft.client.render.world.*;
 import net.minecraft.client.world.BuiltChunk;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -14,17 +19,29 @@ import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
+import java.util.Set;
 
 @Mixin(WorldRenderer.class)
-public abstract class WorldRendererMixin implements ChunkSetter {
+public abstract class WorldRendererMixin implements PreviewRenderer {
     @Shadow private ClientWorld world;
 
+    @Shadow private boolean needsTerrainUpdate;
+    @Shadow @Final private MinecraftClient client;
+    @Shadow private int renderDistance;
+    @Shadow private BuiltChunkStorage chunks;
+
+    @Shadow protected abstract void clearChunkRenderers();
+
+    @Shadow @Final private Set<BlockEntity> noCullingBlockEntities;
+    @Shadow private ChunkRenderFactory chunkRenderFactory;
+    @Shadow private int totalEntityCount;
     public boolean previewRenderer;
     public void setPreviewRenderer(){
         this.previewRenderer=true;
@@ -139,5 +156,19 @@ public abstract class WorldRendererMixin implements ChunkSetter {
             return;
         }
         instance.disableLightmap();
+    }
+
+    public void safeReload() {
+        Entity entity;
+        this.needsTerrainUpdate = true;
+        if (this.chunks != null) {
+            this.chunks.clear();
+            ((BuiltChunkStorageMixin)this.chunks).invokeCreateChunks(this.chunkRenderFactory);
+        }
+        this.clearChunkRenderers();
+        if (this.world != null && (entity = this.client.getCameraEntity()) != null) {
+            this.chunks.updateCameraPosition(entity.x, entity.z);
+        }
+        this.totalEntityCount = 2;
     }
 }

@@ -84,7 +84,7 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                             worldpreview_calculateSpawn((ServerWorld) getWorld());
                             WorldPreview.loadedSpawn = true;
                         }
-                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && Math.abs(chunk.chunkX - spawnChunkX) % 4 == 0) {
+                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow) {
                             lastRow = chunk.chunkX;
                             WorldPreview.canReload = true;
                         }
@@ -147,7 +147,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
             worldpreview_shutdownWithoutSave();
             ci.cancel();
         }
-        WorldPreview.kill = 0;
     }
 
     @Inject(method = "prepareWorlds",at=@At(value = "INVOKE",target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", shift = At.Shift.AFTER), cancellable = true)
