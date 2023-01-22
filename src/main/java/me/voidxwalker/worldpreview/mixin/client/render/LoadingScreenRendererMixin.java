@@ -255,7 +255,9 @@ public abstract class LoadingScreenRendererMixin {
         this.client.profiler.swap("terrain_setup");
         worldRenderer.setupTerrain(entity, (double)tickDelta, cameraView, frameCount++, true);
         this.client.profiler.swap("updatechunks");
-        worldRenderer.updateChunks(endTime);
+        if (!WorldPreview.freezePreview) {
+            worldRenderer.updateChunks(endTime);
+        }
         this.client.profiler.swap("terrain");
         GlStateManager.matrixMode(5888);
         GlStateManager.pushMatrix();
