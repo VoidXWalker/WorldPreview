@@ -181,6 +181,7 @@ public abstract class LoadingScreenRendererMixin {
             this.client.textRenderer.drawWithShadow(this.field_1028, (float) ((width - this.client.textRenderer.getStringWidth(this.field_1028)) / 2), (float) (height / 2 - 4 + 8), 16777215);
             this.client.updateDisplay();
         } else if (l - this.lastInputPollTime >= 1000L / WorldPreview.loadingScreenPollingRate){
+            this.lastInputPollTime = l;
             Display.processMessages(); //updateDisplay() calls Display.processMessages() anyway, so no need to run both in one render.
         }
         this.nanoTime = System.nanoTime();
@@ -252,12 +253,6 @@ public abstract class LoadingScreenRendererMixin {
         this.client.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         DiffuseLighting.disable();
         this.client.profiler.swap("terrain_setup");
-        if (WorldPreview.loadedSpawn) {
-            if (WorldPreview.canReload && !WorldPreview.freezePreview) {
-                ((PreviewRenderer) worldRenderer).safeReload();
-                WorldPreview.canReload = false;
-            }
-        }
         worldRenderer.setupTerrain(entity, (double)tickDelta, cameraView, frameCount++, true);
         this.client.profiler.swap("updatechunks");
         worldRenderer.updateChunks(endTime);

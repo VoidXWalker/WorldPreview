@@ -60,8 +60,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
 
     @Shadow protected abstract void logProgress(String progressType, int worldProgress);
 
-    private int lastRow = -100;
-
     @Redirect(method = "prepareWorlds",at = @At(value = "INVOKE",target = "Lnet/minecraft/world/chunk/ServerChunkProvider;getOrGenerateChunk(II)Lnet/minecraft/world/chunk/Chunk;"))
     public Chunk getChunks(ServerChunkProvider instance, int x, int z){
         Chunk ret = instance.getOrGenerateChunk(x,z);
@@ -84,10 +82,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                             worldpreview_calculateSpawn((ServerWorld) getWorld());
                             WorldPreview.loadedSpawn = true;
                         }
-                        if (WorldPreview.loadedSpawn && chunk.chunkX != lastRow && Math.abs(chunk.chunkX - spawnChunkX) % 4 == 1) {
-                            lastRow = chunk.chunkX;
-                            WorldPreview.canReload = true;
-                        }
                     }
                 }
             }
@@ -109,11 +103,6 @@ public abstract class MinecraftServerMixin {//  extends ReentrantThreadExecutor<
                 WorldPreview.player = new ClientPlayerEntity(MinecraftClient.getInstance(), WorldPreview.clientWorld, networkHandler,null);
             }
         }
-    }
-
-    @Inject(method = "prepareWorlds", at = @At("TAIL"))
-    private void resetLastRow(CallbackInfo ci) {
-        lastRow = -100;
     }
 
     private void worldpreview_calculateSpawn(ServerWorld serverWorld) {

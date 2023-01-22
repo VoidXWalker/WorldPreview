@@ -151,18 +151,4 @@ public abstract class WorldRendererMixin implements PreviewRenderer {
         }
         instance.disableLightmap();
     }
-
-    public void safeReload() {
-        Entity entity;
-        this.needsTerrainUpdate = true;
-        if (this.chunks != null) {
-            this.chunks.clear();
-            ((BuiltChunkStorageMixin)this.chunks).invokeCreateChunks(this.chunkRenderFactory);
-        }
-        this.clearChunkRenderers();
-        if (this.world != null && (entity = this.client.getCameraEntity()) != null) {
-            this.chunks.updateCameraPosition(entity.x, entity.z);
-        }
-        this.totalEntityCount = 2;
-    }
 }

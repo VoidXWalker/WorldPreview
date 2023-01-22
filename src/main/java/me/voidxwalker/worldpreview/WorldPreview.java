@@ -29,7 +29,6 @@ public class WorldPreview implements ClientModInitializer {
    public static WorldRenderer worldRenderer;
    public static boolean existingWorld;
    public static boolean loadedSpawn;
-   public static boolean canReload;
    public static KeyBinding resetKey;
    public static boolean canFreeze;
    public static KeyBinding freezeKey;
@@ -58,7 +57,6 @@ public class WorldPreview implements ClientModInitializer {
       WorldPreview.freezePreview = false;
       WorldPreview.canFreeze = false;
       WorldPreview.loadedSpawn = false;
-      WorldPreview.canReload = true;
       WorldPreview.world = null;
       if (WorldPreview.worldRenderer != null) {
           WorldPreview.worldRenderer.setWorld(null);
