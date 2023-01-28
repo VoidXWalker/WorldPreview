@@ -21,6 +21,11 @@ public abstract class ServerPlayerEntityMixin  {
     @Shadow public abstract BlockPos getBlockPos();
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;getTopPosition(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/BlockPos;"))
     private BlockPos setSpawnPos(ServerWorld instance, BlockPos blockPos) {
-        return WorldPreview.existingWorld ? instance.getTopPosition(blockPos) : WorldPreview.spawnPos ;
+        if (WorldPreview.existingWorld) {
+            return instance.getTopPosition(blockPos);
+        } else {
+            WorldPreview.existingWorld = true;
+            return WorldPreview.spawnPos;
+        }
     }
 }

@@ -81,7 +81,7 @@ public abstract class LoadingScreenRendererMixin {
         int height = window.getHeight();
         int mouseX = Mouse.getX() * width / this.client.width;
         int mouseY = height - Mouse.getY() * height / this.client.height - 1;
-        if (!WorldPreview.inPreview || Display.wasResized()) {
+        if ((!WorldPreview.inPreview || Display.wasResized()) && !WorldPreview.existingWorld) {
             WorldPreview.inPreview = true;
             worldpreview_setButtons(width, height);
         }
@@ -101,7 +101,7 @@ public abstract class LoadingScreenRendererMixin {
                 frameCount = 0;
                 WorldPreview.canFreeze = true;
             }
-            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null) {
+            if (((WorldRendererMixin) WorldPreview.worldRenderer).getWorld() != null && l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {
                 this.field_1842 = this.field_1843;
                 float h = WorldPreview.world.getBrightness(new BlockPos(WorldPreview.player));
                 float x = (float) this.client.options.viewDistance / 32.0F;
@@ -122,18 +122,16 @@ public abstract class LoadingScreenRendererMixin {
                 q = Math.max(q, 60);
                 long r = System.nanoTime() - nanoTime;
                 long s = Math.max((long) (1000000000 / q / 4) - r, 0L);
-                if (l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {
-                    this.worldpreview_renderWorld(((MinecraftClientMixin) this.client).getTicker().tickDelta, System.nanoTime() + s);
-                    GlStateManager.matrixMode(5889);
-                    GlStateManager.loadIdentity();
-                    GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
-                    GlStateManager.matrixMode(5888);
-                    GlStateManager.loadIdentity();
-                    GlStateManager.translatef(0.0F, 0.0F, -200.0F);
-                    GlStateManager.clear(256);
-                    this.worldpreview_renderCenteredString(this.client.textRenderer, I18n.translate("menu.game"), width / 2, 40, 16777215);
-                    this.worldpreview_renderMenuButtons(width, height, mouseX, mouseY);
-                }
+                this.worldpreview_renderWorld(((MinecraftClientMixin) this.client).getTicker().tickDelta, System.nanoTime() + s);
+                GlStateManager.matrixMode(5889);
+                GlStateManager.loadIdentity();
+                GlStateManager.ortho(0.0D, window.getScaledWidth(), window.getScaledHeight(), 0.0D, 100.0D, 300.0D);
+                GlStateManager.matrixMode(5888);
+                GlStateManager.loadIdentity();
+                GlStateManager.translatef(0.0F, 0.0F, -200.0F);
+                GlStateManager.clear(256);
+                this.worldpreview_renderCenteredString(this.client.textRenderer, I18n.translate("menu.game"), width / 2, 40, 16777215);
+                this.worldpreview_renderMenuButtons(width, height, mouseX, mouseY);
             }
         } else { // usual loading screen
             if (l - this.lastRenderTime >= 1000L / WorldPreview.loadingScreenFPS) {
