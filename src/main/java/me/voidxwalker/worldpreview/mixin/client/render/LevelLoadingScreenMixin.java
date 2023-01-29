@@ -51,17 +51,11 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 2)
     public int worldpreview_moveLoadingScreen(int i){
-        if(WorldPreview.camera==null){
-            return i;
-        }
         return worldpreview_getChunkMapPos().x;
     }
 
     @ModifyVariable(method = "render", at = @At("STORE"), ordinal = 3)
     public int moveLoadingScreen2(int i){
-        if(WorldPreview.camera==null){
-            return i;
-        }
         return worldpreview_getChunkMapPos().y;
     }
     @Inject(method = "render",at=@At("HEAD"))
