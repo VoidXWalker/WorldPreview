@@ -21,7 +21,7 @@ import java.util.Random;
 
 @Mixin(BlockModelRenderer.class)
 public abstract class BlockModelRendererMixin implements OldSodiumCompatibility {
-    @Shadow public abstract boolean renderSmooth(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay);
+  /*  @Shadow public abstract boolean renderSmooth(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay);
 
     @Shadow public abstract boolean renderFlat(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long l, int i);
 
@@ -43,7 +43,7 @@ public abstract class BlockModelRendererMixin implements OldSodiumCompatibility 
     @Override
     public void worldpreview_setWorldSafe(ClientWorld world){
 
-    }
+    }*/
 
     
 }

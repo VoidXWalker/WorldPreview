@@ -2,14 +2,12 @@ package me.voidxwalker.worldpreview;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
@@ -64,9 +62,9 @@ public class WorldPreview  implements ClientModInitializer {
       ));
    }
    public Text translate(String key, String replacement ){
-      Text t = new TranslatableText(key);
+      Text t = Text.translatable(key);
       if(t.getString().equals(key)){
-         return new LiteralText(replacement);
+         return Text.literal(replacement);
       }
       return t;
    }

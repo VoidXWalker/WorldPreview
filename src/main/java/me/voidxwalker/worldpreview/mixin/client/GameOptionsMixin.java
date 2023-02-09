@@ -3,10 +3,8 @@ package me.voidxwalker.worldpreview.mixin.client;
 import me.voidxwalker.worldpreview.KeyBindingHelper;
 import me.voidxwalker.worldpreview.WorldPreview;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.nbt.CompoundTag;
-import org.apache.commons.lang3.ArrayUtils;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.KeyBinding;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -23,11 +21,11 @@ import java.util.Iterator;
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
         @Mutable @Final
-        @Shadow public KeyBinding[] keysAll;
+        @Shadow public KeyBinding[] allKeys;
 
         @Inject(at = @At("HEAD"), method = "load()V")
         public void loadHook(CallbackInfo info) {
-            keysAll = KeyBindingHelper.process(keysAll);
+                allKeys = KeyBindingHelper.process(allKeys);
         }
 
 }

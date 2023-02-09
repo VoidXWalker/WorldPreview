@@ -1,6 +1,6 @@
 
 plugins {
-	id 'fabric-loom' version '0.9-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -12,7 +12,7 @@ version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 loom {
-	accessWidener = file("src/main/resources/worldpreview.accesswidener")
+//	accessWidenerPath = file("src/main/resources/worldpreview.accesswidener")
 }
 
 repositories {

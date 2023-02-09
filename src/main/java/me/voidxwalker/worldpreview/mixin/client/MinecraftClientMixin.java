@@ -10,9 +10,10 @@ import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.resource.ReloadableResourceManager;
-import net.minecraft.resource.ResourceReloadListener;
+import net.minecraft.resource.ResourcePackManager;
+import net.minecraft.server.SaveLoader;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -45,7 +46,7 @@ public abstract class MinecraftClientMixin {
             cir.setReturnValue(false);
         }
     }
-    @Inject(method = "startIntegratedServer(Ljava/lang/String;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/MinecraftClient$WorldLoadAction;)V",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
+    @Inject(method = "startIntegratedServer",at=@At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/server/integrated/IntegratedServer;isLoading()Z"),cancellable = true)
     public void worldpreview_onHotKeyPressed( CallbackInfo ci){
         if(WorldPreview.inPreview){
             worldpreview_cycleCooldown++;
@@ -63,7 +64,7 @@ public abstract class MinecraftClientMixin {
                 this.server.shutdown();
                 MinecraftClient.getInstance().disconnect();
                 WorldPreview.kill=0;
-                MinecraftClient.getInstance().openScreen(new TitleScreen());
+                MinecraftClient.getInstance().setScreen(new TitleScreen());
                 ci.cancel();
             }
             if(WorldPreview.freezeKey.wasPressed()){
@@ -78,30 +79,30 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method="startIntegratedServer(Ljava/lang/String;)V",at=@At(value = "HEAD"))
-    public void worldpreview_isExistingWorld(String worldName, CallbackInfo ci){
-        WorldPreview.existingWorld=true;
+    @Inject(method="startIntegratedServer",at=@At(value = "HEAD"))
+    public void worldpreview_isExistingWorld(String levelName, LevelStorage.Session session, ResourcePackManager dataPackManager, SaveLoader saveLoader, boolean newWorld, CallbackInfo ci){
+        WorldPreview.existingWorld=!newWorld;
     }
 
-    @Redirect(method="reset",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;openScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
+    @Redirect(method="reset",at=@At(value="INVOKE",target="Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
     public void worldpreview_smoothTransition(MinecraftClient instance, Screen screen){
         if(this.currentScreen instanceof LevelLoadingScreen&&  ((WorldRendererMixin)WorldPreview.worldRenderer).getWorld()!=null&&WorldPreview.world!=null&& WorldPreview.clientWord!=null&&WorldPreview.player!=null){
             return;
         }
-        instance.openScreen(screen);
+        instance.setScreen(screen);
 
     }
 
     //sodium
 
-    @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManager;registerListener(Lnet/minecraft/resource/ResourceReloadListener;)V",ordinal = 11))
+   /* @Redirect(method = "<init>",at = @At(value = "INVOKE",target = "Lnet/minecraft/resource/ReloadableResourceManager;registerListener(Lnet/minecraft/resource/ResourceReloadListener;)V",ordinal = 11))
     public void worldpreview_createWorldRenderer(ReloadableResourceManager instance, ResourceReloadListener resourceReloadListener){
         WorldPreview.worldRenderer=new WorldRenderer(MinecraftClient.getInstance(), new BufferBuilderStorage());
         ((OldSodiumCompatibility)WorldPreview.worldRenderer).setPreviewRenderer();
         this.worldRenderer = new WorldRenderer((MinecraftClient) (Object)this, this.bufferBuilders);
         instance.registerListener(worldRenderer);
 
-    }
+    }*/
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",at=@At(value = "HEAD"))
     public void worldpreview_reset(Screen screen, CallbackInfo ci){
         synchronized (WorldPreview.lock){

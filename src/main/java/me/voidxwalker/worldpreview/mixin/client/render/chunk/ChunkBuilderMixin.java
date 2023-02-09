@@ -8,6 +8,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.chunk.BlockBufferBuilderStorage;
 import net.minecraft.client.render.chunk.ChunkBuilder;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -31,7 +32,7 @@ public class ChunkBuilderMixin {
     @Shadow private volatile int bufferCount;
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
-    public void worldpreview_sodiumCompatibility(World world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
+    public void worldpreview_sodiumCompatibility(ClientWorld world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen) {
             int i = Math.max(1, (int) ((double) Runtime.getRuntime().maxMemory() * 0.3D) / (RenderLayer.getBlockLayers().stream().mapToInt(RenderLayer::getExpectedBufferSize).sum() * 4) - 1);
             int j = Runtime.getRuntime().availableProcessors();

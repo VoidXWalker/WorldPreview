@@ -5,8 +5,9 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientChunkManager;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.util.registry.RegistryTracker;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
+
 import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,16 +24,10 @@ import java.util.function.Supplier;
 public class ClientWorldMixin {
     @Mutable @Shadow @Final private ClientChunkManager chunkManager;
 
-    @Redirect(method = "<init>",at=@At(value="INVOKE",target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;getRegistryTracker()Lnet/minecraft/util/registry/RegistryTracker;"))
-    public RegistryTracker worldpreview_stopLag(ClientPlayNetworkHandler instance){
-        if(instance==null){
-            return RegistryTracker.create();
-        }
-        return instance.getRegistryTracker();
-    }
 
-    @Inject(method ="<init>",at=@At("TAIL"))
-    public void worldpreview_oldSodiumCompatibility(ClientPlayNetworkHandler clientPlayNetworkHandler, ClientWorld.Properties properties, RegistryKey registryKey, RegistryKey registryKey2, DimensionType dimensionType, int i, Supplier supplier, WorldRenderer worldRenderer, boolean bl, long l, CallbackInfo ci){
+
+    /*@Inject(method ="<init>",at=@At("TAIL"))
+    public void worldpreview_oldSodiumCompatibility(ClientPlayNetworkHandler networkHandler, ClientWorld.Properties properties, RegistryKey registryRef, RegistryEntry dimensionTypeEntry, int loadDistance, int simulationDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci){
         if(WorldPreview.camera==null&& WorldPreview.world!=null&& WorldPreview.spawnPos!=null){
             this.chunkManager=worldpreview_getChunkManager(i);
         }
@@ -41,5 +36,5 @@ public class ClientWorldMixin {
 
     private ClientChunkManager worldpreview_getChunkManager(int i){
         return new ClientChunkManager((ClientWorld) (Object)this, i);
-    }
+    }*/
 }
