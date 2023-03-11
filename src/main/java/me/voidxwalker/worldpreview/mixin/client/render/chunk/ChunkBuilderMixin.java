@@ -37,7 +37,7 @@ public class ChunkBuilderMixin {
             int j = Runtime.getRuntime().availableProcessors();
             int k = is64Bits ? j : Math.min(j, 4);
             int l = Math.max(1, Math.min(k, i));
-            ArrayList list = this.worldpreview_getList(l);
+            ArrayList<BlockBufferBuilderStorage> list = this.worldpreview_getList(l);
             try {
                 for (int m = 0; m < l; ++m) {
                     list.add(new BlockBufferBuilderStorage());
@@ -56,7 +56,7 @@ public class ChunkBuilderMixin {
             this.bufferCount = this.threadBuffers.size();
         }
     }
-    private ArrayList worldpreview_getList(int l) {
+    private ArrayList<BlockBufferBuilderStorage> worldpreview_getList(int l) {
         return Lists.newArrayListWithExpectedSize(l);
     }
 
