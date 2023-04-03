@@ -2,6 +2,7 @@ package me.voidxwalker.worldpreview.mixin.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
+import me.voidxwalker.worldpreview.StateOutputHelper;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
@@ -43,6 +44,8 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         WorldPreview.freezePreview=false;
         WorldPreview.calculatedSpawn=false;
         KeyBinding.unpressAll();
+        StateOutputHelper.loadingProgress = 0;
+        StateOutputHelper.outputState("generating,0");
     }
     @Redirect(method = "render",at = @At(value = "INVOKE",target = "Lnet/minecraft/client/gui/screen/LevelLoadingScreen;renderBackground()V"))
     public void stopBackgroundRender(LevelLoadingScreen instance){
@@ -86,6 +89,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, 0.2F);
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() - 1.5, WorldPreview.player.getZ(), 0.0F, 0.0F);
                     WorldPreview.inPreview=true;
+                    StateOutputHelper.outputState("previewing," + StateOutputHelper.loadingProgress);
                     WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.getX() + ", "+(double)Math.floor(WorldPreview.player.getY())+ ", "+ WorldPreview.player.getZ()+")");
                 }
                 MatrixStack matrixStack = new MatrixStack();

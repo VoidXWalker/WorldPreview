@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview.mixin.client;
 
 import me.voidxwalker.worldpreview.OldSodiumCompatibility;
+import me.voidxwalker.worldpreview.StateOutputHelper;
 import me.voidxwalker.worldpreview.WorldPreview;
 import me.voidxwalker.worldpreview.mixin.access.WorldRendererMixin;
 import net.minecraft.client.MinecraftClient;
@@ -8,6 +9,7 @@ import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -38,6 +40,7 @@ public abstract class MinecraftClientMixin {
 
     @Shadow private @Nullable IntegratedServer server;
 
+    @Shadow @Nullable public ClientPlayerEntity player;
     @Shadow @Nullable public Entity cameraEntity;
     @Shadow private @Nullable ClientConnection connection;
     @Shadow @Final private SoundManager soundManager;
@@ -119,5 +122,29 @@ public abstract class MinecraftClientMixin {
             worldpreview_cycleCooldown=0;
         }
 
+    }
+
+    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At("TAIL"))
+    private void worldpreview_outputWaitingState(Screen screen, CallbackInfo info) {
+        // We do this inject after this.player is set to null in the disconnect method.
+        // This is because the inworld state output depends on the player being non-null,
+        // so it makes more sense to set the state for exiting after the player becomes null.
+
+        // While disconnect is intended for leaving a world, it may also occur before the first world creation,
+        // hence the output "waiting" as opposed to "exiting"
+        StateOutputHelper.outputState("waiting");
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void worldpreview_outputInWorldState(CallbackInfo info) {
+        // If there is no player, there is no world to be in
+        if (this.player == null) return;
+        if (this.currentScreen == null) {
+            StateOutputHelper.outputState("inworld,unpaused");
+        } else if (this.currentScreen.isPauseScreen()) {
+            StateOutputHelper.outputState("inworld,paused");
+        } else {
+            StateOutputHelper.outputState("inworld,gamescreenopen");
+        }
     }
 }
