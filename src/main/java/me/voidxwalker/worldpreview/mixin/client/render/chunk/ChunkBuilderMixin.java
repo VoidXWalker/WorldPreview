@@ -33,10 +33,8 @@ public class ChunkBuilderMixin {
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     public void sodiumCompatibility(World world, WorldRenderer worldRenderer, Executor executor, boolean is64Bits, BlockBufferBuilderStorage buffers, CallbackInfo ci) {
         if(MinecraftClient.getInstance().currentScreen instanceof LevelLoadingScreen) {
-            int i = Math.max(1, (int) ((double) Runtime.getRuntime().maxMemory() * 0.3D) / (RenderLayer.getBlockLayers().stream().mapToInt(RenderLayer::getExpectedBufferSize).sum() * 4) - 1);
-            int j = Runtime.getRuntime().availableProcessors();
-            int k = is64Bits ? j : Math.min(j, 4);
-            int l = Math.max(1, Math.min(k, i));
+            // Override vanilla logic because 1 buffer thread is just better for multi instance, faster world gen and less memory usage (Author @jojoe77777)
+            int l = 1;
             ArrayList list = this.getList(l);
             try {
                 for (int m = 0; m < l; ++m) {
