@@ -11,6 +11,8 @@
     "access.ChunkInfoMixin",
     "access.KeyBindingMixin",
     "access.WorldRendererMixin",
+    "access.VersionedChunkStorageMixin",
+    "access.SerializingRegionBasedStorageMixin",
 
     "client.render.block.BlockModelRendererMixin",
     "client.render.block.BlockRenderManagerMixin",
@@ -28,7 +30,10 @@
 
     "server.MinecraftServerMixin",
     "server.ServerChunkManagerMixin",
-    "server.ServerPlayerEntityMixin"
+    "server.ServerPlayerEntityMixin",
+    "server.shutdown.StorageIOWorkerMixin",
+    "server.shutdown.ThreadedAnvilChunkStorageMixin"
+
   ],
   "injectors": {
     "defaultRequire": 1
