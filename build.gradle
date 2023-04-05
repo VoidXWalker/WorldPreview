@@ -1,14 +1,36 @@
 plugins {
 	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
+	id 'org.ajoberstar.grgit' version '4.1.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName = project.archives_base_name
-version = "${project.mod_version}+${project.minecraft_version}"
+archivesBaseName = "${project.mod_id}-${project.minecraft_version}"
+version = "${getVersionMetadata()}"
 group = project.maven_group
+
+def getVersionMetadata() {
+    // CI builds version numbers
+    def build_id = System.getenv("RELEASE_NUMBER")
+    if (build_id != null) {
+        return build_id + ".0.0"
+    }
+
+    // Development builds
+    if (grgit == null) {
+        return "dev"
+    }
+
+    // Named development builds
+    def id = grgit.head().abbreviatedId
+    if (!grgit.status().clean) {
+        id += "-dirty"
+    }
+
+    return "rev.${id}"
+}
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -24,21 +46,17 @@ dependencies {
 		minecraft "com.mojang:minecraft:1.15.2"
 		mappings "net.fabricmc:yarn:1.15.2+build.17:v2"
 		modImplementation "net.fabricmc:fabric-loader:0.12.12"
-
-
-
-
-
-
 }
 
 processResources {
-	inputs.property "version", project.version
+    inputs.property "mod_id", project.mod_id
+    inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
+    filesMatching("fabric.mod.json") {
+        expand "mod_id": project.mod_id, "version": project.version
+    }
 }
+
 
 tasks.withType(JavaCompile).configureEach {
 	// ensure that the encoding is set to UTF-8, no matter what the system default is

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "worldpreview",
+  "id": "${mod_id}",
   "version": "${version}",
   "name": "WorldPreview",
   "description": "Makes you reset block game fast",
