@@ -33,6 +33,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.concurrent.locks.LockSupport;
+
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 
@@ -67,7 +69,7 @@ public abstract class MinecraftClientMixin {
                 WorldPreview.log(Level.INFO,"Leaving world generation");
                 WorldPreview.kill = 1;
                 while(WorldPreview.inPreview){
-                    Thread.yield();
+                    LockSupport.park(); // I am at a loss to emphasize how bad of an idea Thread.yield() here is.
                 }
                 this.server.shutdown();
                 MinecraftClient.getInstance().disconnect();

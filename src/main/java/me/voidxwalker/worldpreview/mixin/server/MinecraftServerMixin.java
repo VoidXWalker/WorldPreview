@@ -2,6 +2,7 @@ package me.voidxwalker.worldpreview.mixin.server;
 
 import me.voidxwalker.worldpreview.IFastCloseable;
 import me.voidxwalker.worldpreview.WorldPreview;
+import me.voidxwalker.worldpreview.mixin.access.MinecraftClientMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.LevelLoadingScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -32,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.locks.LockSupport;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<ServerTask> {
@@ -130,6 +132,7 @@ public abstract class MinecraftServerMixin  extends ReentrantThreadExecutor<Serv
     public void kill2(CallbackInfo ci){
         WorldPreview.inPreview=false;
         if(WorldPreview.kill==1){
+            LockSupport.unpark(((MinecraftClientMixin)MinecraftClient.getInstance()).invokeGetThread());
             ci.cancel();
         }
     }

@@ -13,6 +13,7 @@
     "access.WorldRendererMixin",
     "access.VersionedChunkStorageMixin",
     "access.SerializingRegionBasedStorageMixin",
+    "access.MinecraftClientMixin",
 
     "client.render.block.BlockModelRendererMixin",
     "client.render.block.BlockRenderManagerMixin",
