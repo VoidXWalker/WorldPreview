@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.9-SNAPSHOT'
+	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -18,7 +18,7 @@ repositories {
 	// for more information about repositories.
 }
 loom {
-	accessWidener = file("src/main/resources/worldpreview.accesswidener")
+	accessWidenerPath = file("src/main/resources/worldpreview.accesswidener")
 }
 dependencies {
 		minecraft "com.mojang:minecraft:1.15.2"
