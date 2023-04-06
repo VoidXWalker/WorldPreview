@@ -53,6 +53,7 @@ log files, the mod prints 3 log lines:
 
 - [@Void_X_Walker](https://www.github.com/voidxwalker) (https://ko-fi.com/voidxwalker)
 - [DuncanRuns](https://www.github.com/DuncanRuns)
+- [jojoe77777](https://www.github.com/jojoe77777)
 - [pixfumy](https://www.github.com/pixfumy)
 
 
