@@ -3,12 +3,10 @@ package me.voidxwalker.worldpreview;
 import org.apache.logging.log4j.Level;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * A helper class for outputting and logging the current state of resetting to help with macros and verification without interrupting the regular flow of the game.
@@ -19,6 +17,8 @@ public final class StateOutputHelper {
     public static int loadingProgress = 0;
     public static boolean titleHasEverLoaded = false;
     private static String lastOutput = "";
+
+    private static RandomAccessFile stateFile;
 
 
     private StateOutputHelper() {
@@ -42,7 +42,12 @@ public final class StateOutputHelper {
 
     private synchronized static void outputStateInternal(String string) {
         try {
-            Files.write(OUT_PATH, string.getBytes(StandardCharsets.UTF_8));
+            if(stateFile == null){ // opening file only once is better for performance
+                stateFile = new RandomAccessFile(OUT_PATH.toString(), "rw");
+            }
+            stateFile.setLength(0); // clear existing file contents
+            stateFile.seek(0); // move pointer back to start of file
+            stateFile.write(string.getBytes(StandardCharsets.UTF_8));
             WorldPreview.log(Level.INFO, "WorldPreview State: " + string);
         } catch (IOException ignored) {
             WorldPreview.log(Level.ERROR, "Failed to write state output!");
