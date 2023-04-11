@@ -18,7 +18,7 @@ public abstract class WorldGenerationProgressLoggerMixin {
     private void worldpreview_outputGenerationState(ChunkPos pos, ChunkStatus status, CallbackInfo info) {
         // Using the getProgressPercentage to recalculate is slightly unoptimized but prevents needing to do locals capture, making it easier to port this mixin.
         StateOutputHelper.loadingProgress = MathHelper.clamp(getProgressPercentage(), 0, 100);
-        StateOutputHelper.outputState((WorldPreview.inPreview ? "previewing," : "generating,") + StateOutputHelper.loadingProgress);
+        StateOutputHelper.outputState((WorldPreview.renderingPreview ? "previewing," : "generating,") + StateOutputHelper.loadingProgress);
     }
 
     @Shadow

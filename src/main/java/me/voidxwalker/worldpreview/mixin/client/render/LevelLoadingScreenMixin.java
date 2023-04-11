@@ -89,8 +89,6 @@ public abstract class LevelLoadingScreenMixin extends Screen {
                     WorldPreview.camera.update(WorldPreview.world, WorldPreview.player, this.minecraft.options.perspective > 0, this.minecraft.options.perspective == 2, 0.2F);
                     WorldPreview.player.refreshPositionAndAngles(WorldPreview.player.getX(), WorldPreview.player.getY() - 1.5, WorldPreview.player.getZ(), 0.0F, 0.0F);
                     WorldPreview.inPreview=true;
-                    StateOutputHelper.outputState("previewing," + StateOutputHelper.loadingProgress);
-                    WorldPreview.log(Level.INFO,"Starting Preview at ("+ WorldPreview.player.getX() + ", "+(double)Math.floor(WorldPreview.player.getY())+ ", "+ WorldPreview.player.getZ()+")");
                 }
                 MatrixStack matrixStack = new MatrixStack();
                 matrixStack.peek().getModel().multiply(this. worldpreview_getBasicProjectionMatrix());

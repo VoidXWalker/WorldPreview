@@ -23,6 +23,7 @@ public class WorldPreview  implements ClientModInitializer {
    public static ClientPlayerEntity player;
    public static ClientWorld clientWord;
    public static boolean inPreview;
+   public static boolean renderingPreview;
    public static BlockPos spawnPos;
    public static int kill=0;
    public static int playerSpawn;
