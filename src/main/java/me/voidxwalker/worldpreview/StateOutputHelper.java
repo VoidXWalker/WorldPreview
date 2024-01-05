@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
  */
 public final class StateOutputHelper {
     private static final Path OUT_PATH = Paths.get("wpstateout.txt");
-    private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
     // Storage variable, not necessarily involved or required for using outputState()
     public static int loadingProgress = 0;
     public static boolean titleHasEverLoaded = false;
@@ -38,11 +37,10 @@ public final class StateOutputHelper {
         }
         lastOutput = string;
 
-        // Queue up the file writes as to not interrupt mc itself
-        EXECUTOR.execute(() -> outputStateInternal(string));
+        outputStateInternal(string);
     }
 
-    private static void outputStateInternal(String string) {
+    private synchronized static void outputStateInternal(String string) {
         try {
             Files.write(OUT_PATH, string.getBytes(StandardCharsets.UTF_8));
             WorldPreview.log(Level.INFO, "WorldPreview State: " + string);
