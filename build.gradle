@@ -7,8 +7,8 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName = "${project.mod_id}-${project.minecraft_version}"
-version = "${getVersionMetadata()}"
+archivesBaseName = project.mod_id
+version = "$mod_version+$minecraft_version"
 group = project.maven_group
 
 def getVersionMetadata() {
