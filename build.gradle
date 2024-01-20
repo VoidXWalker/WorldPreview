@@ -1,13 +1,9 @@
 plugins {
-	id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
 	id 'maven-publish'
 	id 'org.ajoberstar.grgit' version '4.1.0'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.mod_id
 version = "$mod_version+$minecraft_version"
 group = project.maven_group
 
@@ -32,28 +28,31 @@ def getVersionMetadata() {
     return "rev.${id}"
 }
 
+base {
+    archivesName = archives_name
+}
+
 repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.grad........................le.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+    maven { url "https://jitpack.io" }
 }
 loom {
 	accessWidenerPath = file("src/main/resources/worldpreview.accesswidener")
 }
 dependencies {
-		minecraft "com.mojang:minecraft:1.15.2"
-		mappings "net.fabricmc:yarn:1.15.2+build.17:v2"
-		modImplementation "net.fabricmc:fabric-loader:0.12.12"
+    minecraft "com.mojang:minecraft:$minecraft_version"
+    mappings "net.fabricmc:yarn:$yarn_mappings:v2"
+    modImplementation "net.fabricmc:fabric-loader:$loader_version"
+    implementation "dev.tildejustin.state-output:state-output-common:v1.1.4"
 }
 
 processResources {
-    inputs.property "mod_id", project.mod_id
-    inputs.property "version", project.version
-
     filesMatching("fabric.mod.json") {
-        expand "mod_id": project.mod_id, "version": project.version
+        expand "version": version
     }
 }
 
@@ -65,41 +64,23 @@ tasks.withType(JavaCompile).configureEach {
 	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
 
-	// Minecraft 1.17 (21w19a) upwards uses Java 16.
 	it.options.release = 8
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
+
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${base.archivesName.get()}"}
 	}
 }
 
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
-	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+publishing {
+    publications.create("mavenJava", MavenPublication) {
+        from components.java
 	}
+    repositories {}
 }
