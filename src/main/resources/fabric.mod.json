@@ -5,15 +5,20 @@
   "name": "WorldPreview",
   "description": "Makes you reset block game fast",
   "authors": [
-    "Void_X_Walker"
+    "Void_X_Walker",
+    "pixfumy",
+    "DuncanRuns",
+    "jojoe77777",
+    "tildejustin"
   ],
   "contact": {
-    "repo": "https://github.com/VoidXWalker/WorldPreview"
+    "homepage": "https://github.com/Minecraft-Java-Edition-Speedrunning/mcsr-worldpreview-1.16.1",
+    "sources": "https://github.com/Minecraft-Java-Edition-Speedrunning/mcsr-worldpreview-1.16.1"
   },
   "license": "MIT",
   "icon": "assets/worldpreview/icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "me.voidxwalker.worldpreview.WorldPreview"
@@ -26,5 +31,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.12.0"
+  },
+  "suggests": {
+    "state-output": "1.1.3+"
   }
 }

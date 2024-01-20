@@ -1,6 +1,7 @@
 package me.voidxwalker.worldpreview;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.network.ClientPlayerEntity;
 
 import net.minecraft.client.options.KeyBinding;
@@ -37,6 +38,7 @@ public class WorldPreview  implements ClientModInitializer {
    public static KeyBinding cycleChunkMapKey;
    public static int chunkMapPos;
    public static boolean freezePreview;
+   public static final boolean stateOutputLoaded = FabricLoader.getInstance().isModLoaded("state-output");
    public static final Object lock= new Object();
    public static Logger LOGGER = LogManager.getLogger();
    public static void log(Level level, String message) {
